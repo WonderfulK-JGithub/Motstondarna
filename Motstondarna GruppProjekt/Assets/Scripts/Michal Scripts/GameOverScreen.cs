@@ -1,0 +1,29 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+// Av Michal
+public class GameOverScreen : MonoBehaviour
+{
+    public Text pointsText;
+
+    private void Start()
+    {
+        Setup(PlayerPrefs.GetInt("score", 0));
+    }
+    public void Setup(int score) // Poäng efter man har dött
+    {
+        print("setup");
+        gameObject.SetActive(true);
+        pointsText.text = score.ToString() + " POÄNG";
+    }
+    public void RestartButton() // Buton till starta om spelet
+    {
+        SceneManager.LoadScene("GameScene");
+    }
+    public void ExitButton() // Button till gå till MainMenu
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
+}
