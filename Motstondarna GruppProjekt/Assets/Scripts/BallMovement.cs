@@ -41,15 +41,31 @@ public class BallMovement : MonoBehaviour
         inputX = Input.GetAxisRaw("Horizontal");
         inputZ = Input.GetAxisRaw("Vertical");
 
+        bool noInput = inputX == 0 && inputZ == 0;
+
         Vector3 targetSpeed;
 
         targetSpeed = new Vector3(inputX * topSpeed * orientationTransform.right.x + inputZ * topSpeed * orientationTransform.forward.x, 0f, inputX * topSpeed * orientationTransform.right.z + inputZ * topSpeed * orientationTransform.forward.z);
-        
-        float xAcceleration = Mathf.Sign(targetSpeed.x) == Mathf.Sign(currentSpeed.x) ? acceleration : acceleration * extraAccelerationFactor;
-        float zAcceleration = Mathf.Sign(targetSpeed.z) == Mathf.Sign(currentSpeed.z) ? acceleration : acceleration * extraAccelerationFactor;
 
-        currentSpeed.x = Mathf.MoveTowards(currentSpeed.x, targetSpeed.x, xAcceleration * Time.deltaTime);
-        currentSpeed.z = Mathf.MoveTowards(currentSpeed.z, targetSpeed.z, zAcceleration * Time.deltaTime);
+        float xAcceleration;
+        float zAcceleration;
+        if (!noInput)
+        {
+            xAcceleration = Mathf.Sign(targetSpeed.x) == Mathf.Sign(currentSpeed.x) ? acceleration : acceleration * extraAccelerationFactor;
+            zAcceleration = Mathf.Sign(targetSpeed.z) == Mathf.Sign(currentSpeed.z) ? acceleration : acceleration * extraAccelerationFactor;
+        }
+        else
+        {
+            xAcceleration = acceleration;
+            zAcceleration = acceleration;
+        }
+        
+        if(onGround || !noInput)
+        {
+            currentSpeed.x = Mathf.MoveTowards(currentSpeed.x, targetSpeed.x, xAcceleration * Time.deltaTime);
+            currentSpeed.z = Mathf.MoveTowards(currentSpeed.z, targetSpeed.z, zAcceleration * Time.deltaTime);
+        }
+        
 
 
         if(Input.GetButtonDown("Jump") && onGround)
