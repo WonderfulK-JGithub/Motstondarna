@@ -9,7 +9,7 @@ public class JumpPad : MonoBehaviour
         if (collision.gameObject.GetComponent<Rigidbody>() != null) // om objektet har en rigidbody - Anton
         {
             Rigidbody rb = collision.gameObject.GetComponent<Rigidbody>(); // referens till rigidbodyn - Anton
-            rb.velocity = new Vector3(rb.velocity.x, strength, rb.velocity.z); // skjuter upp objektet i luften - Anton
+            rb.velocity += transform.up * strength; // skjuter upp objektet i luften - Anton
         }
     }
 }
