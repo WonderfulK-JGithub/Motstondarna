@@ -18,17 +18,29 @@ public class BallMovement : MonoBehaviour
     [SerializeField] float terminalVelocity;
     [SerializeField] LayerMask groundLayers;
 
+    [Header("Dashing")]
+    [SerializeField] float dashChargePower;
+    [SerializeField] float dashMaxCharge;
+    [SerializeField] float reducedAccelerationFactor;
+    [SerializeField] float reducedAccelerationTime;
+
     float inputX;
     float inputZ;
 
     float holdTimer;
 
+    float totalCharge;
+    float accReduction;
+    float accReductionTimer;
+
     bool onGround;
     bool isJumping;
 
-    Vector3 currentSpeed;
+    [HideInInspector] public Vector3 currentSpeed;
 
     Rigidbody rb;
+
+    PlayerState state;
 
     void Awake()
     {
@@ -38,63 +50,104 @@ public class BallMovement : MonoBehaviour
 
     void Update()
     {
-        inputX = Input.GetAxisRaw("Horizontal");
-        inputZ = Input.GetAxisRaw("Vertical");
-
-        bool noInput = inputX == 0 && inputZ == 0;
-
         Vector3 targetSpeed;
-
-        targetSpeed = new Vector3(inputX * topSpeed * orientationTransform.right.x + inputZ * topSpeed * orientationTransform.forward.x, 0f, inputX * topSpeed * orientationTransform.right.z + inputZ * topSpeed * orientationTransform.forward.z);
-
-        float xAcceleration;
-        float zAcceleration;
-        if (!noInput)
+        switch (state)
         {
-            xAcceleration = Mathf.Sign(targetSpeed.x) == Mathf.Sign(currentSpeed.x) ? acceleration : acceleration * extraAccelerationFactor;
-            zAcceleration = Mathf.Sign(targetSpeed.z) == Mathf.Sign(currentSpeed.z) ? acceleration : acceleration * extraAccelerationFactor;
-        }
-        else
-        {
-            xAcceleration = acceleration;
-            zAcceleration = acceleration;
-        }
-        
-        if(onGround || !noInput)
-        {
-            currentSpeed.x = Mathf.MoveTowards(currentSpeed.x, targetSpeed.x, xAcceleration * Time.deltaTime);
-            currentSpeed.z = Mathf.MoveTowards(currentSpeed.z, targetSpeed.z, zAcceleration * Time.deltaTime);
-        }
-        
+            case PlayerState.Free:
+                #region
+                inputX = Input.GetAxisRaw("Horizontal");
+                inputZ = Input.GetAxisRaw("Vertical");
+
+                bool noInput = inputX == 0 && inputZ == 0;
+
+                
+
+                targetSpeed = new Vector3(inputX * topSpeed * orientationTransform.right.x + inputZ * topSpeed * orientationTransform.forward.x, 0f, inputX * topSpeed * orientationTransform.right.z + inputZ * topSpeed * orientationTransform.forward.z);
 
 
-        if(Input.GetButtonDown("Jump") && onGround)
-        {
-            rb.velocity = new Vector3(rb.velocity.x,jumpStrength,rb.velocity.z);
-            isJumping = true;
-            holdTimer = jumpHoldTime;
-        }
+                float xAcceleration;
+                float zAcceleration;
 
-
-        if(isJumping && !onGround)
-        {
-            if(Input.GetButton("Jump"))
-            {
-                holdTimer -= Time.deltaTime;
-                if(holdTimer <= 0)
+                
+                if(accReductionTimer > 0)
                 {
-                    isJumping = false;
+                    accReductionTimer -= Time.deltaTime;
+                    accReduction = reducedAccelerationFactor;
                 }
-            }
-            else
-            {
-                isJumping = false;
-            }
+                else
+                {
+                    accReduction = 1f;
+                }
+
+                if (!noInput)
+                {
+                    xAcceleration = Mathf.Sign(targetSpeed.x) == Mathf.Sign(currentSpeed.x) ? acceleration : acceleration * extraAccelerationFactor * accReduction;
+                    zAcceleration = Mathf.Sign(targetSpeed.z) == Mathf.Sign(currentSpeed.z) ? acceleration : acceleration * extraAccelerationFactor * accReduction;
+                }
+                else
+                {
+                    xAcceleration = acceleration;
+                    zAcceleration = acceleration;
+                }
+
+                if (onGround || !noInput)
+                {
+                    currentSpeed.x = Mathf.MoveTowards(currentSpeed.x, targetSpeed.x, xAcceleration * Time.deltaTime);
+                    currentSpeed.z = Mathf.MoveTowards(currentSpeed.z, targetSpeed.z, zAcceleration * Time.deltaTime);
+                }
+
+
+
+                if (Input.GetButtonDown("Jump") && onGround)
+                {
+                    rb.velocity = new Vector3(rb.velocity.x, jumpStrength, rb.velocity.z);
+                    isJumping = true;
+                    holdTimer = jumpHoldTime;
+                }
+
+
+                if (isJumping && !onGround)
+                {
+                    if (Input.GetButton("Jump"))
+                    {
+                        holdTimer -= Time.deltaTime;
+                        if (holdTimer <= 0)
+                        {
+                            isJumping = false;
+                        }
+                    }
+                    else
+                    {
+                        isJumping = false;
+                    }
+                }
+
+                if(Input.GetButtonDown("Fire1"))
+                {
+                    state = PlayerState.Dash;
+                }
+
+                #endregion
+                break;
+            case PlayerState.Dash:
+                #region
+                currentSpeed.x = Mathf.MoveTowards(currentSpeed.x, 0, acceleration * Time.deltaTime);
+                currentSpeed.z = Mathf.MoveTowards(currentSpeed.z, 0, acceleration * Time.deltaTime);
+
+                totalCharge += dashChargePower * Time.deltaTime;
+
+                totalCharge = Mathf.Clamp(totalCharge,0, dashMaxCharge);
+
+                if(!Input.GetButton("Fire1"))
+                {
+                    state = PlayerState.Free;
+                    currentSpeed = orientationTransform.forward * totalCharge;
+
+                    accReductionTimer = reducedAccelerationTime * (totalCharge / dashMaxCharge);
+                }
+                #endregion
+                break;
         }
-         
-
-
-
 
     }
 
@@ -121,4 +174,11 @@ public class BallMovement : MonoBehaviour
         float yVelocityClamped = Mathf.Clamp(rb.velocity.y, terminalVelocity, 69420f);
         rb.velocity = new Vector3(rb.velocity.x, yVelocityClamped, rb.velocity.z);
     }
+}
+
+
+public enum PlayerState
+{
+    Free,
+    Dash,
 }
