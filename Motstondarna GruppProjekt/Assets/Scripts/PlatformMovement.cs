@@ -7,11 +7,12 @@ public class PlatformMovement : MonoBehaviour
     [Range(0, 5)] // hastigheten ska inte vara för hög - Anton
     public float speed; // hastigheten - Anton
     public bool backAndForth; // om plattformen ska röra sig fram och tillbaka - Anton
+    public bool enableMove; // om plattformen ska röra sig - Anton
     bool reverse; // används endast om backAndForth är satt på true och plattformen åker tillbaka - Anton
     Transform[] children; // får tag på alla children för att den senare ska extrahera ut punkterna - Anton
     Transform[] points; // alla punkter (de berättar för plattformen hur den ska åka) - Anton
     int targetPoint = 0; // vilken punkt plattan rör sig mot - Anton
-    public List<Transform> objectsOnPlatform = new List<Transform>(); // vilka objekt som nuddar plattformen - Anton
+    List<Transform> objectsOnPlatform = new List<Transform>(); // vilka objekt som nuddar plattformen - Anton
 
     private void Start()
     {
@@ -25,7 +26,11 @@ public class PlatformMovement : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        Vector3 difference = platform.transform.position - Vector3.MoveTowards(platform.transform.position, points[targetPoint].position, speed * Time.fixedDeltaTime); // den ska alltid röra sig mot nästa punkt - Anton
+        Vector3 difference = Vector3.zero;
+        if (enableMove)
+        {
+            difference = platform.transform.position - Vector3.MoveTowards(platform.transform.position, points[targetPoint].position, speed * Time.fixedDeltaTime); // den ska alltid röra sig mot nästa punkt - Anton
+        }
         platform.transform.position -= difference; // detta flyttar plattan - Anton
 
         for (int i = 0; i < objectsOnPlatform.Count; i++)
