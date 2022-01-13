@@ -2,16 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BasicEnemy : MonoBehaviour
+//Max Script
+public class BaseEnemy : MonoBehaviour
 {
-    [SerializeField] float speedToDie;
-
-    [SerializeField] float deathForce;
-
+    [SerializeField] float playerVelocityForDeath;
+    [SerializeField] float dieForce;
     [SerializeField] float fadeSpeed;
 
     bool hasDied = false;
 
+    //Referenser
     MeshRenderer rend;
 
     private void Awake()
@@ -23,7 +23,7 @@ public class BasicEnemy : MonoBehaviour
     {
         //Kolla spelarens script och ta lastVelocity för att se om velocity > speedToDIe, då ska de dö.
 
-        if (true)
+        if (collision.transform.GetComponent<BallMovement>() /* && collision.transform.GetComponent<BallMovement>().currentVelocity >= playerVelocityToDie*/)
         {
             if (!hasDied)
             {
@@ -32,7 +32,7 @@ public class BasicEnemy : MonoBehaviour
         }
     }
 
-    void Die(Vector3 contactPoint)
+    public virtual void Die(Vector3 contactPoint)
     {
         //Så den inte dör flera gånger
         hasDied = true;
@@ -44,7 +44,7 @@ public class BasicEnemy : MonoBehaviour
         dir = -dir.normalized;
 
         //Lägger på en force i direction
-        GetComponent<Rigidbody>().AddForce(dir * deathForce);
+        GetComponent<Rigidbody>().AddForce(dir * dieForce);
 
         StartCoroutine(Fade());
     }
