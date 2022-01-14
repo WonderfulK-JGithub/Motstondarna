@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //Max Script
-public class WanderingEnemy : MonoBehaviour
+public class WanderingEnemy : BaseEnemy
 {
     [SerializeField] Vector3 wanderingAreaCenter;
 
-    [SerializeField] float wanderingAreaRadius;
+    [SerializeField] float wanderingAreaSize;
+
+    [SerializeField] float playerCheckRadius;
 
     [SerializeField] float wanderingSpeed;
     [SerializeField] float chasingSpeed;
@@ -26,96 +28,127 @@ public class WanderingEnemy : MonoBehaviour
 
     bool isMoving = false;
 
-    Rigidbody rb;
+    Rigidbody rb2;
 
     void Start()
     {
         wanderingAreaCenter = transform.position;
         player = FindObjectOfType<BallMovement>().transform;
-        rb = GetComponent<Rigidbody>();
+        rb2 = GetComponent<Rigidbody>();
 
         NewPos();
     }
 
     private void Update()
     {
-        
+        if (!isChasingPlayer)
+        {
+            if (Vector3.Distance(player.position, transform.position) < playerCheckRadius)
+            {
+                isChasingPlayer = true;
+            }
+        }
     }
 
     void FixedUpdate()
     {
-        MoveTowardsTarget();
+        //Man ska inte alltid kunna röra på sig - Max
+        if (!isMoving) return;
+
+        if (isChasingPlayer)
+        {
+            ChasePlayer();
+        }
+        else
+        {
+            MoveTowardsTarget();
+        }
+    }
+
+    void ChasePlayer()
+    {
+
     }
 
     void MoveTowardsTarget()
     {
-        if (!isMoving) return;
+        Vector3 target = currentTarget;
 
-        Vector3 target = isChasingPlayer ? player.position : currentTarget;
-
-        if (!GroundCheck() || Vector3.Distance(new Vector3(transform.position.x, 0, transform.position.z), new Vector3(target.x, 0, target.z)) < targetDistance)
+        //Om den är tillräckligt nära target så ska fienden stanna och efter ett tag få en ny target - Max
+        if (Vector3.Distance(new Vector3(transform.position.x, 0, transform.position.z), new Vector3(target.x, 0, target.z)) < targetDistance)
         {
             isMoving = false;
             Invoke(nameof(NewPos), waitTimeToNewTarget);
             return;
         }
 
-        float speed = isChasingPlayer ? chasingSpeed : wanderingSpeed;
-
-        //Kollar mot target
+        //Kollar mot target - Max
         var lookPos = target - transform.position;
         lookPos.y = 0;
         var rotation = Quaternion.LookRotation(lookPos);
         transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * rotationSpeed);
 
-        //Rör sig mot target
-        Vector3 newVel = transform.forward * speed;
-        rb.velocity = new Vector3(newVel.x, rb.velocity.y, newVel.z);
-    }
-
-    bool GroundCheck()
-    {
-        RaycastHit hit;
-        Debug.DrawRay(transform.position + transform.forward * 1, Vector3.down, Color.red, 4);
-
-        if (Physics.Raycast(transform.position + transform.forward * 1, Vector3.down, out hit, 4, LayerMask.GetMask("Water")))
-        {
-            Debug.DrawRay(transform.position + transform.forward * 1, Vector3.down, Color.red, 4);
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        //Rör sig mot target - Max
+        Vector3 newVel = transform.forward * wanderingSpeed;
+        rb2.velocity = new Vector3(newVel.x, rb2.velocity.y, newVel.z);
     }
 
     void NewPos()
     {
-        Vector3 newTarget = wanderingAreaCenter + 
+        bool foundPos = false;
+        while (!foundPos)
+        {
+            Vector3 newTarget = wanderingAreaCenter +
             new Vector3
                 (
-                Random.Range(-wanderingAreaRadius, wanderingAreaRadius), 
+                Random.Range(-wanderingAreaSize, wanderingAreaSize),
                 0,
-                Random.Range(-wanderingAreaRadius, wanderingAreaRadius)
+                Random.Range(-wanderingAreaSize, wanderingAreaSize)
                 );
 
-        currentTarget = newTarget;
-        isMoving = true;
+            if (Physics.Raycast(newTarget + new Vector3(0,5,0), Vector3.down, 7, LayerMask.GetMask("Water")))
+            {
+                foundPos = true;
+
+                currentTarget = newTarget;
+                isMoving = true;
+            }
+        }       
+    }
+
+    public override void OnCollisionEnter(Collision collision)
+    {
+        base.OnCollisionEnter(collision);
+
+        if (collision.transform.GetComponent<BallMovement>())
+        {
+            NewPos();
+        }
+    }
+
+    public override void Die(Vector3 contactPoint)
+    {
+        //Gör så att den kan påverkas av forces - Max
+        isMoving = false;
+        rb2.isKinematic = false;
+        rb2.constraints = RigidbodyConstraints.None;
+        
+        base.Die(contactPoint);
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.color = new Color(0,255,0,0.4f);
 
+        Gizmos.DrawSphere(transform.position, playerCheckRadius);
 
         if (Application.isPlaying)
         {
-            Gizmos.DrawSphere(wanderingAreaCenter, wanderingAreaRadius);
+            Gizmos.DrawCube(wanderingAreaCenter, new Vector3(wanderingAreaSize * 2, wanderingAreaSize * 2, wanderingAreaSize * 2));
         }
         else
         {
-            Gizmos.DrawSphere(transform.position, wanderingAreaRadius);
-
+            Gizmos.DrawCube(transform.position, new Vector3(wanderingAreaSize * 2, wanderingAreaSize * 2, wanderingAreaSize * 2));
         }
     }
 }
