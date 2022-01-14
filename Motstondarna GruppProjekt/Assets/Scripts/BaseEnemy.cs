@@ -13,15 +13,17 @@ public class BaseEnemy : MonoBehaviour
 
     //Referenser
     MeshRenderer rend;
+    Rigidbody rb;
 
     private void Awake()
     {
         rend = GetComponent<MeshRenderer>();
+        rb = GetComponent<Rigidbody>();
     }
 
-    private void OnCollisionEnter(Collision collision)
+    public virtual void OnCollisionEnter(Collision collision)
     {
-        //Kolla spelarens script och ta lastVelocity för att se om velocity > speedToDIe, då ska de dö.
+        //Kolla spelarens script och ta lastVelocity för att se om velocity > speedToDIe, då ska de dö. - Max
 
         if (collision.transform.GetComponent<BallMovement>() && collision.transform.GetComponent<BallMovement>().currentSpeed.magnitude >= playerVelocityForDeath)
         {
@@ -30,21 +32,41 @@ public class BaseEnemy : MonoBehaviour
                 Die(collision.GetContact(0).point);
             }
         }
+        else if (collision.transform.GetComponent<BallMovement>() && collision.transform.GetComponent<BallMovement>().currentSpeed.magnitude < playerVelocityForDeath)
+        {
+            rb.isKinematic = true;
+
+            //Använder formeln angle = point1 - point2 för att ta fram vinkeln mellan spelaren och fienden - Max
+            Vector3 dir = collision.GetContact(0).point - transform.position;
+
+            //Reversar vinkeln så den går bort från spelaren istället och normalizar den så att jag bara får vinkeln av vektorn - Max
+            dir = dir.normalized;
+
+            //Lägger på en force i direction - Max
+            collision.transform.GetComponent<BallMovement>().currentSpeed = dir * 5;
+        }    
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.transform.GetComponent<BallMovement>())
+            rb.isKinematic = false;
     }
 
     public virtual void Die(Vector3 contactPoint)
     {
-        //Så den inte dör flera gånger
+        //Så den inte dör flera gånger - Max
         hasDied = true;
 
-        //Använder formeln angle = point1 - point2 för att ta fram vinkeln mellan spelaren och fienden
+        //Använder formeln angle = point1 - point2 för att ta fram vinkeln mellan spelaren och fienden - Max
         Vector3 dir = contactPoint - transform.position;
 
-        //Reversar vinkeln så den går bort från spelaren istället och normalizar den så att jag bara får vinkeln av vektorn
+        //Reversar vinkeln så den går bort från spelaren istället och normalizar den så att jag bara får vinkeln av vektorn - Max
         dir = -dir.normalized;
 
-        //Lägger på en force i direction
-        GetComponent<Rigidbody>().AddForce(dir * dieForce);
+        //Lägger på en force i direction - Max
+        //GetComponent<Rigidbody>().AddForce(dir * dieForce);
+        GetComponent<Rigidbody>().AddForceAtPosition(dir * dieForce, contactPoint);
 
         StartCoroutine(Fade());
     }
