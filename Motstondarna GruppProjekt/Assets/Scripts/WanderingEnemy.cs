@@ -5,29 +5,30 @@ using UnityEngine;
 //Max Script
 public class WanderingEnemy : BaseEnemy
 {
+    [Header("Wandering Area")]
     [SerializeField] Vector3 wanderingAreaCenter;
-
     [SerializeField] float wanderingAreaSize;
 
+    [Header("Wandering parameters")]
+    [SerializeField] float wanderingSpeed;
+    [SerializeField] float targetDistance;
+    [SerializeField] float waitTimeToNewTarget;
+    [SerializeField] Vector3 currentTarget;
+
+    [Header("Checking For Player")]
     [SerializeField] float playerCheckRadius;
 
-    [SerializeField] float wanderingSpeed;
+    [Header("Chasing parameters")]
     [SerializeField] float chasingSpeed;
-
     [SerializeField] float rotationSpeed;
-
-    [SerializeField] float targetDistance;
-
-    [SerializeField] float waitTimeToNewTarget;
-
-    [SerializeField] Vector3 currentTarget;
 
     Transform player;
 
     bool isChasingPlayer = false;
-
     bool isMoving = false;
+    bool canCheckForPlayer = true;
 
+    //Components
     Rigidbody rb2;
 
     void Start()
@@ -41,11 +42,19 @@ public class WanderingEnemy : BaseEnemy
 
     private void Update()
     {
-        if (!isChasingPlayer)
+        if (canCheckForPlayer && !isChasingPlayer)
         {
             if (Vector3.Distance(player.position, transform.position) < playerCheckRadius)
             {
                 isChasingPlayer = true;
+            }
+        }
+
+        if (!canCheckForPlayer)
+        {
+            if(Vector3.Distance(player.position, transform.position) > playerCheckRadius + 4f)
+            {
+                canCheckForPlayer = true;
             }
         }
     }
@@ -61,16 +70,25 @@ public class WanderingEnemy : BaseEnemy
         }
         else
         {
-            MoveTowardsTarget();
+            Wandering();
         }
     }
 
     void ChasePlayer()
     {
-
+        if (GroundCheck())
+        {
+            MoveTowardsTarget(player.position, chasingSpeed);
+        }
+        else
+        {
+            Invoke(nameof(StopChasing), 1f);
+            rb2.velocity = Vector3.zero;
+            canCheckForPlayer = false;
+        }
     }
 
-    void MoveTowardsTarget()
+    void Wandering()
     {
         Vector3 target = currentTarget;
 
@@ -82,6 +100,16 @@ public class WanderingEnemy : BaseEnemy
             return;
         }
 
+        MoveTowardsTarget(target, wanderingSpeed);
+    }
+
+    void StopChasing()
+    {
+        isChasingPlayer = false;
+    }
+
+    void MoveTowardsTarget(Vector3 target, float speed)
+    {
         //Kollar mot target - Max
         var lookPos = target - transform.position;
         lookPos.y = 0;
@@ -89,8 +117,22 @@ public class WanderingEnemy : BaseEnemy
         transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * rotationSpeed);
 
         //Rör sig mot target - Max
-        Vector3 newVel = transform.forward * wanderingSpeed;
+        Vector3 newVel = transform.forward * speed;
         rb2.velocity = new Vector3(newVel.x, rb2.velocity.y, newVel.z);
+    }
+
+    bool GroundCheck()
+    {
+        Debug.DrawRay(transform.position + transform.forward * 1, Vector3.down, Color.red, 4);
+
+        if (Physics.Raycast(transform.position + transform.forward * 1, Vector3.down, 4, LayerMask.GetMask("Water"))) 
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     void NewPos()
