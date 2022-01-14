@@ -23,9 +23,11 @@ public class BallMovement : MonoBehaviour
     [SerializeField] float dashMaxCharge;
     [SerializeField] float reducedAccelerationFactor;
     [SerializeField] float reducedAccelerationTime;
+    [SerializeField] float dashTime;
 
     [Header("Other")]
     [SerializeField] ParticleSystem chargeParticle;
+    [SerializeField] float slideExtraGravity;
 
     float inputX;
     float inputZ;
@@ -35,9 +37,11 @@ public class BallMovement : MonoBehaviour
     float totalCharge;
     float accReduction;
     float accReductionTimer;
+    float dashTimer;
 
     bool onGround;
     bool isJumping;
+    bool canDash;
 
     [HideInInspector] public Vector3 currentSpeed;
 
@@ -135,31 +139,52 @@ public class BallMovement : MonoBehaviour
                     }
                 }
 
-                if(Input.GetButtonDown("Fire1"))
+                if(Input.GetButtonDown("Fire1") && canDash)
                 {
-                    state = PlayerState.Dash;
+                    state = PlayerState.ChargeDash;
                     chargeParticle.Play();
+                    canDash = false;
+                    rb.velocity = Vector2.zero;
+                    rb.useGravity = false;
                 }
 
                 #endregion
                 break;
-            case PlayerState.Dash:
+            case PlayerState.ChargeDash:
                 #region
-                currentSpeed.x = Mathf.MoveTowards(currentSpeed.x, 0, acceleration * Time.deltaTime);
-                currentSpeed.z = Mathf.MoveTowards(currentSpeed.z, 0, acceleration * Time.deltaTime);
+                //currentSpeed.x = Mathf.MoveTowards(currentSpeed.x, 0, acceleration * Time.deltaTime);
+                //currentSpeed.z = Mathf.MoveTowards(currentSpeed.z, 0, acceleration * Time.deltaTime);
 
                 totalCharge += dashChargePower * Time.deltaTime;
 
                 totalCharge = Mathf.Clamp(totalCharge,0, dashMaxCharge);
 
+                currentSpeed = Vector3.Lerp(currentSpeed, Vector3.zero, 0.05f);
+
                 if(!Input.GetButton("Fire1"))
                 {
                     chargeParticle.Stop();
-                    state = PlayerState.Free;
-                    currentSpeed = orientationTransform.forward * totalCharge;
+                    state = PlayerState.Dash;
 
-                    accReductionTimer = reducedAccelerationTime * (totalCharge / dashMaxCharge);
+                    rb.velocity = orientationTransform.forward * topSpeed;
+                    dashTimer = dashTime;
+
                 }
+                #endregion
+                break;
+            case PlayerState.Dash:
+                #region
+                dashTimer -= Time.deltaTime;
+
+                if(dashTimer <= 0f)
+                {
+                    state = PlayerState.Free;
+
+                    currentSpeed = rb.velocity;
+
+                    rb.useGravity = true;
+                }
+
                 #endregion
                 break;
         }
@@ -168,29 +193,66 @@ public class BallMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        rb.velocity = new Vector3(currentSpeed.x, rb.velocity.y, currentSpeed.z);
-
-        if (Physics.Raycast(transform.position, Vector3.down, 0.5f, groundLayers))
+        switch(state)
         {
-            onGround = true;
+            case PlayerState.Free:
+                #region
+                rb.velocity = new Vector3(currentSpeed.x, rb.velocity.y, currentSpeed.z);
+
+                if (Physics.Raycast(transform.position, Vector3.down, 0.5f, groundLayers))
+                {
+                    onGround = true;
+                    canDash = true;
+                }
+                else
+                {
+                    onGround = false;
+                }
+
+
+                if (!onGround && !isJumping)
+                {
+                    rb.velocity += new Vector3(0f, Physics.gravity.y * (extraGravityFactor - 1) * Time.fixedDeltaTime, 0f);
+                }
+
+                float yVelocityClamped = Mathf.Clamp(rb.velocity.y, terminalVelocity, 69420f);
+                rb.velocity = new Vector3(rb.velocity.x, yVelocityClamped, rb.velocity.z);
+
+                chargeParticle.transform.position = transform.position;
+                #endregion
+                break;
+            case PlayerState.ChargeDash:
+
+                rb.velocity = new Vector3(currentSpeed.x, currentSpeed.y, currentSpeed.z);
+                chargeParticle.transform.position = transform.position;
+                break;
+            case PlayerState.Renn:
+                rb.velocity += new Vector3(0f, Physics.gravity.y * (slideExtraGravity - 1) * Time.fixedDeltaTime, 0f);
+                break;
         }
-        else
-        {
-            onGround = false;
-        }
-
-
-        if(!onGround && !isJumping)
-        {
-            rb.velocity += new Vector3(0f, Physics.gravity.y * (extraGravityFactor - 1) * Time.fixedDeltaTime, 0f);
-        }
-
-        float yVelocityClamped = Mathf.Clamp(rb.velocity.y, terminalVelocity, 69420f);
-        rb.velocity = new Vector3(rb.velocity.x, yVelocityClamped, rb.velocity.z);
-
-        chargeParticle.transform.position = transform.position;
+        
         
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Ränna"))
+        {
+            state = PlayerState.Renn;
+            currentSpeed = Vector3.zero;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("Ränna"))
+        {
+            state = PlayerState.Free;
+            currentSpeed = rb.velocity;
+            currentSpeed.y = 0f;
+        }
+    }
+    
 }
 
 
@@ -200,5 +262,7 @@ public class BallMovement : MonoBehaviour
 public enum PlayerState
 {
     Free,
+    ChargeDash,
     Dash,
+    Renn,
 }
