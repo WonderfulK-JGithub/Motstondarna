@@ -24,6 +24,9 @@ public class BallMovement : MonoBehaviour
     [SerializeField] float reducedAccelerationFactor;
     [SerializeField] float reducedAccelerationTime;
 
+    [Header("Other")]
+    [SerializeField] ParticleSystem chargeParticle;
+
     float inputX;
     float inputZ;
 
@@ -64,7 +67,6 @@ public class BallMovement : MonoBehaviour
 
                 targetSpeed = new Vector3(inputX * topSpeed * orientationTransform.right.x + inputZ * topSpeed * orientationTransform.forward.x, 0f, inputX * topSpeed * orientationTransform.right.z + inputZ * topSpeed * orientationTransform.forward.z);
 
-
                 float xAcceleration;
                 float zAcceleration;
 
@@ -81,14 +83,25 @@ public class BallMovement : MonoBehaviour
 
                 if (!noInput)
                 {
+                    
+
                     xAcceleration = Mathf.Sign(targetSpeed.x) == Mathf.Sign(currentSpeed.x) ? acceleration : acceleration * extraAccelerationFactor * accReduction;
                     zAcceleration = Mathf.Sign(targetSpeed.z) == Mathf.Sign(currentSpeed.z) ? acceleration : acceleration * extraAccelerationFactor * accReduction;
+
+                    //xAcceleration *= Mathf.Abs(inputX * orientationTransform.right.x + inputZ * orientationTransform.forward.x);
+                    //zAcceleration *= Mathf.Abs(inputX * orientationTransform.right.z + inputZ * orientationTransform.forward.z);
                 }
                 else
                 {
                     xAcceleration = acceleration;
                     zAcceleration = acceleration;
+
+                    
                 }
+
+                
+                
+                
 
                 if (onGround || !noInput)
                 {
@@ -125,6 +138,7 @@ public class BallMovement : MonoBehaviour
                 if(Input.GetButtonDown("Fire1"))
                 {
                     state = PlayerState.Dash;
+                    chargeParticle.Play();
                 }
 
                 #endregion
@@ -140,6 +154,7 @@ public class BallMovement : MonoBehaviour
 
                 if(!Input.GetButton("Fire1"))
                 {
+                    chargeParticle.Stop();
                     state = PlayerState.Free;
                     currentSpeed = orientationTransform.forward * totalCharge;
 
@@ -155,8 +170,7 @@ public class BallMovement : MonoBehaviour
     {
         rb.velocity = new Vector3(currentSpeed.x, rb.velocity.y, currentSpeed.z);
 
-
-        if(Physics.Raycast(transform.position, Vector3.down, 0.5f, groundLayers))
+        if (Physics.Raycast(transform.position, Vector3.down, 0.5f, groundLayers))
         {
             onGround = true;
         }
@@ -173,8 +187,14 @@ public class BallMovement : MonoBehaviour
 
         float yVelocityClamped = Mathf.Clamp(rb.velocity.y, terminalVelocity, 69420f);
         rb.velocity = new Vector3(rb.velocity.x, yVelocityClamped, rb.velocity.z);
+
+        chargeParticle.transform.position = transform.position;
+        
     }
 }
+
+
+
 
 
 public enum PlayerState
