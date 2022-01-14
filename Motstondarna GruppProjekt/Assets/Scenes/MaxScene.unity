@@ -214,7 +214,7 @@ Transform:
   m_GameObject: {fileID: 119396961}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
@@ -254,7 +254,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 80
   m_CollisionDetection: 0
 --- !u!64 &204775092
 MeshCollider:
@@ -333,6 +333,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wanderingAreaCenter: {x: 0, y: 0, z: 0}
   wanderingAreaRadius: 7
+  wanderingSpeed: 2
+  chasingSpeed: 5
+  rotationSpeed: 2
+  targetDistance: 1
+  waitTimeToNewTarget: 2
+  currentTarget: {x: 0, y: 0, z: 0}
 --- !u!4 &204775096
 Transform:
   m_ObjectHideFlags: 0
@@ -341,7 +347,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 204775090}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.5, y: 1.21, z: 0}
+  m_LocalPosition: {x: -2.75, y: 1.25, z: 9.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -566,8 +572,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aeca44ca472a4c5439ae0b904bb4e602, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerVelocityForDeath: 0
-  dieForce: 0
+  playerVelocityForDeath: 8
+  dieForce: 1000
   fadeSpeed: 0.5
 --- !u!1 &600932654
 GameObject:
@@ -613,6 +619,11 @@ MonoBehaviour:
   groundLayers:
     serializedVersion: 2
     m_Bits: 16
+  dashChargePower: 0
+  dashMaxCharge: 0
+  reducedAccelerationFactor: 0
+  reducedAccelerationTime: 0
+  currentSpeed: {x: 0, y: 0, z: 0}
 --- !u!54 &600932656
 Rigidbody:
   m_ObjectHideFlags: 0

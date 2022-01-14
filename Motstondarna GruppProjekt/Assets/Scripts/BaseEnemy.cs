@@ -23,7 +23,7 @@ public class BaseEnemy : MonoBehaviour
     {
         //Kolla spelarens script och ta lastVelocity för att se om velocity > speedToDIe, då ska de dö.
 
-        if (collision.transform.GetComponent<BallMovement>() /* && collision.transform.GetComponent<BallMovement>().currentVelocity >= playerVelocityToDie*/)
+        if (collision.transform.GetComponent<BallMovement>() && collision.transform.GetComponent<BallMovement>().currentSpeed.magnitude >= playerVelocityForDeath)
         {
             if (!hasDied)
             {
