@@ -24,6 +24,7 @@ public class BallMovement : MonoBehaviour
     [SerializeField] float reducedAccelerationFactor;
     [SerializeField] float reducedAccelerationTime;
     [SerializeField] float dashTime;
+    [SerializeField] GameObject dashTrail;
 
     [Header("Other")]
     [SerializeField] ParticleSystem chargeParticle;
@@ -146,6 +147,8 @@ public class BallMovement : MonoBehaviour
                     canDash = false;
                     rb.velocity = Vector2.zero;
                     rb.useGravity = false;
+                    dashTrail.transform.position = transform.position;
+                    dashTrail.SetActive(false);
                 }
 
                 #endregion
@@ -169,6 +172,8 @@ public class BallMovement : MonoBehaviour
                     rb.velocity = orientationTransform.forward * topSpeed;
                     dashTimer = dashTime;
 
+                    
+                    dashTrail.SetActive(true);
                 }
                 #endregion
                 break;
@@ -183,6 +188,8 @@ public class BallMovement : MonoBehaviour
                     currentSpeed = rb.velocity;
 
                     rb.useGravity = true;
+
+
                 }
 
                 #endregion
@@ -199,7 +206,7 @@ public class BallMovement : MonoBehaviour
                 #region
                 rb.velocity = new Vector3(currentSpeed.x, rb.velocity.y, currentSpeed.z);
 
-                if (Physics.Raycast(transform.position, Vector3.down, 0.5f, groundLayers))
+                if (Physics.Raycast(transform.position, Vector3.down, 0.52f, groundLayers))
                 {
                     onGround = true;
                     canDash = true;
@@ -229,8 +236,10 @@ public class BallMovement : MonoBehaviour
             case PlayerState.Renn:
                 rb.velocity += new Vector3(0f, Physics.gravity.y * (slideExtraGravity - 1) * Time.fixedDeltaTime, 0f);
                 break;
+            case PlayerState.Dash:
+                dashTrail.transform.position = transform.position;
+                break;
         }
-        
         
     }
 

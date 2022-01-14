@@ -258,6 +258,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &934397638 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2667104024554036990, guid: 38e692ee287ba1147b43096b0bd76980, type: 3}
+  m_PrefabInstance: {fileID: 577211304583936681}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1270670682
 GameObject:
   m_ObjectHideFlags: 0
@@ -945,17 +950,9 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 577211304676323994, guid: 38e692ee287ba1147b43096b0bd76980, type: 3}
-      propertyPath: dashTime
-      value: 0.4
-      objectReference: {fileID: 0}
-    - target: {fileID: 577211304676323994, guid: 38e692ee287ba1147b43096b0bd76980, type: 3}
-      propertyPath: slideExtraGravity
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 577211304676323994, guid: 38e692ee287ba1147b43096b0bd76980, type: 3}
-      propertyPath: groundLayers.m_Bits
-      value: 64
-      objectReference: {fileID: 0}
+      propertyPath: dashTrail
+      value: 
+      objectReference: {fileID: 934397638}
     - target: {fileID: 577211304676323994, guid: 38e692ee287ba1147b43096b0bd76980, type: 3}
       propertyPath: orientationTransform
       value: 
@@ -966,11 +963,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 577211305618531393, guid: 38e692ee287ba1147b43096b0bd76980, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -12.6
       objectReference: {fileID: 0}
     - target: {fileID: 577211305618531393, guid: 38e692ee287ba1147b43096b0bd76980, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 3.9
       objectReference: {fileID: 0}
     - target: {fileID: 577211305618531393, guid: 38e692ee287ba1147b43096b0bd76980, type: 3}
       propertyPath: m_LocalPosition.z
