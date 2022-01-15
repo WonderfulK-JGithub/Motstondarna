@@ -174,6 +174,7 @@ public class BallMovement : MonoBehaviour
                     state = PlayerState.Dash;
 
                     rb.velocity = orientationTransform.forward * topSpeed;
+                    currentSpeed = rb.velocity;
                     dashTimer = dashTime;
 
                     
@@ -189,7 +190,7 @@ public class BallMovement : MonoBehaviour
                 {
                     state = PlayerState.Free;
 
-                    currentSpeed = rb.velocity;
+                    
 
                     rb.useGravity = true;
 
