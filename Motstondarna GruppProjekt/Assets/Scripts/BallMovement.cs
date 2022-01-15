@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BallMovement : MonoBehaviour
 {
@@ -8,8 +9,10 @@ public class BallMovement : MonoBehaviour
     [SerializeField] float topSpeed;
     [SerializeField] float acceleration;
     [SerializeField] float extraAccelerationFactor;
-
     [SerializeField] Transform orientationTransform;
+    [SerializeField] Slider speedBar;
+    [SerializeField] Image fillImage;
+    [SerializeField] Gradient speedColors;
 
     [Header("Jumping")]
     [SerializeField] float jumpStrength;
@@ -53,6 +56,7 @@ public class BallMovement : MonoBehaviour
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        
     }
 
 
@@ -240,7 +244,14 @@ public class BallMovement : MonoBehaviour
                 dashTrail.transform.position = transform.position;
                 break;
         }
-        
+
+        rb.angularVelocity = new Vector3(rb.velocity.z,0f,rb.velocity.x);
+
+        float _value = new Vector3(rb.velocity.x,0f,rb.velocity.z).magnitude / (topSpeed * 0.95f);
+
+        speedBar.value = Mathf.Lerp(speedBar.value,_value,0.3f);
+
+        fillImage.color = speedColors.Evaluate(_value);
     }
 
     private void OnTriggerEnter(Collider other)
