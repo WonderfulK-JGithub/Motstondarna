@@ -5091,11 +5091,10 @@ MonoBehaviour:
   terminalVelocity: -12
   groundLayers:
     serializedVersion: 2
-    m_Bits: 64
-  dashChargePower: 40
-  dashMaxCharge: 20
-  reducedAccelerationFactor: 0.6
-  reducedAccelerationTime: 0.3
+    m_Bits: 192
+  slipparyLayer:
+    serializedVersion: 2
+    m_Bits: 128
   dashTime: 0.4
   dashTrail: {fileID: 2667104024554036990}
   chargeParticle: {fileID: 577211304363952022}

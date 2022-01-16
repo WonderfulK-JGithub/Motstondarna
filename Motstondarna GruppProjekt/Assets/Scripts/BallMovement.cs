@@ -20,12 +20,9 @@ public class BallMovement : MonoBehaviour
     [SerializeField] float extraGravityFactor;
     [SerializeField] float terminalVelocity;
     [SerializeField] LayerMask groundLayers;
+    [SerializeField] LayerMask slipparyLayer;
 
     [Header("Dashing")]
-    [SerializeField] float dashChargePower;
-    [SerializeField] float dashMaxCharge;
-    [SerializeField] float reducedAccelerationFactor;
-    [SerializeField] float reducedAccelerationTime;
     [SerializeField] float dashTime;
     [SerializeField] GameObject dashTrail;
 
@@ -38,12 +35,10 @@ public class BallMovement : MonoBehaviour
 
     float holdTimer;
 
-    float totalCharge;
-    float accReduction;
-    float accReductionTimer;
     float dashTimer;
 
     bool onGround;
+    bool onSlippary;
     bool isJumping;
     bool canDash;
 
@@ -80,22 +75,13 @@ public class BallMovement : MonoBehaviour
                 float zAcceleration;
 
                 
-                if(accReductionTimer > 0)
-                {
-                    accReductionTimer -= Time.deltaTime;
-                    accReduction = reducedAccelerationFactor;
-                }
-                else
-                {
-                    accReduction = 1f;
-                }
-
+                
                 if (!noInput)
                 {
                     
 
-                    xAcceleration = Mathf.Sign(targetSpeed.x) == Mathf.Sign(currentSpeed.x) ? acceleration : acceleration * extraAccelerationFactor * accReduction;
-                    zAcceleration = Mathf.Sign(targetSpeed.z) == Mathf.Sign(currentSpeed.z) ? acceleration : acceleration * extraAccelerationFactor * accReduction;
+                    xAcceleration = Mathf.Sign(targetSpeed.x) == Mathf.Sign(currentSpeed.x) ? acceleration : acceleration * extraAccelerationFactor;
+                    zAcceleration = Mathf.Sign(targetSpeed.z) == Mathf.Sign(currentSpeed.z) ? acceleration : acceleration * extraAccelerationFactor;
 
                     //xAcceleration *= Mathf.Abs(inputX * orientationTransform.right.x + inputZ * orientationTransform.forward.x);
                     //zAcceleration *= Mathf.Abs(inputX * orientationTransform.right.z + inputZ * orientationTransform.forward.z);
@@ -112,7 +98,7 @@ public class BallMovement : MonoBehaviour
                 
                 
 
-                if (onGround || !noInput)
+                if ((onGround && !onSlippary) || !noInput)
                 {
                     currentSpeed.x = Mathf.MoveTowards(currentSpeed.x, targetSpeed.x, xAcceleration * Time.deltaTime);
                     currentSpeed.z = Mathf.MoveTowards(currentSpeed.z, targetSpeed.z, zAcceleration * Time.deltaTime);
@@ -159,12 +145,6 @@ public class BallMovement : MonoBehaviour
                 break;
             case PlayerState.ChargeDash:
                 #region
-                //currentSpeed.x = Mathf.MoveTowards(currentSpeed.x, 0, acceleration * Time.deltaTime);
-                //currentSpeed.z = Mathf.MoveTowards(currentSpeed.z, 0, acceleration * Time.deltaTime);
-
-                totalCharge += dashChargePower * Time.deltaTime;
-
-                totalCharge = Mathf.Clamp(totalCharge,0, dashMaxCharge);
 
                 currentSpeed = Vector3.Lerp(currentSpeed, Vector3.zero, 0.05f);
 
@@ -219,6 +199,14 @@ public class BallMovement : MonoBehaviour
                 else
                 {
                     onGround = false;
+                }
+                if (Physics.Raycast(transform.position, Vector3.down, 0.52f, slipparyLayer))
+                {
+                    onSlippary = true;
+                }
+                else
+                {
+                    onSlippary = false;
                 }
 
 
