@@ -29,7 +29,7 @@ public class BaseEnemy : MonoBehaviour
         {
             if (!hasDied)
             {
-                Die(collision.GetContact(0).point);
+                Die(collision.GetContact(0).point, collision.transform.GetComponent<BallMovement>().currentSpeed);
             }
         }
         else if (collision.transform.GetComponent<BallMovement>() && collision.transform.GetComponent<BallMovement>().currentSpeed.magnitude < playerVelocityForDeath)
@@ -53,7 +53,7 @@ public class BaseEnemy : MonoBehaviour
             rb.isKinematic = false;
     }
 
-    public virtual void Die(Vector3 contactPoint)
+    public virtual void Die(Vector3 contactPoint, Vector3 speed)
     {
         //Så den inte dör flera gånger - Max
         hasDied = true;
@@ -62,7 +62,8 @@ public class BaseEnemy : MonoBehaviour
         Vector3 dir = contactPoint - transform.position;
 
         //Reversar vinkeln så den går bort från spelaren istället och normalizar den så att jag bara får vinkeln av vektorn - Max
-        dir = -dir.normalized;
+        //dir = -dir.normalized;
+        dir = speed.normalized;
 
         //Lägger på en force i direction - Max
         //GetComponent<Rigidbody>().AddForce(dir * dieForce);

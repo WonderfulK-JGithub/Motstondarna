@@ -427,7 +427,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerVelocityForDeath: 10
-  dieForce: 1000
+  dieForce: 2000
   fadeSpeed: 0.5
   wanderingAreaCenter: {x: 0, y: 0, z: 0}
   wanderingAreaSize: 7
@@ -672,7 +672,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerVelocityForDeath: 10
-  dieForce: 1000
+  dieForce: 2000
   fadeSpeed: 0.5
 --- !u!1 &553321719
 GameObject:
@@ -994,7 +994,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerVelocityForDeath: 10
-  dieForce: 1000
+  dieForce: 2000
   fadeSpeed: 0.5
   wanderingAreaCenter: {x: 0, y: 0, z: 0}
   wanderingAreaSize: 7
