@@ -8,15 +8,20 @@ public class LaserEnemy : MonoBehaviour
     //De lasrarna som är igång - Max
     [SerializeField] GameObject[] activeLasers = new GameObject[2];
 
+    [SerializeField] float rotateVelocity;
+    [SerializeField] float rotateAcceleration;
+
     [Header("Parameters")]
 
     [SerializeField] float laserMaxDistance;
 
     [SerializeField] float laserStartRotation;
 
-    [SerializeField] float laserRotationSpeed;
+    [SerializeField] float laserActivationRotationSpeed;
 
-    bool lasersOn = false;
+    [SerializeField] float laserAttackActivateRadius;
+
+    public bool lasersOn = false;
 
     [Header("References")]
 
@@ -28,8 +33,22 @@ public class LaserEnemy : MonoBehaviour
     //För att inte behöva göra en raycast per ögon så finns det en annan transform som används för raycast origin - Max
     [SerializeField] Transform laserOrigin; //Är också parent till eyes
 
+    WanderingEnemy wanderingScript;
+    [SerializeField] Transform player;
+
+    private void Awake()
+    {
+        wanderingScript = GetComponent<WanderingEnemy>();
+    }
+
     private void Update()
     {
+        if (lasersOn && wanderingScript.hasDied)
+        {
+            TurnOffLasers();
+            return;
+        }
+
         if (lasersOn)
         {
             RaycastHit hit;
@@ -43,8 +62,32 @@ public class LaserEnemy : MonoBehaviour
                 UpdateLaserScale(laserMaxDistance);
             }
 
-            laserOrigin.rotation = Quaternion.Lerp(laserOrigin.rotation, Quaternion.Euler(0, 0, 0), laserRotationSpeed * Time.deltaTime);
+            laserOrigin.localEulerAngles = new Vector3(Mathf.Lerp(laserOrigin.eulerAngles.x, 0, laserActivationRotationSpeed * Time.deltaTime), 0, 0);
         }
+
+        if (!wanderingScript.overrideChasing && Vector3.Distance(new Vector3(transform.position.x, 0, transform.position.z), new Vector3(player.position.x, 0, player.position.z)) < laserAttackActivateRadius)
+        {
+            wanderingScript.overrideChasing = true;
+            TurnOnLasers();
+        }
+        else if (wanderingScript.overrideChasing && Vector3.Distance(new Vector3(transform.position.x, 0, transform.position.z), new Vector3(player.position.x, 0, player.position.z)) > laserAttackActivateRadius + 4)
+        {
+            wanderingScript.overrideChasing = false;
+            TurnOffLasers();
+        }
+
+        if (lasersOn)
+        {
+            RotateTowardsPlayer();
+        }
+    }
+
+    void RotateTowardsPlayer()
+    {
+        var lookPos = player.position - transform.position;
+        lookPos.y = 0;
+        var rotation = Quaternion.LookRotation(lookPos);
+        transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * rotateAcceleration);
     }
 
     void UpdateLaserScale(float length)
@@ -54,6 +97,7 @@ public class LaserEnemy : MonoBehaviour
             activeLasers[i].transform.localScale = new Vector3(1, 1, length);
         }
     }
+
     public void TurnOnLasers()
     {
         lasersOn = true;
