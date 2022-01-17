@@ -27,6 +27,10 @@ public class BallMovement : MonoBehaviour
 
     float holdTimer;
 
+    float xAcceleration;
+    float zAcceleration;
+    Vector3 targetSpeed;
+
     [Header("Dashing")]
     [SerializeField] float dashTime;
     [SerializeField] GameObject dashTrail;
@@ -41,6 +45,8 @@ public class BallMovement : MonoBehaviour
     bool onSlippary;
     bool isJumping;
     bool canDash;
+
+    bool noInput;
 
     [HideInInspector] public Vector3 currentSpeed;
     Vector3 accelerationDirection;
@@ -57,7 +63,7 @@ public class BallMovement : MonoBehaviour
 
     public virtual void Update()
     {
-        Vector3 targetSpeed;
+        
         switch (state)
         {
             case PlayerState.Free:
@@ -67,42 +73,21 @@ public class BallMovement : MonoBehaviour
                 inputX = Input.GetAxisRaw("Horizontal");
                 inputZ = Input.GetAxisRaw("Vertical");
 
-                bool noInput = inputX == 0 && inputZ == 0;//variabel som kollar om man tryckt åt något håll alls
+                noInput = inputX == 0 && inputZ == 0;//variabel som kollar om man tryckt åt något håll alls
 
                 
                 //Den speed som bollen ska accelerera mot
                 targetSpeed = new Vector3(inputX * topSpeed * orientationTransform.right.x + inputZ * topSpeed * orientationTransform.forward.x, 0f, inputX * topSpeed * orientationTransform.right.z + inputZ * topSpeed * orientationTransform.forward.z);
 
-                float xAcceleration;
-                float zAcceleration;
+                
 
                 
                 
-                if (!noInput)
-                {
-                    accelerationDirection = targetSpeed / topSpeed;//variabel som bestämmer acceleration baserat på riktingen bollen ska åka
-
-                    //räknar ut vilken acceleration man ska ha i x och z led. Tanken med detta är att man ska ha starkare acceleration när man tvärsvänger
-                    xAcceleration = Mathf.Sign(targetSpeed.x) == Mathf.Sign(currentSpeed.x) ? acceleration : acceleration * extraAccelerationFactor;
-                    zAcceleration = Mathf.Sign(targetSpeed.z) == Mathf.Sign(currentSpeed.z) ? acceleration : acceleration * extraAccelerationFactor;
-                }
-                else
-                {
-                    xAcceleration = acceleration;
-                    zAcceleration = acceleration;
-                }
+                
 
 
-                xAcceleration *= Mathf.Abs(accelerationDirection.x);
-                zAcceleration *= Mathf.Abs(accelerationDirection.z);
+                
 
-
-
-                if ((onGround && !onSlippary) || !noInput)//Är man i luften eller på halt golv OCH inte trycker åt något håll behåller man den hastighet man hade
-                {
-                    currentSpeed.x = Mathf.MoveTowards(currentSpeed.x, targetSpeed.x, xAcceleration * Time.deltaTime);
-                    currentSpeed.z = Mathf.MoveTowards(currentSpeed.z, targetSpeed.z, zAcceleration * Time.deltaTime);
-                }
 
 
                 //Hopp
@@ -187,12 +172,38 @@ public class BallMovement : MonoBehaviour
 
     }
 
+    
     void FixedUpdate()
     {
         switch(state)
         {
             case PlayerState.Free:
                 #region
+                if (!noInput)
+                {
+                    accelerationDirection = targetSpeed / topSpeed;//variabel som bestämmer acceleration baserat på riktingen bollen ska åka
+
+                    //räknar ut vilken acceleration man ska ha i x och z led. Tanken med detta är att man ska ha starkare acceleration när man tvärsvänger
+                    xAcceleration = Mathf.Sign(targetSpeed.x) == Mathf.Sign(currentSpeed.x) ? acceleration : acceleration * extraAccelerationFactor;
+                    zAcceleration = Mathf.Sign(targetSpeed.z) == Mathf.Sign(currentSpeed.z) ? acceleration : acceleration * extraAccelerationFactor;
+                }
+                else
+                {
+                    xAcceleration = acceleration;
+                    zAcceleration = acceleration;
+                }
+
+
+                xAcceleration *= Mathf.Abs(accelerationDirection.x);
+                zAcceleration *= Mathf.Abs(accelerationDirection.z);
+
+
+                if ((onGround && !onSlippary) || !noInput)//Är man i luften eller på halt golv OCH inte trycker åt något håll behåller man den hastighet man hade
+                {
+                    currentSpeed.x = Mathf.MoveTowards(rb.velocity.x, targetSpeed.x, xAcceleration * Time.fixedDeltaTime);
+                    currentSpeed.z = Mathf.MoveTowards(rb.velocity.z, targetSpeed.z, zAcceleration * Time.fixedDeltaTime);
+                }
+
                 rb.velocity = new Vector3(currentSpeed.x, rb.velocity.y, currentSpeed.z);
 
                 if (Physics.Raycast(transform.position, Vector3.down, 0.52f, groundLayers))
@@ -249,7 +260,7 @@ public class BallMovement : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Ränna"))
+        if (other.gameObject.CompareTag("Ränna") && state == PlayerState.Free)
         {
             state = PlayerState.Renn;
             currentSpeed = Vector3.zero;
