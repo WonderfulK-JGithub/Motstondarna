@@ -168,14 +168,14 @@ public class WanderingEnemy : BaseEnemy
         }
     }
 
-    public override void Die(Vector3 contactPoint)
+    public override void Die(Vector3 contactPoint, Vector3 speed)
     {
         //Gör så att den kan påverkas av forces - Max
         isMoving = false;
         rb2.isKinematic = false;
         rb2.constraints = RigidbodyConstraints.None;
         
-        base.Die(contactPoint);
+        base.Die(contactPoint, speed);
     }
 
     private void OnDrawGizmos()
