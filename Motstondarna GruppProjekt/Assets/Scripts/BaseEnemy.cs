@@ -9,7 +9,9 @@ public class BaseEnemy : MonoBehaviour
     [SerializeField] float dieForce;
     [SerializeField] float fadeSpeed;
 
-    bool hasDied = false;
+    [SerializeField] bool canDieFromOtherPins = false;
+
+    public bool hasDied = false;
 
     //Referenser
     MeshRenderer rend;
@@ -17,7 +19,7 @@ public class BaseEnemy : MonoBehaviour
 
     private void Awake()
     {
-        rend = GetComponent<MeshRenderer>();
+        rend = GetComponentInChildren<MeshRenderer>();
         rb = GetComponent<Rigidbody>();
     }
 
@@ -25,7 +27,7 @@ public class BaseEnemy : MonoBehaviour
     {
         //Kolla spelarens script och ta lastVelocity för att se om velocity > speedToDIe, då ska de dö. - Max
 
-        if (collision.transform.GetComponent<BallMovement>() && collision.transform.GetComponent<BallMovement>().currentSpeed.magnitude >= playerVelocityForDeath)
+        if ((collision.transform.GetComponent<BallMovement>() && collision.transform.GetComponent<BallMovement>().currentSpeed.magnitude >= playerVelocityForDeath))
         {
             if (!hasDied)
             {
@@ -45,6 +47,15 @@ public class BaseEnemy : MonoBehaviour
             //Lägger på en force i direction - Max
             collision.transform.GetComponent<BallMovement>().currentSpeed = dir * 5;
         }    
+        else if (canDieFromOtherPins && collision.transform.GetComponent<BaseEnemy>())
+        {
+            Vector3 dir = collision.GetContact(0).point - transform.position;
+
+            //Normalizar vinkeln den så att jag bara får vinkeln av vektorn - Max
+            dir = -dir.normalized;
+
+            Die(collision.GetContact(0).point, dir * dieForce / 3);
+        }
     }
 
     private void OnCollisionExit(Collision collision)

@@ -28,6 +28,8 @@ public class WanderingEnemy : BaseEnemy
     bool isMoving = false;
     bool canCheckForPlayer = true;
 
+    public bool overrideChasing = false;
+
     //Components
     Rigidbody rb2;
 
@@ -42,6 +44,8 @@ public class WanderingEnemy : BaseEnemy
 
     private void Update()
     {
+        if (hasDied) return;
+
         if (canCheckForPlayer && !isChasingPlayer)
         {
             if (Vector3.Distance(player.position, transform.position) < playerCheckRadius)
@@ -63,15 +67,28 @@ public class WanderingEnemy : BaseEnemy
     {
         //Man ska inte alltid kunna röra på sig - Max
         if (!isMoving) return;
+        if (hasDied) return;
 
         if (isChasingPlayer)
         {
-            ChasePlayer();
+            if (!overrideChasing)
+            {
+                ChasePlayer();
+            }
+            else
+            {
+                AttackEveryFrame();
+            }
         }
         else
         {
             Wandering();
         }
+    }
+
+    void AttackEveryFrame()
+    {
+
     }
 
     void ChasePlayer()
@@ -125,7 +142,7 @@ public class WanderingEnemy : BaseEnemy
     {
         Debug.DrawRay(transform.position + transform.forward * 1, Vector3.down, Color.red, 4);
 
-        if (Physics.Raycast(transform.position + transform.forward * 1, Vector3.down, 4, LayerMask.GetMask("Water"))) 
+        if (Physics.Raycast(transform.position + transform.forward * 1, Vector3.down, 4, LayerMask.GetMask("Ground", "Slippery")))
         {
             return true;
         }
@@ -148,7 +165,7 @@ public class WanderingEnemy : BaseEnemy
                 Random.Range(-wanderingAreaSize, wanderingAreaSize)
                 );
 
-            if (Physics.Raycast(newTarget + new Vector3(0,5,0), Vector3.down, 7, LayerMask.GetMask("Water")))
+            if (Physics.Raycast(newTarget + new Vector3(0,5,0), Vector3.down, 7, LayerMask.GetMask("Ground", "Slipper")))
             {
                 foundPos = true;
 
