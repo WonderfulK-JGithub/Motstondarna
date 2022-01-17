@@ -39,7 +39,7 @@ public class BaseEnemy : MonoBehaviour
             //Använder formeln angle = point1 - point2 för att ta fram vinkeln mellan spelaren och fienden - Max
             Vector3 dir = collision.GetContact(0).point - transform.position;
 
-            //Reversar vinkeln så den går bort från spelaren istället och normalizar den så att jag bara får vinkeln av vektorn - Max
+            //Normalizar vinkeln den så att jag bara får vinkeln av vektorn - Max
             dir = dir.normalized;
 
             //Lägger på en force i direction - Max
