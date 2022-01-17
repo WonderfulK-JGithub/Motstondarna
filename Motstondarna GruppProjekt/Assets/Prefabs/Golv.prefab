@@ -11,10 +11,10 @@ GameObject:
   - component: {fileID: 5611534822425532049}
   - component: {fileID: 5611534822425532060}
   - component: {fileID: 5611534822425532051}
-  - component: {fileID: 5611534822425532050}
-  m_Layer: 6
-  m_Name: kant (-x) (1)
-  m_TagString: Untagged
+  - component: {fileID: 6299668510575873206}
+  m_Layer: 0
+  m_Name: kant (-x)
+  m_TagString: "R\xE4nna"
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -82,16 +82,16 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &5611534822425532050
+--- !u!64 &6299668510575873206
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5611534822425532048}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: e22b082db6db90b4685f8e3277ea21fb, type: 2}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   m_Convex: 0
   m_CookingOptions: 30
@@ -107,10 +107,10 @@ GameObject:
   - component: {fileID: 5611534822653028307}
   - component: {fileID: 5611534822653028318}
   - component: {fileID: 5611534822653028317}
-  - component: {fileID: 5611534822653028316}
-  m_Layer: 6
-  m_Name: kant (-z) (1)
-  m_TagString: Untagged
+  - component: {fileID: 6471441227812551025}
+  m_Layer: 0
+  m_Name: kant (-z)
+  m_TagString: "R\xE4nna"
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -178,16 +178,16 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &5611534822653028316
+--- !u!64 &6471441227812551025
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5611534822653028306}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: e22b082db6db90b4685f8e3277ea21fb, type: 2}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   m_Convex: 0
   m_CookingOptions: 30
@@ -203,10 +203,10 @@ GameObject:
   - component: {fileID: 5611534822985993177}
   - component: {fileID: 5611534822985992740}
   - component: {fileID: 5611534822985993179}
-  - component: {fileID: 5611534822985993178}
-  m_Layer: 6
-  m_Name: kant (+x) (1)
-  m_TagString: Untagged
+  - component: {fileID: 1438344192936720984}
+  m_Layer: 0
+  m_Name: kant (+x)
+  m_TagString: "R\xE4nna"
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -274,16 +274,16 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &5611534822985993178
+--- !u!64 &1438344192936720984
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5611534822985993176}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: e22b082db6db90b4685f8e3277ea21fb, type: 2}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   m_Convex: 0
   m_CookingOptions: 30
@@ -299,8 +299,8 @@ GameObject:
   - component: {fileID: 5611534823474748118}
   - component: {fileID: 5611534823474748117}
   - component: {fileID: 5611534823474748116}
-  - component: {fileID: 5611534823474748107}
   - component: {fileID: 5611534823474748119}
+  - component: {fileID: 5093786993777729261}
   m_Layer: 6
   m_Name: Golv
   m_TagString: Untagged
@@ -375,20 +375,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &5611534823474748107
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5611534823474748106}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!114 &5611534823474748119
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -401,8 +387,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5353a22546ac534eb744c8a9a41568f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  groundCoords: []
-  faces: []
+  wallCollision: 1
+--- !u!65 &5093786993777729261
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5611534823474748106}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 10.1, y: 2.220446e-16, z: 10.1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5611534823941300670
 GameObject:
   m_ObjectHideFlags: 0
@@ -414,10 +412,10 @@ GameObject:
   - component: {fileID: 5611534823941300671}
   - component: {fileID: 5611534823941300666}
   - component: {fileID: 5611534823941300665}
-  - component: {fileID: 5611534823941300664}
-  m_Layer: 6
-  m_Name: kant (+z) (1)
-  m_TagString: Untagged
+  - component: {fileID: 4355099925852913250}
+  m_Layer: 0
+  m_Name: kant (+z)
+  m_TagString: "R\xE4nna"
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -485,16 +483,16 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &5611534823941300664
+--- !u!64 &4355099925852913250
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5611534823941300670}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: e22b082db6db90b4685f8e3277ea21fb, type: 2}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   m_Convex: 0
   m_CookingOptions: 30
