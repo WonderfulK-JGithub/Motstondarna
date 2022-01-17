@@ -4938,7 +4938,7 @@ GameObject:
   - component: {fileID: 577211304676323993}
   - component: {fileID: 577211304676323974}
   - component: {fileID: 577211304676323997}
-  - component: {fileID: 577211304676323994}
+  - component: {fileID: 2046470084}
   m_Layer: 0
   m_Name: obamium
   m_TagString: Untagged
@@ -5016,7 +5016,7 @@ SphereCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 577211304676323975}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: e22b082db6db90b4685f8e3277ea21fb, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -5038,7 +5038,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &577211304676323994
+--- !u!114 &2046470084
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5047,7 +5047,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 577211304676323975}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4a2ecd7c4560164197d13c9ff983150, type: 3}
+  m_Script: {fileID: 11500000, guid: 0e5335ee9108ef34b91bee3ba270a263, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   topSpeed: 12
@@ -5088,7 +5088,7 @@ MonoBehaviour:
   jumpStrength: 10
   jumpHoldTime: 0.4
   extraGravityFactor: 4
-  terminalVelocity: -12
+  terminalVelocity: -14
   groundLayers:
     serializedVersion: 2
     m_Bits: 192
@@ -5100,6 +5100,7 @@ MonoBehaviour:
   chargeParticle: {fileID: 577211304363952022}
   slideExtraGravity: 3
   currentSpeed: {x: 0, y: 0, z: 0}
+  maxHealth: 0
 --- !u!1 &577211305618531406
 GameObject:
   m_ObjectHideFlags: 0
@@ -5328,7 +5329,7 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 0.2
+  m_Time: 0.25
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1
@@ -5650,7 +5651,7 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 0.2
+  m_Time: 0.25
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1

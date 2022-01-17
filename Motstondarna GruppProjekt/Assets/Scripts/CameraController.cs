@@ -22,7 +22,7 @@ public class CameraController : MonoBehaviour
 
     [SerializeField] float smoothTime;
     [SerializeField] float smoothSpeed;
-    [SerializeField] LayerMask playerLayer;
+    [SerializeField] LayerMask collisionLayers;
 
     [SerializeField] float theGaming;
 
@@ -31,7 +31,7 @@ public class CameraController : MonoBehaviour
 
     bool firstPerson;
 
-    private void Awake()
+    void Awake()
     {
         Cursor.lockState = CursorLockMode.Locked;
         distanceFromTarget = maxDistanceFromTarget;
@@ -87,7 +87,7 @@ public class CameraController : MonoBehaviour
         {
             transform.localEulerAngles = new Vector3(currentRotation.y, currentRotation.x, 0f);
 
-            if (Physics.Raycast(target.position, transform.forward * -1f, out RaycastHit hit, maxDistanceFromTarget, playerLayer))
+            if (Physics.Raycast(target.position, transform.forward * -1f, out RaycastHit hit, maxDistanceFromTarget, collisionLayers))
             {
                 //transform.position = hit.point;
                 distanceFromTarget = Mathf.Lerp(distanceFromTarget, hit.distance, smoothSpeed) - theGaming;

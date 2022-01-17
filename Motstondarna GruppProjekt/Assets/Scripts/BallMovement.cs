@@ -14,6 +14,9 @@ public class BallMovement : MonoBehaviour
     [SerializeField] Image fillImage;
     [SerializeField] Gradient speedColors;
 
+    float inputX;
+    float inputZ;
+
     [Header("Jumping")]
     [SerializeField] float jumpStrength;
     [SerializeField] float jumpHoldTime;
@@ -22,20 +25,17 @@ public class BallMovement : MonoBehaviour
     [SerializeField] LayerMask groundLayers;
     [SerializeField] LayerMask slipparyLayer;
 
+    float holdTimer;
+
     [Header("Dashing")]
     [SerializeField] float dashTime;
     [SerializeField] GameObject dashTrail;
 
+    float dashTimer;
+
     [Header("Other")]
     [SerializeField] ParticleSystem chargeParticle;
     [SerializeField] float slideExtraGravity;
-
-    float inputX;
-    float inputZ;
-
-    float holdTimer;
-
-    float dashTimer;
 
     bool onGround;
     bool onSlippary;
@@ -43,32 +43,34 @@ public class BallMovement : MonoBehaviour
     bool canDash;
 
     [HideInInspector] public Vector3 currentSpeed;
+    Vector3 accelerationDirection;
 
     Rigidbody rb;
-
     PlayerState state;
 
-    void Awake()
+    public virtual void Awake()
     {
         rb = GetComponent<Rigidbody>();
         
     }
 
 
-    void Update()
+    public virtual void Update()
     {
         Vector3 targetSpeed;
         switch (state)
         {
             case PlayerState.Free:
                 #region
+
+                //hämtar inputs för vilket håll man ska gå
                 inputX = Input.GetAxisRaw("Horizontal");
                 inputZ = Input.GetAxisRaw("Vertical");
 
-                bool noInput = inputX == 0 && inputZ == 0;
+                bool noInput = inputX == 0 && inputZ == 0;//variabel som kollar om man tryckt åt något håll alls
 
                 
-
+                //Den speed som bollen ska accelerera mot
                 targetSpeed = new Vector3(inputX * topSpeed * orientationTransform.right.x + inputZ * topSpeed * orientationTransform.forward.x, 0f, inputX * topSpeed * orientationTransform.right.z + inputZ * topSpeed * orientationTransform.forward.z);
 
                 float xAcceleration;
@@ -78,42 +80,40 @@ public class BallMovement : MonoBehaviour
                 
                 if (!noInput)
                 {
-                    
+                    accelerationDirection = targetSpeed / topSpeed;//variabel som bestämmer acceleration baserat på riktingen bollen ska åka
 
+                    //räknar ut vilken acceleration man ska ha i x och z led. Tanken med detta är att man ska ha starkare acceleration när man tvärsvänger
                     xAcceleration = Mathf.Sign(targetSpeed.x) == Mathf.Sign(currentSpeed.x) ? acceleration : acceleration * extraAccelerationFactor;
                     zAcceleration = Mathf.Sign(targetSpeed.z) == Mathf.Sign(currentSpeed.z) ? acceleration : acceleration * extraAccelerationFactor;
-
-                    //xAcceleration *= Mathf.Abs(inputX * orientationTransform.right.x + inputZ * orientationTransform.forward.x);
-                    //zAcceleration *= Mathf.Abs(inputX * orientationTransform.right.z + inputZ * orientationTransform.forward.z);
                 }
                 else
                 {
                     xAcceleration = acceleration;
                     zAcceleration = acceleration;
-
-                    
                 }
 
-                
-                
-                
 
-                if ((onGround && !onSlippary) || !noInput)
+                xAcceleration *= Mathf.Abs(accelerationDirection.x);
+                zAcceleration *= Mathf.Abs(accelerationDirection.z);
+
+
+
+                if ((onGround && !onSlippary) || !noInput)//Är man i luften eller på halt golv OCH inte trycker åt något håll behåller man den hastighet man hade
                 {
                     currentSpeed.x = Mathf.MoveTowards(currentSpeed.x, targetSpeed.x, xAcceleration * Time.deltaTime);
                     currentSpeed.z = Mathf.MoveTowards(currentSpeed.z, targetSpeed.z, zAcceleration * Time.deltaTime);
                 }
 
 
-
+                //Hopp
                 if (Input.GetButtonDown("Jump") && onGround)
                 {
-                    rb.velocity = new Vector3(rb.velocity.x, jumpStrength, rb.velocity.z);
+                    rb.velocity = new Vector3(rb.velocity.x, jumpStrength, rb.velocity.z);//ger en y velocity
                     isJumping = true;
                     holdTimer = jumpHoldTime;
                 }
 
-
+                //Om man släpper hoppknappen, eller att jumptimern går ut, blir isJumping false
                 if (isJumping && !onGround)
                 {
                     if (Input.GetButton("Jump"))
@@ -130,13 +130,15 @@ public class BallMovement : MonoBehaviour
                     }
                 }
 
+                //Dash
                 if(Input.GetButtonDown("Fire1") && canDash)
                 {
-                    state = PlayerState.ChargeDash;
-                    chargeParticle.Play();
-                    canDash = false;
-                    rb.velocity = Vector2.zero;
-                    rb.useGravity = false;
+                    state = PlayerState.ChargeDash;//ändrar state
+                    chargeParticle.Play();//Sätter igång particles
+                    canDash = false;//gör att man inte kan dasha (föräns variabeln blir true igen)
+
+                    rb.useGravity = false;//stänger av gravitation
+
                     dashTrail.transform.position = transform.position;
                     dashTrail.SetActive(false);
                 }
@@ -146,18 +148,20 @@ public class BallMovement : MonoBehaviour
             case PlayerState.ChargeDash:
                 #region
 
-                currentSpeed = Vector3.Lerp(currentSpeed, Vector3.zero, 0.05f);
+                currentSpeed = Vector3.Lerp(currentSpeed, Vector3.zero, 0.05f);//ändrar bollens hastighet långsamt till 0
 
+                //kollar om man släpper dashKnappen
                 if(!Input.GetButton("Fire1"))
                 {
-                    chargeParticle.Stop();
-                    state = PlayerState.Dash;
+                    chargeParticle.Stop();//Stänger av particle systemet
+                    state = PlayerState.Dash;//ändrar state
 
-                    rb.velocity = orientationTransform.forward * topSpeed;
+                    rb.velocity = orientationTransform.forward * topSpeed;//ändrar hastigheten
                     currentSpeed = rb.velocity;
                     dashTimer = dashTime;
 
-                    
+                    accelerationDirection = currentSpeed / topSpeed;
+
                     dashTrail.SetActive(true);
                 }
                 #endregion
