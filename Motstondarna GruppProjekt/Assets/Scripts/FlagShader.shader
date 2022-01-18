@@ -1,3 +1,5 @@
+//Max Script
+
 Shader "Custom/FlagShader"
 {
     Properties
@@ -11,6 +13,9 @@ Shader "Custom/FlagShader"
     {
         Tags { "RenderType"="Opaque" }
         LOD 200
+
+        //Det här är den enda grejen jag la till i shadern - Max
+        //Gör bara så att båda sidorna av plane:et som flaggan är visas, så inte den ena sidan är osynlig - Max
         Cull Off
 
         CGPROGRAM

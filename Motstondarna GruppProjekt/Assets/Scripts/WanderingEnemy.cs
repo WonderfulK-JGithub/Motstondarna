@@ -28,18 +28,22 @@ public class WanderingEnemy : BaseEnemy
     bool isMoving = false;
     bool canCheckForPlayer = true;
 
-    public bool overrideChasing = false;
+    [HideInInspector] public bool overrideChasing = false;
 
     //Components
     Rigidbody rb2;
     Animator anim;
 
-    void Start()
+    private void Awake()
     {
-        wanderingAreaCenter = transform.position;
         player = FindObjectOfType<BallMovement>().transform;
         rb2 = GetComponent<Rigidbody>();
         anim = GetComponentInChildren<Animator>();
+    }
+
+    void Start()
+    {
+        wanderingAreaCenter = transform.position;   
 
         NewPos();
     }
@@ -52,7 +56,7 @@ public class WanderingEnemy : BaseEnemy
         {
             if (Vector3.Distance(player.position, transform.position) < playerCheckRadius)
             {
-                isChasingPlayer = true;
+                StartChasing();
             }
         }
 
@@ -115,7 +119,10 @@ public class WanderingEnemy : BaseEnemy
         if (Vector3.Distance(new Vector3(transform.position.x, 0, transform.position.z), new Vector3(target.x, 0, target.z)) < targetDistance)
         {
             isMoving = false;
-            anim.speed = 0;
+
+            if (anim != null)
+                anim.speed = 0;
+
             Invoke(nameof(NewPos), waitTimeToNewTarget);
             return;
         }
@@ -126,6 +133,12 @@ public class WanderingEnemy : BaseEnemy
     void StopChasing()
     {
         isChasingPlayer = false;
+    }
+
+    public void StartChasing()
+    {
+        anim.speed = 1;
+        isChasingPlayer = true;
     }
 
     void MoveTowardsTarget(Vector3 target, float speed)

@@ -75,9 +75,25 @@ public class LaserEnemy : MonoBehaviour
                 {
                     UpdateLaserScale(laserMaxDistance, i);
                 }
-            }            
+            }
 
-            laserOrigin.localEulerAngles = new Vector3(Mathf.Lerp(laserOrigin.eulerAngles.x, 0, laserActivationRotationSpeed * Time.deltaTime), 0, 0);
+            Vector3 dir = player.position - laserOrigin.position;
+
+            dir = dir.normalized;
+
+            Quaternion dirQ = Quaternion.LookRotation(dir);
+
+            //Quaternion dirQ = Quaternion.LookRotation(Vector3.RotateTowards(laserOrigin.forward, player.position, laserActivationRotationSpeed * Time.deltaTime, 0.0f));
+
+            //dirQ *= laserOrigin.rotation;
+            //dir = new Vector3(dir.x, 0, 0);
+
+            bool playerAbove = player.position.y > laserOrigin.position.y;
+
+
+                laserOrigin.localEulerAngles = new Vector3(Mathf.Clamp(Mathf.Lerp(laserOrigin.eulerAngles.x, playerAbove ? 0 : dirQ.eulerAngles.x, laserActivationRotationSpeed * Time.deltaTime), 1, 72), 0, 0);
+
+            //laserOrigin.localEulerAngles = new Vector3(Mathf.Lerp(laserOrigin.eulerAngles.x, 0, laserActivationRotationSpeed * Time.deltaTime), 0, 0);
         }
 
         if (!wanderingScript.overrideChasing && Vector3.Distance(new Vector3(transform.position.x, 0, transform.position.z), new Vector3(player.position.x, 0, player.position.z)) < laserAttackActivateRadius)
@@ -132,6 +148,7 @@ public class LaserEnemy : MonoBehaviour
         activeLasers[id].transform.localScale = new Vector3(1, 1, length) * (1 / 0.75f);
     }
 
+    //För att uppdatera scale för båda lasrarna samtidigt
     void UpdateLaserScale(float length)
     {
         for (int i = 0; i <= 1; i++)
@@ -142,7 +159,7 @@ public class LaserEnemy : MonoBehaviour
 
     public void TurnOnLasers()
     {
-        anim.speed = 1;
+        wanderingScript.StartChasing();
         anim.Play("LaserAlerted");
 
         StartCoroutine(nameof(tilLasersOn));
@@ -150,7 +167,7 @@ public class LaserEnemy : MonoBehaviour
 
     IEnumerator tilLasersOn()
     {
-        yield return new WaitForSeconds(1.28333f);
+        yield return new WaitForSeconds(1.28333f / 2);
 
         lasersOn = true;
 
@@ -171,7 +188,6 @@ public class LaserEnemy : MonoBehaviour
             Destroy(activeLasers[i]);
         }
 
-        anim.speed = 1;
         anim.Play("Walking");
     }
 }

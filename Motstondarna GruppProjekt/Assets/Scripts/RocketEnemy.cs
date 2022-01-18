@@ -2,13 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//Max Script
 public class RocketEnemy : MonoBehaviour
 {
     bool rocketOn = false;
+    bool alerted = false;
 
     [Header("Parameters")]
     [SerializeField] float rocketRotatingSpeed;
     [SerializeField] float rocketSpeed;
+    [SerializeField] float rocketRotSpeedWhileActivating;
 
     [SerializeField] float rocketActivateRadius;
     [SerializeField] float rocketExplosionTime;
@@ -43,14 +46,17 @@ public class RocketEnemy : MonoBehaviour
     {
         if (!wanderingScript.overrideChasing && Vector3.Distance(new Vector3(transform.position.x, 0, transform.position.z), new Vector3(player.position.x, 0, player.position.z)) < rocketActivateRadius)
         {
-            wanderingScript.overrideChasing = true;
-
             StartRocket();
         }
 
         if (rocketOn && !wanderingScript.hasDied)
         {
             RocketInUpdate();
+        }
+        else if(alerted)
+        {
+            //Roterar fienden mot spelaren medan den gör startanimationen, annars kan den åka åt fel håll - Max
+            RotateTowardsPlayer(rocketRotSpeedWhileActivating);
         }
 
         if (rocketOn && Vector3.Distance(new Vector3(transform.position.x, 0, transform.position.z), new Vector3(player.position.x, 0, player.position.z)) < rocketExplodeRadius)
@@ -61,8 +67,11 @@ public class RocketEnemy : MonoBehaviour
 
     void StartRocket()
     {
-        anim.speed = 1;
+        wanderingScript.StartChasing();
+        wanderingScript.overrideChasing = true;
+
         anim.Play("RocketStart");
+        alerted = true;
         Invoke(nameof(StartMovingRocket), 1.05f);
         StartCoroutine(nameof(tilExplode));
     }
@@ -75,6 +84,17 @@ public class RocketEnemy : MonoBehaviour
 
     void RocketInUpdate()
     {
+        RotateTowardsPlayer();
+
+        //Rör sig framåt
+        Vector3 newVel = transform.forward * rocketSpeed;
+        rb.velocity = new Vector3(newVel.x, rb.velocity.y, newVel.z);
+    }
+
+    
+
+    void RotateTowardsPlayer()
+    {
         //Roterar
         Vector3 lookAt = transform.InverseTransformPoint(player.position);
         lookAt.y = 0;
@@ -84,10 +104,20 @@ public class RocketEnemy : MonoBehaviour
         transform.LookAt(lookAt, transform.up);
         Quaternion lookRotation = transform.rotation;
         transform.rotation = Quaternion.RotateTowards(rotation, lookRotation, rocketRotatingSpeed * Time.deltaTime);
+    }
 
-        //Rör sig framåt
-        Vector3 newVel = transform.forward * rocketSpeed;
-        rb.velocity = new Vector3(newVel.x, rb.velocity.y, newVel.z);
+    //Den här overriden roterar med en annan speed en originalfunktionen
+    void RotateTowardsPlayer(float rotSpeed)
+    {
+        //Roterar
+        Vector3 lookAt = transform.InverseTransformPoint(player.position);
+        lookAt.y = 0;
+        lookAt = transform.TransformPoint(lookAt);
+
+        Quaternion rotation = transform.rotation;
+        transform.LookAt(lookAt, transform.up);
+        Quaternion lookRotation = transform.rotation;
+        transform.rotation = Quaternion.RotateTowards(rotation, lookRotation, rotSpeed * Time.deltaTime);
     }
 
     IEnumerator tilExplode()

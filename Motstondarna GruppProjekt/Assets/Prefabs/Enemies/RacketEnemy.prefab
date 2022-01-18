@@ -1,24 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!95 &3577710622393957503
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4424783381730835913}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 73bf4c83d2bb4bb45a97af6e983ce889, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &3577710622979236923
 GameObject:
   m_ObjectHideFlags: 0
@@ -4872,8 +4853,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 383b4bb8d531fcc409e3cbb658bd33f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rocketRotatingSpeed: 100
+  rocketRotatingSpeed: 40
   rocketSpeed: 14
+  rocketRotSpeedWhileActivating: 100
   rocketActivateRadius: 9
   rocketExplosionTime: 4
   rocketExplodeRadius: 2
@@ -4897,6 +4879,7 @@ MonoBehaviour:
   dieForce: 2000
   fadeSpeed: 0.5
   canDieFromOtherPins: 0
+  canKillPlayer: 1
   hasDied: 0
   wanderingAreaCenter: {x: 0, y: 0, z: 0}
   wanderingAreaSize: 7
@@ -4987,6 +4970,25 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
+--- !u!95 &3577710622393957503
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4424783381730835913}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 73bf4c83d2bb4bb45a97af6e983ce889, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &3577710622983520408
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -10,6 +10,7 @@ public class BaseEnemy : MonoBehaviour
     [SerializeField] float fadeSpeed;
 
     [SerializeField] bool canDieFromOtherPins = false;
+    [SerializeField] bool canKillPlayer = false;
 
     public bool hasDied = false;
 
@@ -34,7 +35,7 @@ public class BaseEnemy : MonoBehaviour
                 Die(collision.GetContact(0).point, collision.transform.GetComponent<BallMovement>().currentSpeed);
             }
         }
-        else if (collision.transform.GetComponent<BallMovement>() && collision.transform.GetComponent<BallMovement>().currentSpeed.magnitude < playerVelocityForDeath)
+        else if (canKillPlayer && collision.transform.GetComponent<BallMovement>() && collision.transform.GetComponent<BallMovement>().currentSpeed.magnitude < playerVelocityForDeath)
         {
             rb.isKinematic = true;
 
@@ -46,6 +47,8 @@ public class BaseEnemy : MonoBehaviour
 
             //Lägger på en force i direction - Max
             collision.transform.GetComponent<BallMovement>().currentSpeed = dir * 5;
+
+            collision.transform.GetComponent<BallHealth>().TakeDamage(Vector3.zero, 1);
         }    
         else if (canDieFromOtherPins && collision.transform.GetComponent<BaseEnemy>())
         {
