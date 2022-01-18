@@ -32,12 +32,14 @@ public class WanderingEnemy : BaseEnemy
 
     //Components
     Rigidbody rb2;
+    Animator anim;
 
     void Start()
     {
         wanderingAreaCenter = transform.position;
         player = FindObjectOfType<BallMovement>().transform;
         rb2 = GetComponent<Rigidbody>();
+        anim = GetComponentInChildren<Animator>();
 
         NewPos();
     }
@@ -113,6 +115,7 @@ public class WanderingEnemy : BaseEnemy
         if (Vector3.Distance(new Vector3(transform.position.x, 0, transform.position.z), new Vector3(target.x, 0, target.z)) < targetDistance)
         {
             isMoving = false;
+            anim.speed = 0;
             Invoke(nameof(NewPos), waitTimeToNewTarget);
             return;
         }
@@ -172,7 +175,10 @@ public class WanderingEnemy : BaseEnemy
                 currentTarget = newTarget;
                 isMoving = true;
             }
-        }       
+        }
+
+        if(anim != null)
+            anim.speed = 1;
     }
 
     public override void OnCollisionEnter(Collision collision)
