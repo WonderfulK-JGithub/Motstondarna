@@ -11,7 +11,7 @@ public class CameraController : MonoBehaviour
     float rotationX;
     float rotationY;
 
-    [SerializeField] Transform target;
+    [SerializeField] BallMovement target;
     [SerializeField] Transform ballOrientation;
     [SerializeField] Transform chargeParticle;
 
@@ -59,13 +59,12 @@ public class CameraController : MonoBehaviour
 
             Vector3 nextRotation = new Vector3(rotationX, rotationY);
             currentRotation = Vector3.SmoothDamp(currentRotation, nextRotation, ref smoothVelocity, smoothTime);
-            ballOrientation.localEulerAngles = new Vector3(0f, rotationX, 0f);
-            chargeParticle.localEulerAngles = new Vector3(0f, rotationX, 0f);
+            target.UpdateRotation(new Vector3(0f, rotationX, 0f));
 
             if(Input.GetMouseButtonDown(1))
             {
                 firstPerson = true;
-                transform.SetParent(target);
+                transform.SetParent(target.transform);
                 transform.localPosition = Vector3.zero;
             }
         }
@@ -87,7 +86,7 @@ public class CameraController : MonoBehaviour
         {
             transform.localEulerAngles = new Vector3(currentRotation.y, currentRotation.x, 0f);
 
-            if (Physics.Raycast(target.position, transform.forward * -1f, out RaycastHit hit, maxDistanceFromTarget, collisionLayers))
+            if (Physics.Raycast(target.transform.position, transform.forward * -1f, out RaycastHit hit, maxDistanceFromTarget, collisionLayers))
             {
                 //transform.position = hit.point;
                 distanceFromTarget = Mathf.Lerp(distanceFromTarget, hit.distance, smoothSpeed) - theGaming;
@@ -98,7 +97,7 @@ public class CameraController : MonoBehaviour
                 distanceFromTarget = Mathf.Lerp(distanceFromTarget, maxDistanceFromTarget, smoothSpeed) - theGaming;
             }
 
-            transform.position = target.position - transform.forward * distanceFromTarget;
+            transform.position = target.transform.position - transform.forward * distanceFromTarget;
         }
        
     }

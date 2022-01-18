@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class SoundManagerScript : MonoBehaviour
 {
-    public static AudioClip AmbientWind, Checkpoint, Click, Dash, JumpPad, K‰gglaDamage, Landa, PowerUp, Rolling, R‰nna, Skada; //Definerar som audiclip /Theo
+    public static AudioClip AmbientWind, Checkpoint, Click, Dash, JumpPad, K‰gglaDamage, Landa, PowerUp, Rolling, R‰nna, Skada, Laser÷gon, RocketFiende; //Definerar audiclippen /Theo
     static AudioSource audioSrc;
 
-    void Start() //Parar ihop r‰tt variabel med r‰tt audioclip
+    void Start() //Parar ihop r‰tt variebel med motsvarande ljudfil
     {
         AmbientWind = Resources.Load<AudioClip>("AmbientWind");
         Checkpoint = Resources.Load<AudioClip>("Checkoint");
@@ -20,6 +20,8 @@ public class SoundManagerScript : MonoBehaviour
         Rolling = Resources.Load<AudioClip>("Rolling");
         R‰nna = Resources.Load<AudioClip>("R‰nna");
         Skada = Resources.Load<AudioClip>("Skada");
+        Laser÷gon = Resources.Load<AudioClip>("Laser÷gon");
+        RocketFiende = Resources.Load<AudioClip>("RocketFiende");
 
         audioSrc = GetComponent<AudioSource>();
     }
@@ -28,7 +30,7 @@ public class SoundManagerScript : MonoBehaviour
 
     }
 
-    public static void PlaySound(string clip) //Anv‰nder clip string value som en paramiter d‰r den parar ihop "Damage" med korrekt ljudfil /Theo
+    public static void PlaySound(string clip) //Anv‰nder clip string value som en paramiter d‰r den parar ihop "AmbientWind" med korrekt ljudfil /Theo
     {
         switch (clip)
         {
@@ -65,11 +67,14 @@ public class SoundManagerScript : MonoBehaviour
             case "Skada":
                 audioSrc.PlayOneShot(Skada);
                 break;
-
-
-
+            case "Laser÷gon":
+                audioSrc.PlayOneShot(Laser÷gon);
+                break;
+            case "RocketFiende":
+                audioSrc.PlayOneShot(RocketFiende);
+                break;
         }
     }
 }
 
-// Fˆr att spela ljuden SoundManagerScript.PlaySound ("InsertName"); /Theo
+//Fˆr att spela ljuden SoundManagerScript.PlaySound ("InsertName"); /Theo
