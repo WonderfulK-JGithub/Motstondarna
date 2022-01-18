@@ -845,6 +845,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2046470084, guid: 38e692ee287ba1147b43096b0bd76980, type: 3}
+      propertyPath: maxHealth
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2046470084, guid: 38e692ee287ba1147b43096b0bd76980, type: 3}
+      propertyPath: invinceTime
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2046470084, guid: 38e692ee287ba1147b43096b0bd76980, type: 3}
+      propertyPath: orientationTransform
+      value: 
+      objectReference: {fileID: 1937550398}
+    - target: {fileID: 577211304676323975, guid: 38e692ee287ba1147b43096b0bd76980, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 577211304676323994, guid: 38e692ee287ba1147b43096b0bd76980, type: 3}
       propertyPath: dashTime
       value: 0.4
@@ -1061,12 +1077,14 @@ MonoBehaviour:
   activeLasers:
   - {fileID: 0}
   - {fileID: 0}
-  rotateVelocity: 0
-  rotateAcceleration: 1.5
+  laserRotateSpeed: 40
   laserMaxDistance: 100
   laserStartRotation: 70
   laserActivationRotationSpeed: 1.8
   laserAttackActivateRadius: 7
+  laserMask:
+    serializedVersion: 2
+    m_Bits: 193
   lasersOn: 0
   laserObject: {fileID: 6076511715536978644, guid: acbdc0aec4891184a840ed2d55f89986, type: 3}
   eyes:
@@ -1377,9 +1395,9 @@ MonoBehaviour:
   maxDistanceFromTarget: 5
   smoothTime: 0
   smoothSpeed: 1
-  playerLayer:
+  collisionLayers:
     serializedVersion: 2
-    m_Bits: 16
+    m_Bits: 0
   theGaming: 0.02
 --- !u!81 &1961723260
 AudioListener:

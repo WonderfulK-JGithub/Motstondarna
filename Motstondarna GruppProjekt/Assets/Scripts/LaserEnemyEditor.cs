@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 
+//Max Script
 [CustomEditor(typeof(LaserEnemy))]
 public class LaserEnemyEditor : Editor
 {

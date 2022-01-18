@@ -8,8 +8,7 @@ public class LaserEnemy : MonoBehaviour
     //De lasrarna som är igång - Max
     [SerializeField] GameObject[] activeLasers = new GameObject[2];
 
-    [SerializeField] float rotateVelocity;
-    [SerializeField] float rotateAcceleration;
+    [SerializeField] float laserRotateSpeed;
 
     [Header("Parameters")]
 
@@ -20,6 +19,8 @@ public class LaserEnemy : MonoBehaviour
     [SerializeField] float laserActivationRotationSpeed;
 
     [SerializeField] float laserAttackActivateRadius;
+
+    [SerializeField] LayerMask laserMask;
 
     public bool lasersOn = false;
 
@@ -51,16 +52,25 @@ public class LaserEnemy : MonoBehaviour
 
         if (lasersOn)
         {
-            RaycastHit hit;
+            for (int i = 0; i < eyes.Length; i++)
+            {
+                RaycastHit hit;
 
-            if (Physics.Raycast(laserOrigin.position, laserOrigin.forward, out hit, laserMaxDistance, LayerMask.GetMask("Water")))
-            {
-                UpdateLaserScale(hit.distance);
-            }
-            else
-            {
-                UpdateLaserScale(laserMaxDistance);
-            }
+                if (Physics.Raycast(eyes[i].position, eyes[i].forward, out hit, laserMaxDistance, laserMask))
+                {
+                    if(hit.collider.gameObject.tag == "Player")
+                    {
+                        //Damage
+                        Debug.Log("Hit player");
+                    }
+
+                    UpdateLaserScale(hit.distance, i);
+                }
+                else
+                {
+                    UpdateLaserScale(laserMaxDistance, i);
+                }
+            }            
 
             laserOrigin.localEulerAngles = new Vector3(Mathf.Lerp(laserOrigin.eulerAngles.x, 0, laserActivationRotationSpeed * Time.deltaTime), 0, 0);
         }
@@ -84,10 +94,37 @@ public class LaserEnemy : MonoBehaviour
 
     void RotateTowardsPlayer()
     {
-        var lookPos = player.position - transform.position;
-        lookPos.y = 0;
-        var rotation = Quaternion.LookRotation(lookPos);
-        transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * rotateAcceleration);
+        //Roterar
+        Vector3 lookAt = transform.InverseTransformPoint(player.position);
+        lookAt.y = 0;
+        lookAt = transform.TransformPoint(lookAt);
+
+        Quaternion rotation = transform.rotation;
+        transform.LookAt(lookAt, transform.up);
+        Quaternion lookRotation = transform.rotation;
+        transform.rotation = Quaternion.RotateTowards(rotation, lookRotation, laserRotateSpeed * Time.deltaTime);
+
+        //Attempt 2
+        //Quaternion limitedRotation = new Quaternion(0f, 0f, 0f, 0f);
+        //Quaternion rotation = Quaternion.LookRotation(player.position - transform.position);
+        ////lock rotation, yaw only
+        //rotation.eulerAngles = new Vector3(0, rotation.eulerAngles.y, 0);
+
+        ////rotates the Ship to Reticle with fixed speed
+        //limitedRotation = Quaternion.RotateTowards(transform.rotation, rotation, rotateAcceleration * Time.deltaTime);
+
+        //transform.rotation = limitedRotation;
+
+        //Attempt 1
+        //    var lookPos = player.position - transform.position;
+        //    lookPos.y = 0;
+        //    var rotation = Quaternion.LookRotation(lookPos);
+        //    transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * rotateAcceleration);
+    }
+
+    void UpdateLaserScale(float length, int id)
+    {
+        activeLasers[id].transform.localScale = new Vector3(1, 1, length);
     }
 
     void UpdateLaserScale(float length)

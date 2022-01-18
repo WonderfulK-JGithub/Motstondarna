@@ -54,7 +54,7 @@ public class BaseEnemy : MonoBehaviour
             //Normalizar vinkeln den så att jag bara får vinkeln av vektorn - Max
             dir = -dir.normalized;
 
-            Die(collision.GetContact(0).point, dir * dieForce / 3);
+            Die(collision.GetContact(0).point, /*dir * dieForce / 100*/ Vector3.zero );
         }
     }
 
