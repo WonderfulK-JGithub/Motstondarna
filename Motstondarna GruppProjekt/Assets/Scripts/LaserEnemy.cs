@@ -124,14 +124,14 @@ public class LaserEnemy : MonoBehaviour
 
     void UpdateLaserScale(float length, int id)
     {
-        activeLasers[id].transform.localScale = new Vector3(1, 1, length);
+        activeLasers[id].transform.localScale = new Vector3(1, 1, length) * (1 / 0.75f);
     }
 
     void UpdateLaserScale(float length)
     {
         for (int i = 0; i <= 1; i++)
         {
-            activeLasers[i].transform.localScale = new Vector3(1, 1, length);
+            activeLasers[i].transform.localScale = new Vector3(1, 1, length) * (1 / 0.75f);
         }
     }
 
