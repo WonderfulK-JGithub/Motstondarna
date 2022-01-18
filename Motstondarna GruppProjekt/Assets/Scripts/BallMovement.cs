@@ -133,6 +133,8 @@ public class BallMovement : MonoBehaviour
                 //kollar om man släpper dashKnappen
                 if(!Input.GetButton("Fire1"))
                 {
+                    SoundManagerScript.PlaySound("Dash");
+
                     chargeParticle.Stop();//Stänger av particle systemet
                     state = PlayerState.Dash;//ändrar state
 
@@ -165,6 +167,20 @@ public class BallMovement : MonoBehaviour
                 break;
         }
 
+        if (rollSource.isPlaying)
+        {
+            if(rb.velocity == Vector3.zero || !onGround)
+            {
+                rollSource.Stop();
+            }
+        }
+        else
+        {
+            if (rb.velocity != Vector3.zero && onGround)
+            {
+                rollSource.Play();
+            }
+        }
     }
 
     
@@ -192,31 +208,17 @@ public class BallMovement : MonoBehaviour
                     onSlippary = false;
                 }
 
-                if (!noInput)
-                {
-                    accelerationDirection = targetSpeed / topSpeed;//variabel som bestämmer acceleration baserat på riktingen bollen ska åka
-                    
+                
 
-                    //räknar ut vilken acceleration man ska ha i x och z led. Tanken med detta är att man ska ha starkare acceleration när man tvärsvänger
-                    xAcceleration = Mathf.Sign(targetSpeed.x) == Mathf.Sign(currentSpeed.x) ? acceleration : acceleration * extraAccelerationFactor;
-                    zAcceleration = Mathf.Sign(targetSpeed.z) == Mathf.Sign(currentSpeed.z) ? acceleration : acceleration * extraAccelerationFactor;
-                }
-                else
-                {
-                    xAcceleration = acceleration;
-                    zAcceleration = acceleration;
-                }
+                float accModifier = Vector3.Angle(targetSpeed.normalized, currentSpeed.normalized) <= 90f ? 1f : extraAccelerationFactor;
 
                 
 
-                xAcceleration *= Mathf.Abs(accelerationDirection.x);
-                zAcceleration *= Mathf.Abs(accelerationDirection.z);
-
-
                 if ((onGround && !onSlippary) || !noInput)//Är man i luften eller på halt golv OCH inte trycker åt något håll behåller man den hastighet man hade
                 {
-                    currentSpeed.x = Mathf.MoveTowards(rb.velocity.x, targetSpeed.x, xAcceleration * Time.fixedDeltaTime);
-                    currentSpeed.z = Mathf.MoveTowards(rb.velocity.z, targetSpeed.z, zAcceleration * Time.fixedDeltaTime);
+
+                    currentSpeed = Vector3.MoveTowards(new Vector3(rb.velocity.x, 0f, rb.velocity.z), targetSpeed, acceleration * Time.fixedDeltaTime * accModifier);
+
 
                     rb.velocity = new Vector3(currentSpeed.x, rb.velocity.y, currentSpeed.z);
                 }
@@ -253,16 +255,8 @@ public class BallMovement : MonoBehaviour
 
         fillImage.color = speedColors.Evaluate(_value);
 
+        rollSource.pitch = new Vector3(rb.velocity.x, 0f, rb.velocity.z).magnitude / (topSpeed * 2f) + 0.5f;
 
-        if(onGround)
-        {
-            rollSource.volume = new Vector3(rb.velocity.x, 0f, rb.velocity.z).magnitude / topSpeed;
-        }
-        else
-        {
-
-            rollSource.volume = 0f;
-        }
     }
 
     public void UpdateRotation(Vector3 rotation)
