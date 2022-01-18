@@ -267,7 +267,7 @@ GameObject:
   - component: {fileID: 953584419}
   m_Layer: 0
   m_Name: Coin
-  m_TagString: Untagged
+  m_TagString: Coin
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1253,6 +1253,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7274031590788051520, guid: 38e692ee287ba1147b43096b0bd76980, type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7839105584346206628, guid: 38e692ee287ba1147b43096b0bd76980, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

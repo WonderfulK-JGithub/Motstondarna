@@ -63,6 +63,7 @@ public class BallHealth : BallMovement
         if (invinceable) return;
 
         currentSpeed = knockBack;
+        rb.velocity = new Vector3(currentSpeed.x, rb.velocity.y, currentSpeed.z);
 
         healthPoints -= damage;
 
