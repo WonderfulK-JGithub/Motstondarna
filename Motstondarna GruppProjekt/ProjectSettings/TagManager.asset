@@ -6,6 +6,7 @@ TagManager:
   tags:
   - "R\xE4nna"
   - Coin
+  - SimpleBowlingPin
   layers:
   - Default
   - TransparentFX
@@ -16,8 +17,8 @@ TagManager:
   - Ground
   - Slippery
   - Player
-  - 
-  - 
+  - NoPlayerBowlingPinCollision
+  - BowlingPinTrigger
   - 
   - 
   - 

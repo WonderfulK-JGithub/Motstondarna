@@ -13,12 +13,12 @@ public class BaseEnemy : MonoBehaviour
     [SerializeField] bool canKillPlayer = false;
 
     public bool hasDied = false;
-
+    //bool hasDiedFromPlayer;
     //Referenser
     MeshRenderer rend;
-    Rigidbody rb;
+    [HideInInspector] public Rigidbody rb;
 
-    private void Awake()
+    public virtual void Awake()
     {
         rend = GetComponentInChildren<MeshRenderer>();
         rb = GetComponent<Rigidbody>();
@@ -26,16 +26,25 @@ public class BaseEnemy : MonoBehaviour
 
     public virtual void OnCollisionEnter(Collision collision)
     {
-        //Kolla spelarens script och ta lastVelocity för att se om velocity > speedToDIe, då ska de dö. - Max
+        OnAnyCollisionEnter(collision.collider, collision);
+    }
 
-        if ((collision.transform.GetComponent<BallMovement>() && collision.transform.GetComponent<BallMovement>().currentSpeed.magnitude >= playerVelocityForDeath))
+    private void OnTriggerEnter(Collider other)
+    {
+        //if(gameObject.layer == 9)
+            OnAnyCollisionEnter(other);
+    }
+
+    void OnAnyCollisionEnter(Collider other, Collision collision = null)
+    {
+        if ((other.transform.GetComponent<BallMovement>() && other.transform.GetComponent<BallMovement>().currentSpeed.magnitude >= playerVelocityForDeath))
         {
-            if (!hasDied)
+            if ( true)
             {
-                Die(collision.GetContact(0).point, collision.transform.GetComponent<BallMovement>().currentSpeed);
+                Die(collision != null ? collision.GetContact(0).point : other.transform.position, other.transform.GetComponent<BallMovement>().currentSpeed);
             }
         }
-        else if (canKillPlayer && collision.transform.GetComponent<BallMovement>() && collision.transform.GetComponent<BallMovement>().currentSpeed.magnitude < playerVelocityForDeath)
+        else if (canKillPlayer && other.transform.GetComponent<BallMovement>() && collision.transform.GetComponent<BallMovement>().currentSpeed.magnitude < playerVelocityForDeath)
         {
             rb.isKinematic = true;
 
@@ -46,11 +55,11 @@ public class BaseEnemy : MonoBehaviour
             dir = dir.normalized;
 
             //Lägger på en force i direction - Max
-            collision.transform.GetComponent<BallMovement>().currentSpeed = dir * 5;
+            other.transform.GetComponent<BallMovement>().currentSpeed = dir * 5;
 
-            collision.transform.GetComponent<BallHealth>().TakeDamage(Vector3.zero, 1);
-        }    
-        else if (canDieFromOtherPins && collision.transform.GetComponent<BaseEnemy>())
+            other.transform.GetComponent<BallHealth>().TakeDamage(Vector3.zero, 1);
+        }
+        else if (canDieFromOtherPins && other.transform.GetComponent<BaseEnemy>())
         {
             Vector3 dir = collision.GetContact(0).point - transform.position;
 

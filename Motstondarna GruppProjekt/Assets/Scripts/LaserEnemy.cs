@@ -66,7 +66,6 @@ public class LaserEnemy : MonoBehaviour
                         //Damage
 
                         FindObjectOfType<BallHealth>().TakeDamage(new Vector3(0, 0, 0), 1);
-                        Debug.Log("Hit player");
                     }
 
                     UpdateLaserScale(hit.distance, i);

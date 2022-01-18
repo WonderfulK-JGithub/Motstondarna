@@ -31,13 +31,13 @@ public class WanderingEnemy : BaseEnemy
     [HideInInspector] public bool overrideChasing = false;
 
     //Components
-    Rigidbody rb2;
     Animator anim;
 
-    private void Awake()
+    public override void Awake()
     {
+        base.Awake();
+
         player = FindObjectOfType<BallMovement>().transform;
-        rb2 = GetComponent<Rigidbody>();
         anim = GetComponentInChildren<Animator>();
     }
 
@@ -106,7 +106,7 @@ public class WanderingEnemy : BaseEnemy
         else
         {
             Invoke(nameof(StopChasing), 1f);
-            rb2.velocity = Vector3.zero;
+            rb.velocity = Vector3.zero;
             canCheckForPlayer = false;
         }
     }
@@ -137,7 +137,9 @@ public class WanderingEnemy : BaseEnemy
 
     public void StartChasing()
     {
-        anim.speed = 1;
+        if(anim != null)
+            anim.speed = 1;
+
         isChasingPlayer = true;
     }
 
@@ -151,7 +153,7 @@ public class WanderingEnemy : BaseEnemy
 
         //Rör sig mot target - Max
         Vector3 newVel = transform.forward * speed;
-        rb2.velocity = new Vector3(newVel.x, rb2.velocity.y, newVel.z);
+        rb.velocity = new Vector3(newVel.x, rb.velocity.y, newVel.z);
     }
 
     bool GroundCheck()
@@ -208,8 +210,8 @@ public class WanderingEnemy : BaseEnemy
     {
         //Gör så att den kan påverkas av forces - Max
         isMoving = false;
-        rb2.isKinematic = false;
-        rb2.constraints = RigidbodyConstraints.None;
+        rb.isKinematic = false;
+        rb.constraints = RigidbodyConstraints.None;
         
         base.Die(contactPoint, speed);
     }

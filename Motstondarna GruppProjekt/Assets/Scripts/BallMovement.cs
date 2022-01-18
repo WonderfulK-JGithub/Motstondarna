@@ -53,6 +53,8 @@ public class BallMovement : MonoBehaviour
 
     bool noInput;
 
+    bool aboveKillSpeed = false; //För att se om spelaren åker tillräckligt snabbt för att döda en simple bowling pin - Max
+
     [HideInInspector] public Vector3 currentSpeed;
     Vector3 accelerationDirection;
 
@@ -255,8 +257,40 @@ public class BallMovement : MonoBehaviour
 
         fillImage.color = speedColors.Evaluate(_value);
 
+        //Kollar bollens hastighet och ändrar vissa bowling pins till 
+        //triggers så att det ser bättre ut när man får en strike - Max 
+        if (new Vector3(rb.velocity.x, 0f, rb.velocity.z).magnitude >= 10)
+        {
+            if (!aboveKillSpeed) //boolen behövs så det här inte görs varje frame - Max
+            {
+                aboveKillSpeed = true;
+                ChangeBowlingPinLayers(9);
+            }
+        }
+        else
+        {
+            if (aboveKillSpeed)
+            {
+                aboveKillSpeed = false;
+                ChangeBowlingPinLayers(0);
+            }
+        }
+
         rollSource.pitch = new Vector3(rb.velocity.x, 0f, rb.velocity.z).magnitude / (topSpeed * 2f) + 0.5f;
 
+    }
+
+    void ChangeBowlingPinLayers(int layer)
+    {
+        //FindGameObjectsWithTag är tydligen bättre för performance än FindObjectsOfType
+        //och eftersom det kanske finns väldigt många pins på banan så använder jag det - Max
+        GameObject[] allSimpleBowlingPins = GameObject.FindGameObjectsWithTag("SimpleBowlingPin");
+
+        //ändrar lagret på varenda bowling pin den hittar - Max
+        for (int i = 0; i < allSimpleBowlingPins.Length; i++)
+        {
+            allSimpleBowlingPins[i].layer = layer;
+        }
     }
 
     public void UpdateRotation(Vector3 rotation)
