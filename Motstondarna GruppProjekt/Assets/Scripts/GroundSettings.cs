@@ -8,16 +8,13 @@ public class GroundSettings : MonoBehaviour
     Transform[] faces;
     void Start()
     {
+        transform.position = new Vector3(Mathf.Round(transform.position.x), Mathf.Round(transform.position.y), Mathf.Round(transform.position.z));
         GroundSettings[] grounds = FindObjectsOfType<GroundSettings>();
         foreach (var ground in grounds)
         {
             groundCoords.Add(ground.transform.position);
         }
         faces = GetComponentsInChildren<Transform>();
-        for (int i = 1; i < faces.Length; i++)
-        {
-            faces[i].GetComponent<MeshCollider>().enabled = wallCollision;
-        }
 
         if (groundCoords.Contains(transform.position + new Vector3(2, 0, 0))) { Destroy(faces[1].gameObject); }
         if (groundCoords.Contains(transform.position + new Vector3(-2, 0, 0))) { Destroy(faces[2].gameObject); }
