@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class BallMovement : MonoBehaviour
 {
@@ -40,6 +41,9 @@ public class BallMovement : MonoBehaviour
     [Header("Other")]
     [SerializeField] ParticleSystem chargeParticle;
     [SerializeField] float slideExtraGravity;
+    [SerializeField] TextMeshProUGUI scoreText;
+
+    float score;
 
     bool onGround;
     bool onSlippary;
@@ -202,9 +206,11 @@ public class BallMovement : MonoBehaviour
                 {
                     currentSpeed.x = Mathf.MoveTowards(rb.velocity.x, targetSpeed.x, xAcceleration * Time.fixedDeltaTime);
                     currentSpeed.z = Mathf.MoveTowards(rb.velocity.z, targetSpeed.z, zAcceleration * Time.fixedDeltaTime);
+
+                    rb.velocity = new Vector3(currentSpeed.x, rb.velocity.y, currentSpeed.z);
                 }
 
-                rb.velocity = new Vector3(currentSpeed.x, rb.velocity.y, currentSpeed.z);
+                
 
                 if (Physics.Raycast(transform.position, Vector3.down, 0.52f, groundLayers))
                 {
@@ -258,12 +264,25 @@ public class BallMovement : MonoBehaviour
         fillImage.color = speedColors.Evaluate(_value);
     }
 
+    public void UpdateRotation(Vector3 rotation)
+    {
+        orientationTransform.eulerAngles = rotation;
+        chargeParticle.transform.eulerAngles = rotation;
+        if(state == PlayerState.ChargeDash)dashTrail.transform.eulerAngles = rotation;
+    }
+
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Ränna") && state == PlayerState.Free)
         {
             state = PlayerState.Renn;
             currentSpeed = Vector3.zero;
+        }
+        else if(other.gameObject.CompareTag("Coin"))
+        {
+            score += 69;
+            scoreText.text = score.ToString();
         }
     }
 

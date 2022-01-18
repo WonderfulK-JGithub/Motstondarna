@@ -8,6 +8,8 @@ public class BallHealth : BallMovement
     [SerializeField] int maxHealth;
     [SerializeField] float invinceTime;
 
+    public Color invinceColor;
+
     int healthPoints;
 
     float invinceTimer;
@@ -41,6 +43,9 @@ public class BallHealth : BallMovement
             {
                 invinceable = false;
             }
+
+            rend.material.color = invinceColor;
+            
         }
         else
         {
