@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: e15cdbd3070a3354bb6b2129b43a6a46
+guid: 3bcffc3d104040747ae8a89cbe9aedd8
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable:
@@ -13,17 +13,59 @@ ModelImporter:
       74: 7026222156141547930
     second: Armature|Plane.001Action.001
   - first:
-      74: 2849882307600013679
-    second: Armature|Plane.001Action.002
-  - first:
-      74: -7200833235004227176
-    second: Armature|Plane.001Action.003
-  - first:
       74: -8434355280063164500
     second: Armature|Plane.002Action
   - first:
       74: 5038578616295429184
     second: Armature|Plane.003Action
+  - first:
+      74: 6767156099390128960
+    second: Armature|Plane.004Action
+  - first:
+      74: -5784005261616917065
+    second: Armature.001|Armature.001Action.001
+  - first:
+      74: -960898424075949690
+    second: Armature.001|ArmatureAction
+  - first:
+      74: 4785705945719673406
+    second: Armature.001|Plane.001Action.001
+  - first:
+      74: 3171211008697608905
+    second: Armature.001|Plane.002Action
+  - first:
+      74: 997250425210634293
+    second: Armature.001|Plane.003Action
+  - first:
+      74: -2140620872576521243
+    second: Armature.001|Plane.004Action
+  - first:
+      74: -1994871162714822373
+    second: Plane.003|Plane.001Action.001
+  - first:
+      74: -5839455570910890988
+    second: Plane.003|Plane.002Action
+  - first:
+      74: -3246142060146108349
+    second: Plane.003|Plane.003Action
+  - first:
+      74: -8678120721183469476
+    second: Plane.003|Plane.004Action
+  - first:
+      74: 8645343760740499401
+    second: Armature.003|Armature.003Action
+  - first:
+      74: 2695772432341665292
+    second: Armature.003|Plane.001Action.001
+  - first:
+      74: -405951551705346573
+    second: Armature.003|Plane.002Action
+  - first:
+      74: -846654069656430776
+    second: Armature.003|Plane.003Action
+  - first:
+      74: -6713198076506928574
+    second: Armature.003|Plane.004Action
   externalObjects: {}
   materials:
     materialImportMode: 2

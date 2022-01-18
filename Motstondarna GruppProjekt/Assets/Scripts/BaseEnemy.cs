@@ -83,6 +83,18 @@ public class BaseEnemy : MonoBehaviour
         StartCoroutine(Fade());
     }
 
+    public void Die()
+    {
+        hasDied = true;
+        StartCoroutine(Fade());
+    }
+
+    public void DieNow()
+    {
+        hasDied = true;
+        Destroy(gameObject);
+    }
+
     IEnumerator Fade()
     {
         yield return new WaitForSeconds(2);

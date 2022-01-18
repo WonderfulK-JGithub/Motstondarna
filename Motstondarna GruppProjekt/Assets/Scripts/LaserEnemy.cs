@@ -37,9 +37,12 @@ public class LaserEnemy : MonoBehaviour
     WanderingEnemy wanderingScript;
     [SerializeField] Transform player;
 
+    Animator anim;
+
     private void Awake()
     {
         wanderingScript = GetComponent<WanderingEnemy>();
+        anim = GetComponentInChildren<Animator>();
     }
 
     private void Update()
@@ -61,6 +64,8 @@ public class LaserEnemy : MonoBehaviour
                     if(hit.collider.gameObject.tag == "Player")
                     {
                         //Damage
+
+                        FindObjectOfType<BallHealth>().TakeDamage(new Vector3(0, 0, 0), 1);
                         Debug.Log("Hit player");
                     }
 
@@ -137,6 +142,16 @@ public class LaserEnemy : MonoBehaviour
 
     public void TurnOnLasers()
     {
+        anim.speed = 1;
+        anim.Play("LaserAlerted");
+
+        StartCoroutine(nameof(tilLasersOn));
+    }
+
+    IEnumerator tilLasersOn()
+    {
+        yield return new WaitForSeconds(1.28333f);
+
         lasersOn = true;
 
         for (int i = 0; i <= 1; i++)
@@ -155,5 +170,8 @@ public class LaserEnemy : MonoBehaviour
         {
             Destroy(activeLasers[i]);
         }
+
+        anim.speed = 1;
+        anim.Play("Walking");
     }
 }

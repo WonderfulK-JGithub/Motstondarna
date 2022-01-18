@@ -1,20 +1,23 @@
 fileFormatVersion: 2
-guid: aa6868749b22bfa4999e3029003c4c7d
+guid: db14aaf01ab65154eb9160a74606757a
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable:
   - first:
-      74: -7597983235715544647
-    second: Armature|Armature.001Action.001
+      74: 8645343760740499401
+    second: Armature.003|Armature.003Action
   - first:
-      74: 4781951162920444690
-    second: Armature|ArmatureAction
+      74: 2695772432341665292
+    second: Armature.003|Plane.001Action.001
   - first:
-      74: 7026222156141547930
-    second: Armature|Plane.001Action.001
+      74: -405951551705346573
+    second: Armature.003|Plane.002Action
   - first:
-      74: -8434355280063164500
-    second: Armature|Plane.002Action
+      74: -846654069656430776
+    second: Armature.003|Plane.003Action
+  - first:
+      74: -6713198076506928574
+    second: Armature.003|Plane.004Action
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -35,7 +38,7 @@ ModelImporter:
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
     importConstraints: 0
-    animationCompression: 3
+    animationCompression: 1
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
@@ -100,7 +103,7 @@ ModelImporter:
     globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
-    hasExtraRoot: 1
+    hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   autoGenerateAvatarMappingIfUnspecified: 1
