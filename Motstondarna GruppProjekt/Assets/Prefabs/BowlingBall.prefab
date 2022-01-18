@@ -4942,6 +4942,7 @@ GameObject:
   - component: {fileID: 2046470084}
   - component: {fileID: 577211304583936683}
   - component: {fileID: 787827785}
+  - component: {fileID: 334355422160269617}
   m_Layer: 0
   m_Name: obamium
   m_TagString: Player
@@ -5105,6 +5106,7 @@ MonoBehaviour:
   scoreText: {fileID: 1858425599807253556}
   rollSource: {fileID: 787827785}
   currentSpeed: {x: 0, y: 0, z: 0}
+  rb: {fileID: 0}
   maxHealth: 2
   invinceTime: 0.5
   invinceColor: {r: 0, g: 0, b: 0, a: 0}
@@ -5223,6 +5225,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &334355422160269617
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 577211304676323975}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fdf6d6136ae3834b9e68fee31447321, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &577211305618531406
 GameObject:
   m_ObjectHideFlags: 0
