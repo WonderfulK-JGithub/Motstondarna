@@ -57,8 +57,7 @@ public class WanderingEnemy : BaseEnemy
                 StartChasing();
             }
         }
-
-        if (!canCheckForPlayer)
+        else if (!canCheckForPlayer)
         {
             if(Vector3.Distance(player.position, transform.position) > playerCheckRadius + 4f)
             {
