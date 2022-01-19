@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class PlayerCheckpointSpawn : MonoBehaviour
 {
-    public float lowestLevel = -4;
+    public float lowestLevel = -4; // hur lågt ner spelaren kan vara innan spelet startar om - Anton
     // Start is called before the first frame update
     void Start() // kollar vid start av spelet - Anton
     {
@@ -22,9 +22,9 @@ public class PlayerCheckpointSpawn : MonoBehaviour
     }
     private void Update()
     {
-        if (transform.position.y <= lowestLevel)
+        if (transform.position.y < lowestLevel) // om man är under lowestLevel - Anton
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); // starta om banan - Anton
         }
     }
 }
