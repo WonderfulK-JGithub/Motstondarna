@@ -4,7 +4,7 @@ using UnityEngine;
 //Theo
 public class SoundManagerScript : MonoBehaviour
 {
-    public static AudioClip AmbientWind, Checkpoint, Click, Dash, JumpPad, K‰gglaDamage, Landa, PowerUp, Rolling, R‰nna, Skada, Laser÷gon, RocketFiende, Coins; //Definerar audiclippen /Theo
+    public static AudioClip AmbientWind, Checkpoint, Click, Dash, JumpPad, K‰gglaDamage, Landa, PowerUp, Rolling, R‰nna, Skada, Laser÷gon, RocketFiende, Coins, Hoppa; //Definerar audiclippen /Theo
     static AudioSource audioSrc;
 
     void Start() //Parar ihop r‰tt variebel med motsvarande ljudfil
@@ -23,6 +23,7 @@ public class SoundManagerScript : MonoBehaviour
         Laser÷gon = Resources.Load<AudioClip>("Laser÷gon");
         RocketFiende = Resources.Load<AudioClip>("RocketFiende");
         Coins = Resources.Load<AudioClip>("Coins");
+        Hoppa = Resources.Load<AudioClip>("Hoppa");
 
         audioSrc = GetComponent<AudioSource>();
     }
@@ -76,6 +77,9 @@ public class SoundManagerScript : MonoBehaviour
                 break;
             case "Coins":
                 audioSrc.PlayOneShot(Coins);
+                break;
+            case "Hoppa":
+                audioSrc.PlayOneShot(Hoppa);
                 break;
         }
     }

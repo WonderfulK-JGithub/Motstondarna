@@ -573,7 +573,7 @@ GameObject:
   - component: {fileID: 596626754}
   - component: {fileID: 596626755}
   m_Layer: 5
-  m_Name: Volume
+  m_Name: VolumeSlider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -652,7 +652,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 439188332}
+      - m_Target: {fileID: 596626755}
         m_TargetAssemblyTypeName: VolumeScript, Assembly-CSharp
         m_MethodName: ChangeVolume
         m_Mode: 1
