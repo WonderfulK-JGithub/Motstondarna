@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BallHealth : BallMovement
 {
@@ -8,7 +9,11 @@ public class BallHealth : BallMovement
     [SerializeField] int maxHealth;
     [SerializeField] float invinceTime;//hur länge man är odödlig efter att man blivit skadad av en käggla
 
+    [SerializeField] Image healthImage;
+    [SerializeField] Sprite[] healthSprites;
+
     public Color invinceColor;//vilken färg man har när man är odödlig (ändras av en animation som bollen har)
+    Color defaultColor;
 
     int healthPoints;
 
@@ -16,7 +21,7 @@ public class BallHealth : BallMovement
 
     bool invinceable;
 
-    MeshRenderer rend;
+    public MeshRenderer rend;
 
 
     public override void Awake()
@@ -24,9 +29,10 @@ public class BallHealth : BallMovement
         base.Awake();
 
         healthPoints = maxHealth;
-        rend = GetComponent<MeshRenderer>();
+        //rend = GetComponent<MeshRenderer>();
+        defaultColor = rend.material.color;
 
-        
+        NewHealth();
     }
 
     // Update is called once per frame
@@ -49,12 +55,12 @@ public class BallHealth : BallMovement
         }
         else
         {
-            rend.material.color = Color.white;
+            rend.material.color = defaultColor;
         }
 
         if(Input.GetKeyDown(KeyCode.U))
         {
-            TakeDamage(Vector3.zero, 0);
+            TakeDamage(Vector3.zero, 1);
         }
     }
 
@@ -67,6 +73,7 @@ public class BallHealth : BallMovement
         rb.velocity = new Vector3(currentSpeed.x, rb.velocity.y, currentSpeed.z);
 
         healthPoints -= damage;
+        NewHealth();
 
         if(healthPoints <= 0)
         {
@@ -77,6 +84,14 @@ public class BallHealth : BallMovement
             invinceTimer = invinceTime;
             invinceable = true;
         }
+    }
+
+    void NewHealth()
+    {
+        healthPoints = Mathf.Clamp(healthPoints, 0, maxHealth);
+
+        healthImage.sprite = healthSprites[healthPoints];
+
     }
 
     public void GameOver()
@@ -90,9 +105,12 @@ public class BallHealth : BallMovement
 
         if (other.gameObject.CompareTag("Heart"))
         {
-            healthPoints++;
+            healthPoints = maxHealth;
+            NewHealth();
 
             Destroy(other.gameObject);
+
+            SoundManagerScript.PlaySound("PowerUp");
         }
 
     }

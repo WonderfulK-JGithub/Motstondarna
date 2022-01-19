@@ -82,15 +82,9 @@ public class LaserEnemy : MonoBehaviour
 
             Quaternion dirQ = Quaternion.LookRotation(dir);
 
-            //Quaternion dirQ = Quaternion.LookRotation(Vector3.RotateTowards(laserOrigin.forward, player.position, laserActivationRotationSpeed * Time.deltaTime, 0.0f));
-
-            //dirQ *= laserOrigin.rotation;
-            //dir = new Vector3(dir.x, 0, 0);
-
             bool playerAbove = player.position.y > laserOrigin.position.y;
 
-
-                laserOrigin.localEulerAngles = new Vector3(Mathf.Clamp(Mathf.Lerp(laserOrigin.eulerAngles.x, playerAbove ? 0 : dirQ.eulerAngles.x, laserActivationRotationSpeed * Time.deltaTime), 1, 72), 0, 0);
+            laserOrigin.localEulerAngles = new Vector3(Mathf.Clamp(Mathf.Lerp(laserOrigin.eulerAngles.x, playerAbove ? 0 : dirQ.eulerAngles.x, laserActivationRotationSpeed * Time.deltaTime), 1, 72), 0, 0);
 
             //laserOrigin.localEulerAngles = new Vector3(Mathf.Lerp(laserOrigin.eulerAngles.x, 0, laserActivationRotationSpeed * Time.deltaTime), 0, 0);
         }
@@ -123,23 +117,6 @@ public class LaserEnemy : MonoBehaviour
         transform.LookAt(lookAt, transform.up);
         Quaternion lookRotation = transform.rotation;
         transform.rotation = Quaternion.RotateTowards(rotation, lookRotation, laserRotateSpeed * Time.deltaTime);
-
-        //Attempt 2
-        //Quaternion limitedRotation = new Quaternion(0f, 0f, 0f, 0f);
-        //Quaternion rotation = Quaternion.LookRotation(player.position - transform.position);
-        ////lock rotation, yaw only
-        //rotation.eulerAngles = new Vector3(0, rotation.eulerAngles.y, 0);
-
-        ////rotates the Ship to Reticle with fixed speed
-        //limitedRotation = Quaternion.RotateTowards(transform.rotation, rotation, rotateAcceleration * Time.deltaTime);
-
-        //transform.rotation = limitedRotation;
-
-        //Attempt 1
-        //    var lookPos = player.position - transform.position;
-        //    lookPos.y = 0;
-        //    var rotation = Quaternion.LookRotation(lookPos);
-        //    transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * rotateAcceleration);
     }
 
     void UpdateLaserScale(float length, int id)
