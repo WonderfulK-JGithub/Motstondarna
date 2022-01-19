@@ -5,25 +5,25 @@ using UnityEngine;
 //Max Script
 public class RocketEnemy : MonoBehaviour
 {
-    bool rocketOn = false;
-    bool alerted = false;
+    bool rocketOn = false; //Faktiskt åker med raketet - Max
+    bool alerted = false; //Att fienden bara är alerted - Max
 
     [Header("Parameters")]
-    [SerializeField] float rocketRotatingSpeed;
-    [SerializeField] float rocketSpeed;
-    [SerializeField] float rocketRotSpeedWhileActivating;
+    [SerializeField] float rocketRotatingSpeed; //Hur snabbt fienden roterar när den åker med raketen - Max
+    [SerializeField] float rocketSpeed; //Hur snabbt fienden åker med raketen - Max
+    [SerializeField] float rocketRotSpeedWhileActivating; //Hur snabbt den roterar när den blir alerted och kastar sig på marken för att börja åka - Max
 
-    [SerializeField] float rocketActivateRadius;
-    [SerializeField] float rocketExplosionTime;
+    [SerializeField] float rocketActivateRadius; //Radius för att den ska aktiveras - Max
+    [SerializeField] float rocketExplosionTime; //Hur länge den åker innan automatisk explosion - Max
 
-    [SerializeField] float rocketExplodeRadius;
+    [SerializeField] float rocketExplodeRadius; //Radius för att kolla hur nära spelaren ska vara för att den ska explodera - Max
 
-    [SerializeField] float knockBackForce;
+    [SerializeField] float knockBackForce; //Explosionens knockback på spelaren - Max
 
     [Header("References")]
-    [SerializeField] Transform player;
-    [SerializeField] ParticleSystem rocketParticles;
-    [SerializeField] GameObject explosion;
+    Transform player;
+    [SerializeField] ParticleSystem rocketParticles; //Partiklarna från raketen
+    [SerializeField] GameObject explosion; //Explosionen
     WanderingEnemy wanderingScript;
     Rigidbody rb;
 
@@ -33,20 +33,21 @@ public class RocketEnemy : MonoBehaviour
     private void Awake()
     {
         wanderingScript = GetComponent<WanderingEnemy>();
+        player = FindObjectOfType<BallMovement>().transform;
         rb = GetComponent<Rigidbody>();
         anim = GetComponentInChildren<Animator>();
     }
 
     private void Start()
     {
-        rocketParticles.Stop();
+        rocketParticles.Stop(); //Så att inte raketen är på när den bara går runt - Max
     }
 
     private void Update()
     {
         if (!wanderingScript.overrideChasing && Vector3.Distance(new Vector3(transform.position.x, 0, transform.position.z), new Vector3(player.position.x, 0, player.position.z)) < rocketActivateRadius)
         {
-            StartRocket();
+            StartRocket(); //När spelaren är tillräckligt nära så ska den starta raketen - Max
         }
 
         if (rocketOn && !wanderingScript.hasDied)
@@ -59,6 +60,7 @@ public class RocketEnemy : MonoBehaviour
             RotateTowardsPlayer(rocketRotSpeedWhileActivating);
         }
 
+        //Om tillräckligt nära spelaren så ska den explodera - Max
         if (rocketOn && Vector3.Distance(new Vector3(transform.position.x, 0, transform.position.z), new Vector3(player.position.x, 0, player.position.z)) < rocketExplodeRadius)
         {
             Explode();
@@ -67,13 +69,14 @@ public class RocketEnemy : MonoBehaviour
 
     void StartRocket()
     {
+        //Ser till så att det inte blir konstigt med wanderingscript - Max
         wanderingScript.StartChasing();
         wanderingScript.overrideChasing = true;
 
         anim.Play("RocketStart");
-        alerted = true;
+        alerted = true; //istället för att starta raketen direkt så alertar vi den - Max
         Invoke(nameof(StartMovingRocket), 1.05f);
-        StartCoroutine(nameof(tilExplode));
+        StartCoroutine(nameof(tilExplode)); //Tills den exploderar automatiskt - Max
     }
 
     void StartMovingRocket()

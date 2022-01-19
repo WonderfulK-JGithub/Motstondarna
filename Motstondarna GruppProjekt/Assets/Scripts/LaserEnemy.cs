@@ -34,13 +34,14 @@ public class LaserEnemy : MonoBehaviour
     [SerializeField] Transform laserOrigin; //Är också parent till eyes
 
     WanderingEnemy wanderingScript;
-    [SerializeField] Transform player;
+    Transform player;
 
     Animator anim;
 
     private void Awake()
     {
         wanderingScript = GetComponent<WanderingEnemy>();
+        player = FindObjectOfType<BallMovement>().transform;
         anim = GetComponentInChildren<Animator>();
     }
 
@@ -109,13 +110,14 @@ public class LaserEnemy : MonoBehaviour
 
         if (lasersOn)
         {
+            //Rotera för att kolla mot spelaren - Max
             RotateTowardsPlayer();
         }
     }
 
     void RotateTowardsPlayer()
     {
-        //Roterar
+        //Roterar med en constant speed - Max
         Vector3 lookAt = transform.InverseTransformPoint(player.position);
         lookAt.y = 0;
         lookAt = transform.TransformPoint(lookAt);
@@ -128,7 +130,8 @@ public class LaserEnemy : MonoBehaviour
 
     void UpdateLaserScale(float length, int id)
     {
-        activeLasers[id].transform.localScale = new Vector3(1, 1, length) * (1 / 0.75f);
+        //Scalear lasern till length - Max
+        activeLasers[id].transform.localScale = new Vector3(1, 1, length) * (1 / 0.75f); //(1 / 0.75) är för att kompensera för fiendens scale - Max
     }
 
     //För att uppdatera scale för båda lasrarna samtidigt
@@ -142,10 +145,11 @@ public class LaserEnemy : MonoBehaviour
 
     public void TurnOnLasers()
     {
-        wanderingScript.StartChasing();
+        wanderingScript.StartChasing(); //Annars så kan det hända att det blir konstigt eftersom lasern inte kan overridea wandering state - Max
         anim.Play("LaserAlerted");
         SoundManagerScript.PlaySound("LaserÖgon");
 
+        //Använder en IEnumerator så att animationen kan spelas innan lasern sätts igång - Max
         StartCoroutine(nameof(tilLasersOn));
     }
 
@@ -153,13 +157,16 @@ public class LaserEnemy : MonoBehaviour
     {
         yield return new WaitForSeconds(1.28333f / 2);
 
+        wanderingScript.StartChasing();
         lasersOn = true;
 
+        //Spawnar lasrar på båda ögonen - Max
         for (int i = 0; i <= 1; i++)
         {
             activeLasers[i] = Instantiate(laserObject, eyes[i]);
         }
 
+        //Roterar lasrarna neråt i marken så man inte dör direkt - Max
         laserOrigin.rotation = Quaternion.Euler(laserStartRotation, 0, 0);
     }
 
@@ -167,6 +174,7 @@ public class LaserEnemy : MonoBehaviour
     {
         lasersOn = false;
 
+        //Förstör lasrarna för båda ögonen - Max
         for (int i = 1; i >= 0; i--)
         {
             Destroy(activeLasers[i]);
