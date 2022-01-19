@@ -6,31 +6,29 @@ using UnityEngine;
 public class WanderingEnemy : BaseEnemy
 {
     [Header("Wandering Area")]
-    [SerializeField] Vector3 wanderingAreaCenter;
-    [SerializeField] float wanderingAreaSize;
+    [SerializeField] Vector3 wanderingAreaCenter; //Runt den här punkten så wanderar den - Max
+    [SerializeField] float wanderingAreaSize; //Hur stor area som den wanderar - Max
 
     [Header("Wandering parameters")]
-    [SerializeField] float wanderingSpeed;
-    [SerializeField] float targetDistance;
-    [SerializeField] float waitTimeToNewTarget;
-    [SerializeField] Vector3 currentTarget;
+    [SerializeField] float wanderingSpeed; //Hur snabbt den går - Max
+    [SerializeField] float targetDistance; //Hur nära den behöver vara till target för att det ska räknas som att den är framme - Max
+    [SerializeField] float waitTimeToNewTarget; //Hur länge den ska stå still tills den tar en ny target att gå till - Max
+    [SerializeField] Vector3 currentTarget; //Dit den är på väg just nu - Max
 
     [Header("Checking For Player")]
-    [SerializeField] float playerCheckRadius;
+    [SerializeField] float playerCheckRadius; //Hur stor radius som den kollar efter spelaren i - max
 
     [Header("Chasing parameters")]
-    [SerializeField] float chasingSpeed;
-    [SerializeField] float rotationSpeed;
+    [SerializeField] float chasingSpeed; //Hur snabbt den jagar spelaren - max
+    [SerializeField] float rotationSpeed; //Hur snabbt den roterar när den rör sig - max
 
+    bool isChasingPlayer = false; //Jagar spelaren - Max
+    bool isMoving = false; //Rör på sig - Max
+    bool canCheckForPlayer = true; 
+    [HideInInspector] public bool overrideChasing = false; //är public så att andra skript kan accessa den - Max
+
+    //References
     Transform player;
-
-    bool isChasingPlayer = false;
-    bool isMoving = false;
-    bool canCheckForPlayer = true;
-
-    [HideInInspector] public bool overrideChasing = false;
-
-    //Components
     Animator anim;
 
     public override void Awake()
@@ -43,9 +41,9 @@ public class WanderingEnemy : BaseEnemy
 
     void Start()
     {
-        wanderingAreaCenter = transform.position;   
+        wanderingAreaCenter = transform.position; //Den ska wandera runt där den först placeras - max
 
-        NewPos();
+        NewPos(); //Hittar en ny target pos att gå till - Max
     }
 
     private void Update()
@@ -72,8 +70,7 @@ public class WanderingEnemy : BaseEnemy
     void FixedUpdate()
     {
         //Man ska inte alltid kunna röra på sig - Max
-        if (!isMoving) return;
-        if (hasDied) return;
+        if (!isMoving || hasDied) return;
 
         if (isChasingPlayer)
         {
@@ -81,20 +78,11 @@ public class WanderingEnemy : BaseEnemy
             {
                 ChasePlayer();
             }
-            else
-            {
-                AttackEveryFrame();
-            }
         }
         else
         {
             Wandering();
         }
-    }
-
-    void AttackEveryFrame()
-    {
-
     }
 
     void ChasePlayer()
