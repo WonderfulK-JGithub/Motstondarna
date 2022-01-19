@@ -11,11 +11,9 @@ public class CameraController : MonoBehaviour
     float rotationX;
     float rotationY;
 
-    [SerializeField] BallMovement target;
-    [SerializeField] Transform ballOrientation;
-    [SerializeField] Transform chargeParticle;
+    [SerializeField] BallMovement target;//referense till spelaren som kameran ska kolla på
 
-    [SerializeField] float maxDistanceFromTarget = 5f;
+    [SerializeField] float maxDistanceFromTarget = 5f;//hur långt kameran ska kolla ifrån spelaren
 
     Vector3 currentRotation;
     Vector3 smoothVelocity = Vector3.zero;
@@ -29,7 +27,7 @@ public class CameraController : MonoBehaviour
 
     float distanceFromTarget;
 
-    bool firstPerson;
+    bool firstPerson;//om man är i firstperson mode
 
     void Awake()
     {
@@ -40,28 +38,20 @@ public class CameraController : MonoBehaviour
     {
         if(!firstPerson)
         {
-            if (Input.GetMouseButton(0) || true)
-            {
-                float mouseX = Input.GetAxis("Mouse X");
-                float mouseY = Input.GetAxis("Mouse Y");
+            
+            float mouseX = Input.GetAxis("Mouse X");//skaffar mouse drag input
+            float mouseY = Input.GetAxis("Mouse Y");
 
-                rotationX += mouseX * mouseSence;
-                rotationY += mouseY * -mouseSence;
+            rotationX += mouseX * mouseSence;
+            rotationY += mouseY * -mouseSence;
 
-                rotationY = Mathf.Clamp(rotationY, 0, 80f);
+            rotationY = Mathf.Clamp(rotationY, 0, 80f);//begränsar hur mycket man kan rotera kameran upp och ner
 
+            Vector3 nextRotation = new Vector3(rotationX, rotationY);//rotationen kameran ska gå mot
+            currentRotation = Vector3.SmoothDamp(currentRotation, nextRotation, ref smoothVelocity, smoothTime);//i vårt fall har vi ingen "smooth" camera så vi behöver egentligen inte detta
+            target.UpdateRotation(new Vector3(0f, rotationX, 0f));//ändrar rotationen på ett antal saker baserat på kamerans rotation
 
-
-
-            }
-
-
-
-            Vector3 nextRotation = new Vector3(rotationX, rotationY);
-            currentRotation = Vector3.SmoothDamp(currentRotation, nextRotation, ref smoothVelocity, smoothTime);
-            target.UpdateRotation(new Vector3(0f, rotationX, 0f));
-
-            if(Input.GetMouseButtonDown(1))
+            if(Input.GetMouseButtonDown(1))//omg firstperson mode
             {
                 firstPerson = true;
                 transform.SetParent(target.transform);
@@ -84,20 +74,19 @@ public class CameraController : MonoBehaviour
     {
         if(!firstPerson)
         {
-            transform.localEulerAngles = new Vector3(currentRotation.y, currentRotation.x, 0f);
+            transform.localEulerAngles = new Vector3(currentRotation.y, currentRotation.x, 0f);//ändrar rotationen på transformen
 
+            //kameran raycastar från spelaren för att kolla så det inte är ett objekt mellan den och spearen (eller att kameran är i ett objekt)
             if (Physics.Raycast(target.transform.position, transform.forward * -1f, out RaycastHit hit, maxDistanceFromTarget, collisionLayers))
             {
-                //transform.position = hit.point;
-                distanceFromTarget = Mathf.Lerp(distanceFromTarget, hit.distance, smoothSpeed) - theGaming;
+                distanceFromTarget = Mathf.Lerp(distanceFromTarget, hit.distance, smoothSpeed) - theGaming;//igen, jag behöver inte lerp för smootheSpeed är på 1 men det får vara kvar ändå
             }
             else
             {
-                //transform.position = target.position - transform.forward * maxDistanceFromTarget;
                 distanceFromTarget = Mathf.Lerp(distanceFromTarget, maxDistanceFromTarget, smoothSpeed) - theGaming;
             }
 
-            transform.position = target.transform.position - transform.forward * distanceFromTarget;
+            transform.position = target.transform.position - transform.forward * distanceFromTarget;//ändrar kamerans position
         }
        
     }

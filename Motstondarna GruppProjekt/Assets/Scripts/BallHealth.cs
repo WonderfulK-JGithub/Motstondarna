@@ -6,15 +6,15 @@ public class BallHealth : BallMovement
 {
     [Header("Health")]
     [SerializeField] int maxHealth;
-    [SerializeField] float invinceTime;
+    [SerializeField] float invinceTime;//hur länge man är odödlig efter att man blivit skadad av en käggla
 
-    public Color invinceColor;
+    public Color invinceColor;//vilken färg man har när man är odödlig (ändras av en animation som bollen har)
 
     int healthPoints;
 
     float invinceTimer;
 
-    bool invinceable = true;
+    bool invinceable;
 
     MeshRenderer rend;
 
@@ -58,8 +58,9 @@ public class BallHealth : BallMovement
         }
     }
 
-    public void TakeDamage(Vector3 knockBack,int damage)
+    public void TakeDamage(Vector3 knockBack,int damage)//tar bort hp och ändrar hastigheten/ "ge en knockback"
     {
+        
         if (invinceable) return;
 
         currentSpeed = knockBack;
@@ -81,5 +82,18 @@ public class BallHealth : BallMovement
     public void GameOver()
     {
         
+    }
+
+    private new void OnTriggerEnter(Collider other)
+    {
+        base.OnTriggerEnter(other);
+
+        if (other.gameObject.CompareTag("Heart"))
+        {
+            healthPoints++;
+
+            Destroy(other.gameObject);
+        }
+
     }
 }
