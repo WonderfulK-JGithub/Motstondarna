@@ -52,14 +52,15 @@ public class WanderingEnemy : BaseEnemy
 
         if (canCheckForPlayer && !isChasingPlayer)
         {
+            //Om spelaren är inom radius ska man börja chasea den - Max
             if (Vector3.Distance(player.position, transform.position) < playerCheckRadius)
             {
                 StartChasing();
             }
         }
-
-        if (!canCheckForPlayer)
+        else if (!canCheckForPlayer)
         {
+            //Om fienden har chaseat spelaren men slutat så ska den vänta tills spelaren är utanför en stor radius innan den kan chasea spelaren igen - Max
             if(Vector3.Distance(player.position, transform.position) > playerCheckRadius + 4f)
             {
                 canCheckForPlayer = true;
@@ -74,7 +75,7 @@ public class WanderingEnemy : BaseEnemy
 
         if (isChasingPlayer)
         {
-            if (!overrideChasing)
+            if (!overrideChasing) //Override används för att speciella fiender ska kunna göra laser och rocket-attacker - Max
             {
                 ChasePlayer();
             }
@@ -87,12 +88,14 @@ public class WanderingEnemy : BaseEnemy
 
     void ChasePlayer()
     {
-        if (GroundCheck())
+        if (GroundCheck()) //Kollar så att den inte går utför ett stup - Max
         {
             MoveTowardsTarget(player.position, chasingSpeed);
         }
         else
         {
+            //Annars slutar den chasea - Max
+
             Invoke(nameof(StopChasing), 1f);
             rb.velocity = Vector3.zero;
             canCheckForPlayer = false;
@@ -109,9 +112,9 @@ public class WanderingEnemy : BaseEnemy
             isMoving = false;
 
             if (anim != null)
-                anim.speed = 0;
+                anim.speed = 0; //pausar animationen så den inte har gå-animationen utan att den rör sig - Max
 
-            Invoke(nameof(NewPos), waitTimeToNewTarget);
+            Invoke(nameof(NewPos), waitTimeToNewTarget); //Skaffar ny target efter ett tag - Max
             return;
         }
 
@@ -126,7 +129,7 @@ public class WanderingEnemy : BaseEnemy
     public void StartChasing()
     {
         if(anim != null)
-            anim.speed = 1;
+            anim.speed = 1; //Animationspeed ska alltid vara 1 när den inte wanderar
 
         isChasingPlayer = true;
     }
@@ -148,6 +151,7 @@ public class WanderingEnemy : BaseEnemy
     {
         Debug.DrawRay(transform.position + transform.forward * 1, Vector3.down, Color.red, 4);
 
+        //Raycast neråt och returnar true om den träffar ground
         if (Physics.Raycast(transform.position + transform.forward * 1, Vector3.down, 4, LayerMask.GetMask("Ground", "Slippery")))
         {
             return true;
@@ -163,6 +167,7 @@ public class WanderingEnemy : BaseEnemy
         bool foundPos = false;
         while (!foundPos)
         {
+            //Random position inom radius - Max
             Vector3 newTarget = wanderingAreaCenter +
             new Vector3
                 (
@@ -171,6 +176,7 @@ public class WanderingEnemy : BaseEnemy
                 Random.Range(-wanderingAreaSize, wanderingAreaSize)
                 );
 
+            //Den testar om den nya positionen har mark under sig, annars måste den hitta en ny - Max
             if (Physics.Raycast(newTarget + new Vector3(0,5,0), Vector3.down, 7, LayerMask.GetMask("Ground", "Slipper")))
             {
                 foundPos = true;
@@ -181,13 +187,14 @@ public class WanderingEnemy : BaseEnemy
         }
 
         if(anim != null)
-            anim.speed = 1;
+            anim.speed = 1; //Sätter igång animationer igen - Max
     }
 
     public override void OnCollisionEnter(Collision collision)
     {
         base.OnCollisionEnter(collision);
 
+        //Ganska onödig kod efter att chase state las till - Max
         if (collision.transform.GetComponent<BallMovement>())
         {
             NewPos();
@@ -201,11 +208,14 @@ public class WanderingEnemy : BaseEnemy
         rb.isKinematic = false;
         rb.constraints = RigidbodyConstraints.None;
         
+        //Sen dör
         base.Die(contactPoint, speed);
     }
 
     private void OnDrawGizmos()
     {
+        //Visar bara upp fiendens radius i sceneview så det är enkelt att bygga banor - Max
+
         Gizmos.color = new Color(0,255,0,0.4f);
 
         Gizmos.DrawSphere(transform.position, playerCheckRadius);

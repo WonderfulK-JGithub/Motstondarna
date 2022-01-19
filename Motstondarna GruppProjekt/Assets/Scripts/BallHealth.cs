@@ -1,20 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BallHealth : BallMovement
 {
     [Header("Health")]
     [SerializeField] int maxHealth;
-    [SerializeField] float invinceTime;
+    [SerializeField] float invinceTime;//hur länge man är odödlig efter att man blivit skadad av en käggla
 
-    public Color invinceColor;
+    [SerializeField] Image healthImage;
+    [SerializeField] Sprite[] healthSprites;
+
+    public Color invinceColor;//vilken färg man har när man är odödlig (ändras av en animation som bollen har)
 
     int healthPoints;
 
     float invinceTimer;
 
-    bool invinceable = true;
+    bool invinceable;
 
     MeshRenderer rend;
 
@@ -26,7 +30,7 @@ public class BallHealth : BallMovement
         healthPoints = maxHealth;
         rend = GetComponent<MeshRenderer>();
 
-        
+        NewHealth();
     }
 
     // Update is called once per frame
@@ -54,18 +58,20 @@ public class BallHealth : BallMovement
 
         if(Input.GetKeyDown(KeyCode.U))
         {
-            TakeDamage(Vector3.zero, 0);
+            TakeDamage(Vector3.zero, 1);
         }
     }
 
-    public void TakeDamage(Vector3 knockBack,int damage)
+    public void TakeDamage(Vector3 knockBack,int damage)//tar bort hp och ändrar hastigheten/ "ge en knockback"
     {
+        
         if (invinceable) return;
 
         currentSpeed = knockBack;
         rb.velocity = new Vector3(currentSpeed.x, rb.velocity.y, currentSpeed.z);
 
         healthPoints -= damage;
+        NewHealth();
 
         if(healthPoints <= 0)
         {
@@ -78,8 +84,32 @@ public class BallHealth : BallMovement
         }
     }
 
+    void NewHealth()
+    {
+        healthPoints = Mathf.Clamp(healthPoints, 0, maxHealth);
+
+        healthImage.sprite = healthSprites[healthPoints];
+
+    }
+
     public void GameOver()
     {
         
+    }
+
+    private new void OnTriggerEnter(Collider other)
+    {
+        base.OnTriggerEnter(other);
+
+        if (other.gameObject.CompareTag("Heart"))
+        {
+            healthPoints = maxHealth;
+            NewHealth();
+
+            Destroy(other.gameObject);
+
+            SoundManagerScript.PlaySound("PowerUp");
+        }
+
     }
 }

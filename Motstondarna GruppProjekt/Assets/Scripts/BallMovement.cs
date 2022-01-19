@@ -4,44 +4,44 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class BallMovement : MonoBehaviour
+public class BallMovement : MonoBehaviour //av K-J (utom där det står max)
 {
     [Header("X-Z Movement")]
-    [SerializeField] float topSpeed;
-    [SerializeField] float acceleration;
-    [SerializeField] float extraAccelerationFactor;
-    [SerializeField] Transform orientationTransform;
-    [SerializeField] Slider speedBar;
+    [SerializeField] float topSpeed;//högsta hastigheten
+    [SerializeField] float acceleration;//hur snabbt man accelererar
+    [SerializeField] float extraAccelerationFactor;//hur mycket gånger mer man ska accelerera när man tvärsvänger
+    [SerializeField] Transform orientationTransform;//en transform som används för att kalkulera vilket håll bollen ska åka baserat på kamerans rotation
+    [SerializeField] Slider speedBar;//en bar som visar hur snabbt man åker
     [SerializeField] Image fillImage;
-    [SerializeField] Gradient speedColors;
+    [SerializeField] Gradient speedColors;//röd / gul = inte tillräckligt snabbt för att döda käglor, grön = tillräckligt snabbt
 
     float inputX;
     float inputZ;
 
+    Vector3 targetSpeed;//hastigheten som klotet ska accelerera mot
+
+
     [Header("Jumping")]
-    [SerializeField] float jumpStrength;
-    [SerializeField] float jumpHoldTime;
-    [SerializeField] float extraGravityFactor;
-    [SerializeField] float terminalVelocity;
-    [SerializeField] LayerMask groundLayers;
-    [SerializeField] LayerMask slipparyLayer;
+    [SerializeField] float jumpStrength;//hur högt man hoppar
+    [SerializeField] float jumpHoldTime;//hur länge man kan holla in knappen för ett högre hopp
+    [SerializeField] float extraGravityFactor;//hur mycket gånger mer man ska ha gravitation när man inte håller in hoppknappen
+    [SerializeField] float terminalVelocity;//Den snabbaste hastighet klotet kan falla
+    [SerializeField] LayerMask groundLayers;//vilka layers som räknas som ground
+    [SerializeField] LayerMask slipparyLayer;//vilka layers som räknas som slippary
 
     float holdTimer;
 
-    float xAcceleration;
-    float zAcceleration;
-    Vector3 targetSpeed;
-
+    
     [Header("Dashing")]
-    [SerializeField] float dashTime;
-    [SerializeField] GameObject dashTrail;
+    [SerializeField] float dashTime;//hur länge man är fast i dashen
+    [SerializeField] GameObject dashTrail;//referense till trailobjektet
 
     float dashTimer;
 
     [Header("Other")]
-    [SerializeField] ParticleSystem chargeParticle;
-    [SerializeField] float slideExtraGravity;
-    [SerializeField] TextMeshProUGUI scoreText;
+    [SerializeField] ParticleSystem chargeParticle;//referense till partiklesystemet som sätts på när man håller in dashknappen
+    [SerializeField] float slideExtraGravity;//hur mycket gånger mer gravitation man ska ha när man åker i en slide(ränna)
+    [SerializeField] TextMeshProUGUI scoreText;//reference till score texten
     [SerializeField] AudioSource rollSource;
 
     float score;
@@ -56,7 +56,6 @@ public class BallMovement : MonoBehaviour
     bool aboveKillSpeed = false; //För att se om spelaren åker tillräckligt snabbt för att döda en simple bowling pin - Max
 
     [HideInInspector] public Vector3 currentSpeed;
-    Vector3 accelerationDirection;
 
     [HideInInspector] public Rigidbody rb;
     PlayerState state;
@@ -140,11 +139,9 @@ public class BallMovement : MonoBehaviour
                     chargeParticle.Stop();//Stänger av particle systemet
                     state = PlayerState.Dash;//ändrar state
 
-                    rb.velocity = orientationTransform.forward * topSpeed;//ändrar hastigheten
+                    rb.velocity = orientationTransform.forward * topSpeed;//ändrar hastigheten (i den riktingen kameran kollar)
                     currentSpeed = rb.velocity;
                     dashTimer = dashTime;
-
-                    accelerationDirection = currentSpeed / topSpeed;
 
                     dashTrail.SetActive(true);
                 }
@@ -154,15 +151,10 @@ public class BallMovement : MonoBehaviour
                 #region
                 dashTimer -= Time.deltaTime;
 
-                if(dashTimer <= 0f)
+                if(dashTimer <= 0f)//när dashtimern är slut är man tillbaks till vanligt movement
                 {
                     state = PlayerState.Free;
-
-                    
-
                     rb.useGravity = true;
-
-
                 }
 
                 #endregion
@@ -196,7 +188,7 @@ public class BallMovement : MonoBehaviour
                 {
                     onGround = true;
                     canDash = true;
-                }
+                }//kollar om man är på ground
                 else
                 {
                     onGround = false;
@@ -204,7 +196,7 @@ public class BallMovement : MonoBehaviour
                 if (Physics.Raycast(transform.position, Vector3.down, 0.52f, slipparyLayer))
                 {
                     onSlippary = true;
-                }
+                }//kollar om man är på slippary
                 else
                 {
                     onSlippary = false;
@@ -212,7 +204,7 @@ public class BallMovement : MonoBehaviour
 
                 
 
-                float accModifier = Vector3.Angle(targetSpeed.normalized, currentSpeed.normalized) <= 90f ? 1f : extraAccelerationFactor;
+                float accModifier = Vector3.Angle(targetSpeed.normalized, currentSpeed.normalized) <= 90f ? 1f : extraAccelerationFactor;//är vinkeln mellan vectorerna av den nuvarnade hastigheten och target hastigheten mer än 90 grader räknar jag det som tvärsvägning
 
                 
 
@@ -225,37 +217,43 @@ public class BallMovement : MonoBehaviour
                     rb.velocity = new Vector3(currentSpeed.x, rb.velocity.y, currentSpeed.z);
                 }
 
-                if (!onGround && !isJumping)
+                if (!onGround && !isJumping)//lägger till extra gravitation för ett bättre hopp
                 {
                     rb.velocity += new Vector3(0f, Physics.gravity.y * (extraGravityFactor - 1) * Time.fixedDeltaTime, 0f);
                 }
 
-                float yVelocityClamped = Mathf.Clamp(rb.velocity.y, terminalVelocity, 69420f);
+                float yVelocityClamped = Mathf.Clamp(rb.velocity.y, terminalVelocity, 69420f);//clampar y så att man inte går över terminal velocity
                 rb.velocity = new Vector3(rb.velocity.x, yVelocityClamped, rb.velocity.z);
 
-                chargeParticle.transform.position = transform.position;
+                chargeParticle.transform.position = transform.position;//gör att charge particlen följer med spelaren
+
                 #endregion
                 break;
             case PlayerState.ChargeDash:
-
+                #region
                 rb.velocity = new Vector3(currentSpeed.x, currentSpeed.y, currentSpeed.z);
                 chargeParticle.transform.position = transform.position;
+                #endregion
                 break;
             case PlayerState.Renn:
+                #region
                 rb.velocity += new Vector3(0f, Physics.gravity.y * (slideExtraGravity - 1) * Time.fixedDeltaTime, 0f);
+                #endregion
                 break;
             case PlayerState.Dash:
+                #region
                 dashTrail.transform.position = transform.position;
+                #endregion
                 break;
         }
 
-        rb.angularVelocity = new Vector3(rb.velocity.z,0f,rb.velocity.x);
+        rb.angularVelocity = new Vector3(rb.velocity.z,0f,rb.velocity.x);//ändrar rotationSpeeden baserat på hastigheten bollen har
 
-        float _value = new Vector3(rb.velocity.x,0f,rb.velocity.z).magnitude / (topSpeed * 0.95f);
+        float _value = new Vector3(rb.velocity.x,0f,rb.velocity.z).magnitude / (topSpeed * 0.95f);//_value är mellan 0 och 1 och är hur mycket procent av topspeed man har
 
-        speedBar.value = Mathf.Lerp(speedBar.value,_value,0.3f);
+        speedBar.value = Mathf.Lerp(speedBar.value,_value,0.3f);//ändrar valuen på slidern så att baren fylls upp
 
-        fillImage.color = speedColors.Evaluate(_value);
+        fillImage.color = speedColors.Evaluate(_value);//ändar färgen på baren baserat på om man har tillräckligt med fart(för att döda käglor) med hjälp av en gradient
 
         //Kollar bollens hastighet och ändrar vissa bowling pins till 
         //triggers så att det ser bättre ut när man får en strike - Max 
@@ -301,7 +299,7 @@ public class BallMovement : MonoBehaviour
     }
 
 
-    private void OnTriggerEnter(Collider other)
+    public void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Ränna") && state == PlayerState.Free)
         {
@@ -314,6 +312,8 @@ public class BallMovement : MonoBehaviour
             scoreText.text = score.ToString();
 
             Destroy(other.gameObject);
+
+            SoundManagerScript.PlaySound("Coins");
         }
     }
 
