@@ -217,6 +217,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 439188333}
+        m_TargetAssemblyTypeName: SoundManagerScript, Assembly-CSharp
+        m_MethodName: PlaySound
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Click
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &56517750
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -434,7 +446,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.19893785, g: 0.8018868, b: 0.11851779, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -472,6 +484,8 @@ GameObject:
   - component: {fileID: 439188331}
   - component: {fileID: 439188329}
   - component: {fileID: 439188332}
+  - component: {fileID: 439188333}
+  - component: {fileID: 439188334}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -561,6 +575,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   VolumeSlider: {fileID: 0}
+--- !u!114 &439188333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 439188327}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63f61f29e5325dd4e850da193336ee61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &439188334
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 439188327}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26b595895ac9a4e4d86665748e3701ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &596626752
 GameObject:
   m_ObjectHideFlags: 0
@@ -622,11 +660,11 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_NormalColor: {r: 0.72890127, g: 0.9716981, b: 0.4827933, a: 1}
+    m_HighlightedColor: {r: 0.11949676, g: 1, b: 0.17141455, a: 1}
+    m_PressedColor: {r: 0.24380541, g: 1, b: 0, a: 1}
+    m_SelectedColor: {r: 0.3800832, g: 0.990566, b: 0.23985393, a: 1}
+    m_DisabledColor: {r: 0.15164223, g: 0.5283019, b: 0.11297016, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -982,6 +1020,7 @@ GameObject:
   - component: {fileID: 1709492518}
   - component: {fileID: 1709492517}
   - component: {fileID: 1709492520}
+  - component: {fileID: 1709492521}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1150,6 +1189,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1709492521
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1709492516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63f61f29e5325dd4e850da193336ee61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1784394337
 GameObject:
   m_ObjectHideFlags: 0
