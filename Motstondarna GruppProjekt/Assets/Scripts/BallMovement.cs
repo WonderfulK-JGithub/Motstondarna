@@ -233,7 +233,7 @@ public class BallMovement : MonoBehaviour //av K-J (utom där det står max)
                 break;
         }
 
-        rb.angularVelocity = new Vector3(rb.velocity.z,0f,rb.velocity.x);//ändrar rotationSpeeden baserat på hastigheten bollen har
+        rb.angularVelocity = new Vector3(rb.velocity.z,0f,-rb.velocity.x);//ändrar rotationSpeeden baserat på hastigheten bollen har
 
         float _value = new Vector3(rb.velocity.x,0f,rb.velocity.z).magnitude / (topSpeed * 0.95f);//_value är mellan 0 och 1 och är hur mycket procent av topspeed man har
 

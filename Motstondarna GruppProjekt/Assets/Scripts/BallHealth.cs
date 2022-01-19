@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BallHealth : BallMovement
+public class BallHealth : BallMovement // av K-J
 {
     [Header("Health")]
     [SerializeField] int maxHealth;
