@@ -133,8 +133,13 @@ public class RocketEnemy : MonoBehaviour
             //Normalizar så att det är bara riktning
             dir = dir.normalized;
 
+            //Ger knockback till spelaren, 
+            //TakeDamage har en knockback variabel men den kan inte göra på y-axeln, 
+            //så därför gör jag det på rigidbodyns velocity istället - Max
+            player.GetComponent<Rigidbody>().velocity = new Vector3(0,20,0) + dir * knockBackForce;
+
             //Skadar spelaren - Max
-            FindObjectOfType<BallHealth>().TakeDamage(dir * knockBackForce, 1);
+            FindObjectOfType<BallHealth>().TakeDamage(Vector3.zero, 1);
         }
 
         Transform newExplosion = Instantiate(explosion, transform.position, Quaternion.identity).transform;

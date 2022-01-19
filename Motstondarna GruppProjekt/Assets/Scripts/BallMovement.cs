@@ -243,7 +243,7 @@ public class BallMovement : MonoBehaviour //av K-J (utom där det står max)
 
         //Kollar bollens hastighet och ändrar vissa bowling pins till 
         //triggers så att det ser bättre ut när man får en strike - Max 
-        if (new Vector3(rb.velocity.x, 0f, rb.velocity.z).magnitude >= 10)
+        if (new Vector3(rb.velocity.x, 0f, rb.velocity.z).magnitude >= 8)
         {
             if (!aboveKillSpeed) //boolen behövs så det här inte görs varje frame - Max
             {

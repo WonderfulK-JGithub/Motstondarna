@@ -134,7 +134,7 @@ MonoBehaviour:
   activeLasers:
   - {fileID: 0}
   - {fileID: 0}
-  laserRotateSpeed: 40
+  laserRotateSpeed: 60
   laserMaxDistance: 100
   laserStartRotation: 70
   laserActivationRotationSpeed: 1.8

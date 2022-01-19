@@ -22,6 +22,7 @@ public class LaserEnemy : MonoBehaviour
     [SerializeField] LayerMask laserMask; //Vad laserns ska collidea med
 
     public bool lasersOn = false;
+    bool alerted = false;
 
     [Header("References")]
 
@@ -59,6 +60,12 @@ public class LaserEnemy : MonoBehaviour
             TurnOffLasers();
         }
 
+        if(alerted || lasersOn)
+        {
+            //När den lasrar ska den rotera mot spelaren - Max
+            RotateTowardsPlayer();
+        }
+
         if (lasersOn)
         {
             //Har fienden dött eller slutat chasea spelaren ska lasrarna stängas av - Max
@@ -67,9 +74,6 @@ public class LaserEnemy : MonoBehaviour
                 wanderingScript.overrideChasing = false;
                 TurnOffLasers();
             }
-
-            //När den lasrar ska den rotera mot spelaren - Max
-            RotateTowardsPlayer();
 
             //Logic för lasrarna:
 
@@ -146,7 +150,7 @@ public class LaserEnemy : MonoBehaviour
     public void TurnOnLasers()
     {
         anim.Play("LaserAlerted");
-        SoundManagerScript.PlaySound("LaserÖgon");
+        alerted = true; //Så att den börajr rotera mot spelaren i animationen - Max
 
         //Använder en IEnumerator så att animationen kan spelas innan lasern sätts igång - Max
         StartCoroutine(nameof(tilLasersOn));
@@ -156,8 +160,16 @@ public class LaserEnemy : MonoBehaviour
     {
         yield return new WaitForSeconds(1.28333f / 2);
 
+        //Så att den inte börjar lasra när den är död - Max
+        if (wanderingScript.hasDied) yield break;
+
         wanderingScript.StartChasing();
         lasersOn = true;
+        alerted = false;
+
+        //Ljudeffekt
+        SoundManagerScript.PlaySound("LaserÖgon");
+
 
         //Spawnar lasrar på båda ögonen - Max
         for (int i = 0; i <= 1; i++)

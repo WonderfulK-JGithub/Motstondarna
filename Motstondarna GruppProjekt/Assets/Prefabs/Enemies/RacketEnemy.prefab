@@ -4855,7 +4855,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rocketRotatingSpeed: 40
   rocketSpeed: 14
-  rocketRotSpeedWhileActivating: 100
+  rocketRotSpeedWhileActivating: 140
   rocketActivateRadius: 8
   rocketExplosionTime: 4
   rocketExplodeRadius: 2
@@ -4893,6 +4893,7 @@ MonoBehaviour:
   chasingSpeed: 5
   rotationSpeed: 2
   dontPauseAnim: 0
+  yPosToDie: -10
   isChasingPlayer: 0
   overrideChasing: 0
 --- !u!33 &3577710623062323965

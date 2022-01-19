@@ -22,7 +22,8 @@ public class LaserScript : MonoBehaviour //Skriptet är till för att få lasern at
             }
             else
             {
-                _gradientTime = 0;
+                //Eftersom en gradient går mellan 0 och 1 så ska den gå tillbaka till 0 när den gått över 1 för att loopa - Max
+                _gradientTime = 0; 
             }
         }
     }
@@ -34,6 +35,8 @@ public class LaserScript : MonoBehaviour //Skriptet är till för att få lasern at
 
     void Update()
     {
+        //Basically sätter färgen beroende på time - Max
+
         GradientTime += Time.deltaTime * speed;
 
         rend.material.color = colorGradient.Evaluate(GradientTime);

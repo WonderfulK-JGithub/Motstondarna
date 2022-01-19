@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aeca44ca472a4c5439ae0b904bb4e602, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerVelocityForDeath: 10
+  playerVelocityForDeath: 8
   dieForce: 2500
   fadeSpeed: 0.5
   canDieFromOtherPins: 1
