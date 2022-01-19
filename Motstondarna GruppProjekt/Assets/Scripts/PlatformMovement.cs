@@ -62,7 +62,6 @@ public class PlatformMovement : MonoBehaviour
             }
         }
     }
-
     private void OnCollisionEnter(Collision collision) // när något nuddar plattan - Anton
     {
         if (collision.gameObject.GetComponent<Rigidbody>() != null) // och har en rigidbody - Anton
