@@ -42,7 +42,6 @@ public class BallMovement : MonoBehaviour //av K-J (utom där det står max)
     [SerializeField] ParticleSystem chargeParticle;//referense till partiklesystemet som sätts på när man håller in dashknappen
     [SerializeField] float slideExtraGravity;//hur mycket gånger mer gravitation man ska ha när man åker i en slide(ränna)
     [SerializeField] TextMeshProUGUI scoreText;//reference till score texten
-    [SerializeField] AudioSource rollSource;
 
     float score;
 
@@ -161,20 +160,7 @@ public class BallMovement : MonoBehaviour //av K-J (utom där det står max)
                 break;
         }
 
-        if (rollSource.isPlaying)
-        {
-            if(rb.velocity == Vector3.zero || !onGround)
-            {
-                rollSource.Stop();
-            }
-        }
-        else
-        {
-            if (rb.velocity != Vector3.zero && onGround)
-            {
-                rollSource.Play();
-            }
-        }
+        
     }
 
     
@@ -273,8 +259,6 @@ public class BallMovement : MonoBehaviour //av K-J (utom där det står max)
                 ChangeBowlingPinLayers(0);
             }
         }
-
-        rollSource.pitch = new Vector3(rb.velocity.x, 0f, rb.velocity.z).magnitude / (topSpeed * 2f) + 0.5f;
 
     }
 
