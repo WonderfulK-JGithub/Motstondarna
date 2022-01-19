@@ -80,6 +80,7 @@ public class RocketEnemy : MonoBehaviour
     {
         rocketOn = true;
         rocketParticles.Play();
+        SoundManagerScript.PlaySound("RocketFiende");
     }
 
     void RocketInUpdate()
@@ -95,18 +96,10 @@ public class RocketEnemy : MonoBehaviour
 
     void RotateTowardsPlayer()
     {
-        //Roterar
-        Vector3 lookAt = transform.InverseTransformPoint(player.position);
-        lookAt.y = 0;
-        lookAt = transform.TransformPoint(lookAt);
-
-        Quaternion rotation = transform.rotation;
-        transform.LookAt(lookAt, transform.up);
-        Quaternion lookRotation = transform.rotation;
-        transform.rotation = Quaternion.RotateTowards(rotation, lookRotation, rocketRotatingSpeed * Time.deltaTime);
+        RotateTowardsPlayer(rocketRotatingSpeed);
     }
 
-    //Den här overriden roterar med en annan speed en originalfunktionen
+
     void RotateTowardsPlayer(float rotSpeed)
     {
         //Roterar
@@ -130,11 +123,16 @@ public class RocketEnemy : MonoBehaviour
     {
         if (Vector3.Distance(new Vector3(transform.position.x, 0, transform.position.z), new Vector3(player.position.x, 0, player.position.z)) < rocketExplodeRadius)
         {
-            FindObjectOfType<BallHealth>().TakeDamage(new Vector3(0,1,0) * knockBackForce, 1);
+            Vector3 dir = player.position - transform.position;
+
+            dir = dir.normalized;
+
+            FindObjectOfType<BallHealth>().TakeDamage(dir * knockBackForce, 1);
         }
 
         Transform newExplosion = Instantiate(explosion, transform.position, Quaternion.identity).transform;
         Destroy(newExplosion.GetChild(0).gameObject, 0.2f);
+        Destroy(newExplosion.gameObject, 1);
 
         wanderingScript.DieNow();
     }

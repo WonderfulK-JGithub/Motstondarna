@@ -65,7 +65,7 @@ public class LaserEnemy : MonoBehaviour
                     {
                         //Damage
 
-                        FindObjectOfType<BallHealth>().TakeDamage(new Vector3(0, 0, 0), 1);
+                        FindObjectOfType<BallHealth>().TakeDamage(eyes[i].forward * 10, 1);
                     }
 
                     UpdateLaserScale(hit.distance, i);
@@ -160,6 +160,7 @@ public class LaserEnemy : MonoBehaviour
     {
         wanderingScript.StartChasing();
         anim.Play("LaserAlerted");
+        SoundManagerScript.PlaySound("Laser÷gon");
 
         StartCoroutine(nameof(tilLasersOn));
     }

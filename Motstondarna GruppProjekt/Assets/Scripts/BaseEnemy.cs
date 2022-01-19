@@ -18,6 +18,8 @@ public class BaseEnemy : MonoBehaviour
     MeshRenderer rend;
     [HideInInspector] public Rigidbody rb;
 
+    [SerializeField] GameObject deathParticle;
+
     public virtual void Awake()
     {
         rend = GetComponentInChildren<MeshRenderer>();
@@ -44,12 +46,12 @@ public class BaseEnemy : MonoBehaviour
                 Die(collision != null ? collision.GetContact(0).point : other.transform.position, other.transform.GetComponent<BallMovement>().currentSpeed);
             }
         }
-        else if (canKillPlayer && other.transform.GetComponent<BallMovement>() && collision.transform.GetComponent<BallMovement>().currentSpeed.magnitude < playerVelocityForDeath)
+        else if (other.transform.GetComponent<BallMovement>() && other.transform.GetComponent<BallMovement>().currentSpeed.magnitude < playerVelocityForDeath)
         {
             rb.isKinematic = true;
 
             //Använder formeln angle = point1 - point2 för att ta fram vinkeln mellan spelaren och fienden - Max
-            Vector3 dir = collision.GetContact(0).point - transform.position;
+            Vector3 dir = collision != null ? collision.GetContact(0).point : other.transform.position - transform.position;
 
             //Normalizar vinkeln den så att jag bara får vinkeln av vektorn - Max
             dir = dir.normalized;
@@ -57,7 +59,9 @@ public class BaseEnemy : MonoBehaviour
             //Lägger på en force i direction - Max
             other.transform.GetComponent<BallMovement>().currentSpeed = dir * 5;
 
-            other.transform.GetComponent<BallHealth>().TakeDamage(Vector3.zero, 1);
+
+            if(canKillPlayer)
+                other.transform.GetComponent<BallHealth>().TakeDamage(Vector3.zero, 1);
         }
         else if (canDieFromOtherPins && other.transform.GetComponent<BaseEnemy>())
         {
@@ -78,6 +82,9 @@ public class BaseEnemy : MonoBehaviour
 
     public virtual void Die(Vector3 contactPoint, Vector3 speed)
     {
+        SoundManagerScript.PlaySound("KägglaDamage");
+        SpawnParticles();
+
         //Så den inte dör flera gånger - Max
         hasDied = true;
 
@@ -97,14 +104,24 @@ public class BaseEnemy : MonoBehaviour
 
     public void Die()
     {
+        SoundManagerScript.PlaySound("KägglaDamage");
+        SpawnParticles();
         hasDied = true;
         StartCoroutine(Fade());
     }
 
     public void DieNow()
     {
+        SoundManagerScript.PlaySound("KägglaDamage");
+        SpawnParticles();
         hasDied = true;
         Destroy(gameObject);
+    }
+
+    void SpawnParticles()
+    {
+        GameObject newParticle = Instantiate(deathParticle, transform.position, Quaternion.identity);
+        Destroy(newParticle, 1);
     }
 
     IEnumerator Fade()
