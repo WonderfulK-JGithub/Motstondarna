@@ -96,8 +96,9 @@ public class BallHealth : BallMovement // av K-J
 
     public void GameOver()
     {
-        SceneTransition.current.ReLoadScene();
+        SceneTransition.current.EnterScene(1);
         SoundManagerScript.PlaySound("Game Over");
+        Cursor.lockState = CursorLockMode.None;
     }
 
     private new void OnTriggerEnter(Collider other)
