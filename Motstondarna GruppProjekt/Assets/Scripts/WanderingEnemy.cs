@@ -201,8 +201,17 @@ public class WanderingEnemy : BaseEnemy
     void NewPos()
     {
         bool foundPos = false;
+        int count = 0; //failsafe
         while (!foundPos)
         {
+            //failsafe
+            count++;
+            if(count > 20)
+            {
+                Debug.LogError("Detectar ingen position att gå till >:(, sätt fienden på en bättre plats"); //Ger error - Max
+                break;
+            }
+
             //Random position inom radius - Max
             Vector3 newTarget = wanderingAreaCenter +
             new Vector3
@@ -213,7 +222,7 @@ public class WanderingEnemy : BaseEnemy
                 );
 
             //Den testar om den nya positionen har mark under sig, annars måste den hitta en ny - Max
-            if (Physics.Raycast(newTarget + new Vector3(0,5,0), Vector3.down, 7, LayerMask.GetMask("Ground", "Slippery")))
+            if (Physics.Raycast(newTarget + new Vector3(0,5,0), Vector3.down, 10, LayerMask.GetMask("Ground", "Slippery")))
             {
                 foundPos = true;
 
