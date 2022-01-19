@@ -17,6 +17,7 @@ public class WanderingEnemy : BaseEnemy
 
     [Header("Checking For Player")]
     [SerializeField] float playerCheckRadius; //Hur stor radius som den kollar efter spelaren i - max
+    [SerializeField] float tilCanCheckForPlayer = 1f; //Hur lång tid fienden måste vänta mellan en avsutad chase tills den kan börja en ny - Max
 
     [Header("Chasing parameters")]
     [SerializeField] float chasingSpeed; //Hur snabbt den jagar spelaren - max
@@ -24,8 +25,9 @@ public class WanderingEnemy : BaseEnemy
 
     [Header("Other")]
     [SerializeField] bool dontPauseAnim = false;
+    [SerializeField] float yPosToDie = -10f;
 
-    bool isChasingPlayer = false; //Jagar spelaren - Max
+    [HideInInspector] public bool isChasingPlayer = false; //Jagar spelaren - Max
     bool isMoving = false; //Rör på sig - Max
     bool canCheckForPlayer = true; 
     [HideInInspector] public bool overrideChasing = false; //är public så att andra skript kan accessa den - Max
@@ -53,6 +55,11 @@ public class WanderingEnemy : BaseEnemy
     {
         if (hasDied) return;
 
+        if(transform.position.y < yPosToDie)
+        {
+            DieNow();
+        }
+
         if (canCheckForPlayer && !isChasingPlayer)
         {
             //Om spelaren är inom radius ska man börja chasea den - Max
@@ -63,10 +70,10 @@ public class WanderingEnemy : BaseEnemy
         }
         else if (!canCheckForPlayer)
         {
-            //Om fienden har chaseat spelaren men slutat så ska den vänta tills spelaren är utanför en stor radius innan den kan chasea spelaren igen - Max
-            if(Vector3.Distance(player.position, transform.position) > playerCheckRadius + 4f)
+            //Om spelaren är riktigt nära ska den börja chasea den oavsett om den ska vänta lite till innan börjad chase igen - Max
+            if (Vector3.Distance(player.position, transform.position) < playerCheckRadius / 3)
             {
-                canCheckForPlayer = true;
+                StartChasing();
             }
         }
     }
@@ -78,6 +85,13 @@ public class WanderingEnemy : BaseEnemy
 
         if (isChasingPlayer)
         {
+            if (ObstructedCheck()) //Om det är en vägg i vägen ska fienden sluta chasea - Max
+            {
+                Invoke(nameof(StopChasing), 1f);
+                rb.velocity = Vector3.zero;
+                canCheckForPlayer = false;
+            }
+
             if (!overrideChasing) //Override används för att speciella fiender ska kunna göra laser och rocket-attacker - Max
             {
                 ChasePlayer();
@@ -89,6 +103,11 @@ public class WanderingEnemy : BaseEnemy
         }
     }
 
+    void CanCheckForPlayer()
+    {
+        canCheckForPlayer = true;
+    }
+
     void ChasePlayer()
     {
         if (GroundCheck()) //Kollar så att den inte går utför ett stup - Max
@@ -98,8 +117,7 @@ public class WanderingEnemy : BaseEnemy
         else
         {
             //Annars slutar den chasea - Max
-
-            Invoke(nameof(StopChasing), 1f);
+            Invoke(nameof(StopChasing), 0.5f);
             rb.velocity = Vector3.zero;
             canCheckForPlayer = false;
         }
@@ -127,10 +145,13 @@ public class WanderingEnemy : BaseEnemy
     void StopChasing()
     {
         isChasingPlayer = false;
+        Invoke(nameof(CanCheckForPlayer), tilCanCheckForPlayer); //Efter 1 sekund så kan fienden börja kolla efter spelaren igen - Max
     }
 
     public void StartChasing()
     {
+        if (Physics.Linecast(transform.position, player.position, LayerMask.GetMask("Ground", "Slippery"))) return;
+
         if(anim != null)
             anim.speed = 1; //Animationspeed ska alltid vara 1 när den inte wanderar
 
@@ -165,6 +186,18 @@ public class WanderingEnemy : BaseEnemy
         }
     }
 
+    bool ObstructedCheck()
+    {
+        if (Physics.Linecast(transform.position, player.position, LayerMask.GetMask("Ground", "Slippery")))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     void NewPos()
     {
         bool foundPos = false;
@@ -180,7 +213,7 @@ public class WanderingEnemy : BaseEnemy
                 );
 
             //Den testar om den nya positionen har mark under sig, annars måste den hitta en ny - Max
-            if (Physics.Raycast(newTarget + new Vector3(0,5,0), Vector3.down, 7, LayerMask.GetMask("Ground", "Slipper")))
+            if (Physics.Raycast(newTarget + new Vector3(0,5,0), Vector3.down, 7, LayerMask.GetMask("Ground", "Slippery")))
             {
                 foundPos = true;
 

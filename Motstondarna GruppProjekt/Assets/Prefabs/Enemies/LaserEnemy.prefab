@@ -148,7 +148,6 @@ MonoBehaviour:
   - {fileID: 3177112657145491758}
   - {fileID: 3177112655764353277}
   laserOrigin: {fileID: 3177112655759403315}
-  player: {fileID: 0}
 --- !u!114 &3177112656898772241
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -176,8 +175,10 @@ MonoBehaviour:
   waitTimeToNewTarget: 2
   currentTarget: {x: 0, y: 0, z: 0}
   playerCheckRadius: 9
+  tilCanCheckForPlayer: 1
   chasingSpeed: 4
   rotationSpeed: 2
+  dontPauseAnim: 0
   overrideChasing: 0
 --- !u!33 &3177112656898772242
 MeshFilter:
