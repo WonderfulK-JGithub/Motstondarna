@@ -415,8 +415,12 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2046470084, guid: 38e692ee287ba1147b43096b0bd76980, type: 3}
+      propertyPath: rend
+      value: 
+      objectReference: {fileID: 1634492376}
+    - target: {fileID: 2046470084, guid: 38e692ee287ba1147b43096b0bd76980, type: 3}
       propertyPath: maxHealth
-      value: 10
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2046470084, guid: 38e692ee287ba1147b43096b0bd76980, type: 3}
       propertyPath: invinceTime
@@ -532,6 +536,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e5335ee9108ef34b91bee3ba270a263, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!23 &1634492376 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 3086749108199493032, guid: 38e692ee287ba1147b43096b0bd76980, type: 3}
+  m_PrefabInstance: {fileID: 1054208528}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1937550397
 GameObject:
   m_ObjectHideFlags: 0

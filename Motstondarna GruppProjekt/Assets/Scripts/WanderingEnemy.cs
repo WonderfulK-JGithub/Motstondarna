@@ -22,6 +22,9 @@ public class WanderingEnemy : BaseEnemy
     [SerializeField] float chasingSpeed; //Hur snabbt den jagar spelaren - max
     [SerializeField] float rotationSpeed; //Hur snabbt den roterar när den rör sig - max
 
+    [Header("Other")]
+    [SerializeField] bool dontPauseAnim = false;
+
     bool isChasingPlayer = false; //Jagar spelaren - Max
     bool isMoving = false; //Rör på sig - Max
     bool canCheckForPlayer = true; 
@@ -111,7 +114,7 @@ public class WanderingEnemy : BaseEnemy
         {
             isMoving = false;
 
-            if (anim != null)
+            if (anim != null && !dontPauseAnim)
                 anim.speed = 0; //pausar animationen så den inte har gå-animationen utan att den rör sig - Max
 
             Invoke(nameof(NewPos), waitTimeToNewTarget); //Skaffar ny target efter ett tag - Max

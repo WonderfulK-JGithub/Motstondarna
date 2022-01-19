@@ -65,6 +65,7 @@ MonoBehaviour:
   playerCheckRadius: 9
   chasingSpeed: 3
   rotationSpeed: 2
+  dontPauseAnim: 1
   overrideChasing: 0
 --- !u!33 &6040162914256360381
 MeshFilter:

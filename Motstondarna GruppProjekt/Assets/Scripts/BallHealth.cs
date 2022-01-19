@@ -13,6 +13,7 @@ public class BallHealth : BallMovement
     [SerializeField] Sprite[] healthSprites;
 
     public Color invinceColor;//vilken färg man har när man är odödlig (ändras av en animation som bollen har)
+    Color defaultColor;
 
     int healthPoints;
 
@@ -20,7 +21,7 @@ public class BallHealth : BallMovement
 
     bool invinceable;
 
-    MeshRenderer rend;
+    public MeshRenderer rend;
 
 
     public override void Awake()
@@ -28,7 +29,8 @@ public class BallHealth : BallMovement
         base.Awake();
 
         healthPoints = maxHealth;
-        rend = GetComponent<MeshRenderer>();
+        //rend = GetComponent<MeshRenderer>();
+        defaultColor = rend.material.color;
 
         NewHealth();
     }
@@ -53,7 +55,7 @@ public class BallHealth : BallMovement
         }
         else
         {
-            rend.material.color = Color.white;
+            rend.material.color = defaultColor;
         }
 
         if(Input.GetKeyDown(KeyCode.U))
