@@ -5,22 +5,21 @@ using UnityEngine;
 //Max Script
 public class LaserEnemy : MonoBehaviour
 {
-    //De lasrarna som är igång - Max
-    [SerializeField] GameObject[] activeLasers = new GameObject[2];
+    [SerializeField] GameObject[] activeLasers = new GameObject[2];     //De lasrarna som är igång - Max
 
-    [SerializeField] float laserRotateSpeed;
+    [SerializeField] float laserRotateSpeed; //Hur snabbt fienden roterar när lasrarna är på - Max
 
     [Header("Parameters")]
 
-    [SerializeField] float laserMaxDistance;
+    [SerializeField] float laserMaxDistance; //Hur lång som lasern kan vara - Max
 
-    [SerializeField] float laserStartRotation;
+    [SerializeField] float laserStartRotation; //Så att lasern börjar med att kolla ner i marken så man inte instant dör - Max
 
-    [SerializeField] float laserActivationRotationSpeed;
+    [SerializeField] float laserActivationRotationSpeed; //Hur snabbt lasern roterar på x-axeln alltså vinklar sig upp eller ner - Max
 
-    [SerializeField] float laserAttackActivateRadius;
+    [SerializeField] float laserAttackActivateRadius; //Radius för när lasern ska användas - Max
 
-    [SerializeField] LayerMask laserMask;
+    [SerializeField] LayerMask laserMask; //Vad laserns ska collidea med
 
     public bool lasersOn = false;
 
@@ -47,6 +46,7 @@ public class LaserEnemy : MonoBehaviour
 
     private void Update()
     {
+        //Har man dött ska lasrarna stängas av - Max
         if (lasersOn && wanderingScript.hasDied)
         {
             TurnOffLasers();
@@ -59,15 +59,16 @@ public class LaserEnemy : MonoBehaviour
             {
                 RaycastHit hit;
 
+                //En Raycast för varje öga
                 if (Physics.Raycast(eyes[i].position, eyes[i].forward, out hit, laserMaxDistance, laserMask))
                 {
                     if(hit.collider.gameObject.tag == "Player")
                     {
-                        //Damage
-
+                        //Gör Damage
                         FindObjectOfType<BallHealth>().TakeDamage(eyes[i].forward * 10, 1);
                     }
 
+                    //Laserns storlek ska ändras så den slutar där raycasten träffar - Max
                     UpdateLaserScale(hit.distance, i);
                 }
                 else
@@ -76,19 +77,25 @@ public class LaserEnemy : MonoBehaviour
                 }
             }
 
+            //Använder formeln angle = point1 - point2 för att ta fram riktningen från fienden till spelaren - Max
             Vector3 dir = player.position - laserOrigin.position;
 
+            //Normalizar till en riktning - Max
             dir = dir.normalized;
 
+            //Gör om till en rotation - Max
             Quaternion dirQ = Quaternion.LookRotation(dir);
 
+            //kollar om spelaren är över fiendens ögon - Max
             bool playerAbove = player.position.y > laserOrigin.position.y;
 
+            //Lerpar rotationen så att den roterar lasrarna upp och ner så att den siktar mot spelaren, annars kunde man stå under lasern när den gick rakt ut - Max
             laserOrigin.localEulerAngles = new Vector3(Mathf.Clamp(Mathf.Lerp(laserOrigin.eulerAngles.x, playerAbove ? 0 : dirQ.eulerAngles.x, laserActivationRotationSpeed * Time.deltaTime), 1, 72), 0, 0);
 
             //laserOrigin.localEulerAngles = new Vector3(Mathf.Lerp(laserOrigin.eulerAngles.x, 0, laserActivationRotationSpeed * Time.deltaTime), 0, 0);
         }
 
+        //Kollar distance till spelaren och stänger av eller sätter på lasrar - Max
         if (!wanderingScript.overrideChasing && Vector3.Distance(new Vector3(transform.position.x, 0, transform.position.z), new Vector3(player.position.x, 0, player.position.z)) < laserAttackActivateRadius)
         {
             wanderingScript.overrideChasing = true;
