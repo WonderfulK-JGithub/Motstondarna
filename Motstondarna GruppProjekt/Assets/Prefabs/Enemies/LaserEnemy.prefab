@@ -75,7 +75,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3177112655764353278}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.3, y: 0, z: 0}
+  m_LocalPosition: {x: 0.166, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3177112655759403315}
@@ -148,7 +148,6 @@ MonoBehaviour:
   - {fileID: 3177112657145491758}
   - {fileID: 3177112655764353277}
   laserOrigin: {fileID: 3177112655759403315}
-  player: {fileID: 0}
 --- !u!114 &3177112656898772241
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -176,8 +175,12 @@ MonoBehaviour:
   waitTimeToNewTarget: 2
   currentTarget: {x: 0, y: 0, z: 0}
   playerCheckRadius: 9
+  tilCanCheckForPlayer: 1
   chasingSpeed: 4
   rotationSpeed: 2
+  dontPauseAnim: 0
+  yPosToDie: -10
+  isChasingPlayer: 0
   overrideChasing: 0
 --- !u!33 &3177112656898772242
 MeshFilter:
@@ -282,7 +285,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3177112657145491759}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.3, y: 0, z: 0}
+  m_LocalPosition: {x: -0.166, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3177112655759403315}

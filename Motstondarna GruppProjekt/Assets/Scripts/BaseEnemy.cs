@@ -42,7 +42,7 @@ public class BaseEnemy : MonoBehaviour
     {
         BallMovement ball = other.transform.GetComponent<BallMovement>();
 
-        if (ball != null) //Om det är spelaren man collidat med - Max
+        if (ball != null) //Kollar om det är spelaren man collidat med - Max
         {
             if (ball.currentSpeed.magnitude >= playerVelocityForDeath)
             {
@@ -112,7 +112,8 @@ public class BaseEnemy : MonoBehaviour
         hasDied = true; //Så att man inte kan dö flera gånger - Max
 
         SoundManagerScript.PlaySound("KägglaDamage"); //Ljudeffekt - Max
-        SpawnParticles(); //Spawnar particles - Max
+        if(deathParticle != null)
+            SpawnParticles(); //Spawnar particles - Max
     }
 
     void SpawnParticles()

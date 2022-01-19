@@ -47,15 +47,32 @@ public class LaserEnemy : MonoBehaviour
 
     private void Update()
     {
-        //Har man dött ska lasrarna stängas av - Max
-        if (lasersOn && wanderingScript.hasDied)
+        //Kollar distance till spelaren och stänger av eller sätter på lasrar - Max
+        if (wanderingScript.isChasingPlayer && !wanderingScript.overrideChasing && Vector3.Distance(new Vector3(transform.position.x, 0, transform.position.z), new Vector3(player.position.x, 0, player.position.z)) < laserAttackActivateRadius)
         {
+            wanderingScript.overrideChasing = true;
+            TurnOnLasers();
+        }
+        else if (wanderingScript.overrideChasing && Vector3.Distance(new Vector3(transform.position.x, 0, transform.position.z), new Vector3(player.position.x, 0, player.position.z)) > laserAttackActivateRadius + 4)
+        {
+            wanderingScript.overrideChasing = false;
             TurnOffLasers();
-            return;
         }
 
         if (lasersOn)
         {
+            //Har fienden dött eller slutat chasea spelaren ska lasrarna stängas av - Max
+            if (!wanderingScript.isChasingPlayer || wanderingScript.hasDied)
+            {
+                wanderingScript.overrideChasing = false;
+                TurnOffLasers();
+            }
+
+            //När den lasrar ska den rotera mot spelaren - Max
+            RotateTowardsPlayer();
+
+            //Logic för lasrarna:
+
             for (int i = 0; i < eyes.Length; i++)
             {
                 RaycastHit hit;
@@ -63,7 +80,7 @@ public class LaserEnemy : MonoBehaviour
                 //En Raycast för varje öga
                 if (Physics.Raycast(eyes[i].position, eyes[i].forward, out hit, laserMaxDistance, laserMask))
                 {
-                    if(hit.collider.gameObject.tag == "Player")
+                    if (hit.collider.gameObject.tag == "Player")
                     {
                         //Gör Damage
                         FindObjectOfType<BallHealth>().TakeDamage(/*eyes[i].forward * 10*/ Vector3.zero, 1);
@@ -94,24 +111,7 @@ public class LaserEnemy : MonoBehaviour
             laserOrigin.localEulerAngles = new Vector3(Mathf.Clamp(Mathf.Lerp(laserOrigin.eulerAngles.x, playerAbove ? 0 : dirQ.eulerAngles.x, laserActivationRotationSpeed * Time.deltaTime), 1, 72), 0, 0);
 
             //laserOrigin.localEulerAngles = new Vector3(Mathf.Lerp(laserOrigin.eulerAngles.x, 0, laserActivationRotationSpeed * Time.deltaTime), 0, 0);
-        }
 
-        //Kollar distance till spelaren och stänger av eller sätter på lasrar - Max
-        if (!wanderingScript.overrideChasing && Vector3.Distance(new Vector3(transform.position.x, 0, transform.position.z), new Vector3(player.position.x, 0, player.position.z)) < laserAttackActivateRadius)
-        {
-            wanderingScript.overrideChasing = true;
-            TurnOnLasers();
-        }
-        else if (wanderingScript.overrideChasing && Vector3.Distance(new Vector3(transform.position.x, 0, transform.position.z), new Vector3(player.position.x, 0, player.position.z)) > laserAttackActivateRadius + 4)
-        {
-            wanderingScript.overrideChasing = false;
-            TurnOffLasers();
-        }
-
-        if (lasersOn)
-        {
-            //Rotera för att kolla mot spelaren - Max
-            RotateTowardsPlayer();
         }
     }
 
@@ -145,7 +145,6 @@ public class LaserEnemy : MonoBehaviour
 
     public void TurnOnLasers()
     {
-        wanderingScript.StartChasing(); //Annars så kan det hända att det blir konstigt eftersom lasern inte kan overridea wandering state - Max
         anim.Play("LaserAlerted");
         SoundManagerScript.PlaySound("LaserÖgon");
 

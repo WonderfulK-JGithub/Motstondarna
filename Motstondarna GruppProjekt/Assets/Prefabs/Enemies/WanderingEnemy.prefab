@@ -63,6 +63,7 @@ MonoBehaviour:
   waitTimeToNewTarget: 2
   currentTarget: {x: 0, y: 0, z: 0}
   playerCheckRadius: 9
+  tilCanCheckForPlayer: 1
   chasingSpeed: 3
   rotationSpeed: 2
   dontPauseAnim: 1

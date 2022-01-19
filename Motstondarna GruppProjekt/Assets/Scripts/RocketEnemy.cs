@@ -45,7 +45,7 @@ public class RocketEnemy : MonoBehaviour
 
     private void Update()
     {
-        if (!wanderingScript.overrideChasing && Vector3.Distance(new Vector3(transform.position.x, 0, transform.position.z), new Vector3(player.position.x, 0, player.position.z)) < rocketActivateRadius)
+        if (wanderingScript.isChasingPlayer && !wanderingScript.overrideChasing && Vector3.Distance(new Vector3(transform.position.x, 0, transform.position.z), new Vector3(player.position.x, 0, player.position.z)) < rocketActivateRadius)
         {
             StartRocket(); //När spelaren är tillräckligt nära så ska den starta raketen - Max
         }
@@ -70,7 +70,6 @@ public class RocketEnemy : MonoBehaviour
     void StartRocket()
     {
         //Ser till så att det inte blir konstigt med wanderingscript - Max
-        wanderingScript.StartChasing();
         wanderingScript.overrideChasing = true;
 
         anim.Play("RocketStart");
