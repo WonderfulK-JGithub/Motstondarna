@@ -2,11 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+//Theo
 public class PlayButton : MonoBehaviour
 {
-    public void RestartButton() // Buton till starta om spelet
+    public void Play() // Button till starta spelet
     {
         SceneManager.LoadScene("GameScene");
+    }
+
+    public void Exit()
+    {
+        Application.Quit();
     }
 }
