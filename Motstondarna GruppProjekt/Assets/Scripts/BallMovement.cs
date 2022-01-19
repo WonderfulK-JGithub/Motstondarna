@@ -312,6 +312,8 @@ public class BallMovement : MonoBehaviour //av K-J (utom där det står max)
             scoreText.text = score.ToString();
 
             Destroy(other.gameObject);
+
+            SoundManagerScript.PlaySound("Coins");
         }
     }
 
