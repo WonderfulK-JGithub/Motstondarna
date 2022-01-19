@@ -70,7 +70,7 @@ public class BallHealth : BallMovement // av K-J
         if (invinceable) return;
 
         currentSpeed = knockBack;
-        rb.velocity = new Vector3(currentSpeed.x, rb.velocity.y, currentSpeed.z);
+        if(knockBack != Vector3.zero)rb.velocity = new Vector3(currentSpeed.x, rb.velocity.y, currentSpeed.z);
 
         healthPoints -= damage;
         NewHealth();
@@ -96,7 +96,8 @@ public class BallHealth : BallMovement // av K-J
 
     public void GameOver()
     {
-        
+        SceneTransition.current.ReLoadScene();
+        SoundManagerScript.PlaySound("Game Over");
     }
 
     private new void OnTriggerEnter(Collider other)

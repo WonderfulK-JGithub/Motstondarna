@@ -24,7 +24,8 @@ public class PlayerCheckpointSpawn : MonoBehaviour
     {
         if (transform.position.y < lowestLevel) // om man är under lowestLevel - Anton
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); // starta om banan - Anton
+            FindObjectOfType<BallHealth>().GameOver();
+            this.enabled = false;
         }
     }
 }

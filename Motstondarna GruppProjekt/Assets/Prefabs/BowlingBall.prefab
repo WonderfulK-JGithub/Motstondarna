@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &734260463
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 734260464}
+  m_Layer: 0
+  m_Name: BallOrientation
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &734260464
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 734260463}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 12.6, y: -3.9, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 577211305618531393}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &252392392217050724
 GameObject:
   m_ObjectHideFlags: 0
@@ -5057,7 +5087,7 @@ MonoBehaviour:
   topSpeed: 12
   acceleration: 12
   extraAccelerationFactor: 3
-  orientationTransform: {fileID: 0}
+  orientationTransform: {fileID: 734260464}
   speedBar: {fileID: 1256647731920042847}
   fillImage: {fileID: 679938970221929915}
   speedColors:
@@ -5179,6 +5209,7 @@ Transform:
   - {fileID: 577211304363952105}
   - {fileID: 7142657159252162938}
   - {fileID: 5521196038931648518}
+  - {fileID: 734260464}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/KJScene.unity
+    guid: 3ae9d2d47a4d9e042b10d8f01a390073
   m_configObjects: {}
