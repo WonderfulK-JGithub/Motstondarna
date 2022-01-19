@@ -66,7 +66,7 @@ public class LaserEnemy : MonoBehaviour
                     if(hit.collider.gameObject.tag == "Player")
                     {
                         //Gör Damage
-                        FindObjectOfType<BallHealth>().TakeDamage(eyes[i].forward * 10, 1);
+                        FindObjectOfType<BallHealth>().TakeDamage(/*eyes[i].forward * 10*/ Vector3.zero, 1);
                     }
 
                     //Laserns storlek ska ändras så den slutar där raycasten träffar - Max

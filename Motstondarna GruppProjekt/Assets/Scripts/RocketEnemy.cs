@@ -81,6 +81,7 @@ public class RocketEnemy : MonoBehaviour
 
     void StartMovingRocket()
     {
+        //Raketen sätts faktiskt igång - Max
         rocketOn = true;
         rocketParticles.Play();
         SoundManagerScript.PlaySound("RocketFiende");
@@ -102,7 +103,6 @@ public class RocketEnemy : MonoBehaviour
         RotateTowardsPlayer(rocketRotatingSpeed);
     }
 
-
     void RotateTowardsPlayer(float rotSpeed)
     {
         //Roterar
@@ -116,6 +116,7 @@ public class RocketEnemy : MonoBehaviour
         transform.rotation = Quaternion.RotateTowards(rotation, lookRotation, rotSpeed * Time.deltaTime);
     }
 
+    //Exploderar automatiskt efter ett tag - Max
     IEnumerator tilExplode()
     {
         yield return new WaitForSeconds(rocketExplosionTime);
@@ -124,12 +125,16 @@ public class RocketEnemy : MonoBehaviour
 
     void Explode()
     {
+        //Kollar om tillräckligt nära spelaren för att skada den - Max
         if (Vector3.Distance(new Vector3(transform.position.x, 0, transform.position.z), new Vector3(player.position.x, 0, player.position.z)) < rocketExplodeRadius)
         {
+            //får fram vector riktning och längd
             Vector3 dir = player.position - transform.position;
 
+            //Normalizar så att det är bara riktning
             dir = dir.normalized;
 
+            //Skadar spelaren - Max
             FindObjectOfType<BallHealth>().TakeDamage(dir * knockBackForce, 1);
         }
 
@@ -137,6 +142,7 @@ public class RocketEnemy : MonoBehaviour
         Destroy(newExplosion.GetChild(0).gameObject, 0.2f);
         Destroy(newExplosion.gameObject, 1);
 
+        //Ingen fade så använnder die now - Max
         wanderingScript.DieNow();
     }
 }
