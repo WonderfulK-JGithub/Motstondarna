@@ -154,7 +154,7 @@ public class WanderingEnemy : BaseEnemy
         //Kollar om det finns en vägg som är i vägen - Max
         if (Physics.Linecast(transform.position, player.position, LayerMask.GetMask("Ground", "Slippery"))) return;
 
-        if(anim != null)
+        if(anim != null && dontPauseAnim)
             anim.SetBool("isWalking", true); //Börja gå igen - Max
         //anim.speed = 1; //Animationspeed ska alltid vara 1 när den inte wanderar
 
@@ -234,7 +234,7 @@ public class WanderingEnemy : BaseEnemy
             }
         }
 
-        if (anim != null)
+        if (anim != null && dontPauseAnim)
             anim.SetBool("isWalking", true); //Börja gå igen - Max
         //anim.speed = 1; //Sätter igång animationer igen - Max
     }
