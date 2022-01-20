@@ -15,6 +15,6 @@ EditorBuildSettings:
     path: Assets/Scenes/anton.unity
     guid: 2dce880d0d18e4c44b9936eb101b721d
   - enabled: 1
-    path: Assets/Scenes/GameOverScene.unity
+    path: Assets/Scenes/Michal/GameOverScene.unity
     guid: e1590c0b01c04a842b79af11d8f0f30e
   m_configObjects: {}
