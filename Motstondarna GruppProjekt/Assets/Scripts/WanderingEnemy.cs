@@ -133,7 +133,9 @@ public class WanderingEnemy : BaseEnemy
             isMoving = false;
 
             if (anim != null && !dontPauseAnim)
-                anim.speed = 0; //pausar animationen så den inte har gå-animationen utan att den rör sig - Max
+                anim.SetBool("isWalking", false); //Stå still - Max
+            //anim.Play("StandStill");
+            //anim.speed = 0; //pausar animationen så den inte har gå-animationen utan att den rör sig - Max
 
             Invoke(nameof(NewPos), waitTimeToNewTarget); //Skaffar ny target efter ett tag - Max
             return;
@@ -150,10 +152,13 @@ public class WanderingEnemy : BaseEnemy
 
     public void StartChasing()
     {
+        //Kollar om det finns en vägg som är i vägen - Max
         if (Physics.Linecast(transform.position, player.position, LayerMask.GetMask("Ground", "Slippery"))) return;
 
         if(anim != null)
-            anim.speed = 1; //Animationspeed ska alltid vara 1 när den inte wanderar
+            anim.SetBool("isWalking", true); //Börja gå igen - Max
+        //anim.Play("Walking");
+        //anim.speed = 1; //Animationspeed ska alltid vara 1 när den inte wanderar
 
         isChasingPlayer = true;
     }
@@ -201,14 +206,14 @@ public class WanderingEnemy : BaseEnemy
     void NewPos()
     {
         bool foundPos = false;
-        int count = 0; //failsafe
+        int count = 0; //failsafe //Så att unity inte fryser om man placerar fiender på ett så dåligt sätt att det inte finns nån mark under dem - Max
         while (!foundPos)
         {
             //failsafe
             count++;
             if(count > 20)
             {
-                Debug.LogError("Detectar ingen position att gå till >:(, sätt fienden på en bättre plats"); //Ger error - Max
+                Debug.LogError("Sätt fienden på marken >:("); //Ger error - Max
                 break;
             }
 
@@ -231,8 +236,9 @@ public class WanderingEnemy : BaseEnemy
             }
         }
 
-        if(anim != null)
-            anim.speed = 1; //Sätter igång animationer igen - Max
+        if (anim != null)
+            anim.SetBool("isWalking", true); //Börja gå igen - Max
+        //anim.speed = 1; //Sätter igång animationer igen - Max
     }
 
     public override void OnCollisionEnter(Collision collision)
