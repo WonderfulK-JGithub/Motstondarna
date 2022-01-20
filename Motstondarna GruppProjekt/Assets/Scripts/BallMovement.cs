@@ -43,7 +43,7 @@ public class BallMovement : MonoBehaviour //av K-J (utom där det står max)
     [SerializeField] float slideExtraGravity;//hur mycket gånger mer gravitation man ska ha när man åker i en slide(ränna)
     [SerializeField] TextMeshProUGUI scoreText;//reference till score texten
 
-    float score;
+    public int score;
 
     bool onGround;
     bool onSlippary;
@@ -68,7 +68,7 @@ public class BallMovement : MonoBehaviour //av K-J (utom där det står max)
 
     public virtual void Update()
     {
-        
+        if (Pause.gamePaused) return;
         switch (state)
         {
             case PlayerState.Free:

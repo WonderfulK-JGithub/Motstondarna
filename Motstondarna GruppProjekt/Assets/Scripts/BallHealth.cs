@@ -99,6 +99,9 @@ public class BallHealth : BallMovement // av K-J
         SceneTransition.current.EnterScene(3);
         SoundManagerScript.PlaySound("Game Over");
         Cursor.lockState = CursorLockMode.None;
+
+        Pause.gamePaused = true;
+        FindObjectOfType<Pause>().enabled = false;
     }
 
     private new void OnTriggerEnter(Collider other)
@@ -113,6 +116,10 @@ public class BallHealth : BallMovement // av K-J
             Destroy(other.gameObject);
 
             SoundManagerScript.PlaySound("PowerUp");
+
+            PlayerPrefs.SetInt("score", score);
+
+            
         }
 
     }
