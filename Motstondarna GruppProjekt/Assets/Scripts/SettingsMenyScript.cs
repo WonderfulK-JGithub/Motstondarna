@@ -5,9 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class SettingsMenyScript : MonoBehaviour
 {
-    public void Settings() // Button till starta spelet
+    public void Settings() //Settings meny knappen
     {
-        //SceneManager.LoadScene("SettingsMeny");
+        SceneManager.LoadScene("SettingsMeny");
         SceneTransition.current.EnterScene(1);
     }
 }
