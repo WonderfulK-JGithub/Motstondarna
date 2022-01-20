@@ -30,6 +30,8 @@ public class VictoryScreen : MonoBehaviour
     public void Show()
     {
         anim.Play("VictoryScreen_Enter");
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
 
         Pause.gamePaused = true;
         FindObjectOfType<Pause>().enabled = false;
