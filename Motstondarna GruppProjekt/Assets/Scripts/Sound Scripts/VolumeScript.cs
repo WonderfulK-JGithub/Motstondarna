@@ -29,7 +29,7 @@ public class VolumeScript : MonoBehaviour //Kunna sänka/Höja volymen och att den
 
     private void Load() //Använder float baluen som är sparad i "musicVolume" keyname och använder det som volym /Theo
     {
-        VolumeSlider.value = PlayerPrefs.GetFloat("musicVolume");
+        VolumeSlider.value = PlayerPrefs.GetFloat("musicVolume", 1);
     }
     private void Save() //För att kunna spara volymen så att man inte måste sänka den varje gång man spelar spelet. /Theo
     {
