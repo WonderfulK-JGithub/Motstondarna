@@ -160,8 +160,6 @@ public class BallMovement : MonoBehaviour //av K-J (utom där det står max)
                 #endregion
                 break;
         }
-
-        
     }
 
     

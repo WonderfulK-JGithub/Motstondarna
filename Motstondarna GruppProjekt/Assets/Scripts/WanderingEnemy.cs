@@ -99,7 +99,8 @@ public class WanderingEnemy : BaseEnemy
         }
         else
         {
-            Wandering();
+            if(Vector3.Distance(player.position, transform.position) < playerCheckRadius * 4)
+                Wandering();
         }
     }
 
