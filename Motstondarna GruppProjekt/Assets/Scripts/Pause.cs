@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class Pause : MonoBehaviour
 {
@@ -51,6 +48,12 @@ public class Pause : MonoBehaviour
         //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         SceneTransition.current.ReLoadScene();
         Time.timeScale = 1;
+    }
+
+    public void Menu()
+    {
+        Time.timeScale = 1;
+        SceneTransition.current.EnterScene(0);
     }
     private void Update()
     {
