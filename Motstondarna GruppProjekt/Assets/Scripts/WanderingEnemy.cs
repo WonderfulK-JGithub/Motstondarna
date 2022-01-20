@@ -24,7 +24,7 @@ public class WanderingEnemy : BaseEnemy
     [SerializeField] float rotationSpeed; //Hur snabbt den roterar när den rör sig - max
 
     [Header("Other")]
-    [SerializeField] bool dontPauseAnim = false;
+    [SerializeField] bool dontStandStill = false; //Vissa enemies har ingen stå still animation - Max
     [SerializeField] float yPosToDie = -10f;
 
     [HideInInspector] public bool isChasingPlayer = false; //Jagar spelaren - Max
@@ -132,9 +132,8 @@ public class WanderingEnemy : BaseEnemy
         {
             isMoving = false;
 
-            if (anim != null && !dontPauseAnim)
+            if (anim != null && !dontStandStill)
                 anim.SetBool("isWalking", false); //Stå still - Max
-            //anim.speed = 0; //pausar animationen så den inte har gå-animationen utan att den rör sig - Max
 
             Invoke(nameof(NewPos), waitTimeToNewTarget); //Skaffar ny target efter ett tag - Max
             return;
@@ -154,9 +153,8 @@ public class WanderingEnemy : BaseEnemy
         //Kollar om det finns en vägg som är i vägen - Max
         if (Physics.Linecast(transform.position, player.position, LayerMask.GetMask("Ground", "Slippery"))) return;
 
-        if(anim != null && dontPauseAnim)
+        if(anim != null && !dontStandStill)
             anim.SetBool("isWalking", true); //Börja gå igen - Max
-        //anim.speed = 1; //Animationspeed ska alltid vara 1 när den inte wanderar
 
         isChasingPlayer = true;
     }
@@ -209,7 +207,7 @@ public class WanderingEnemy : BaseEnemy
         {
             //failsafe
             count++;
-            if(count > 20)
+            if(count > 100)
             {
                 Debug.LogError("Sätt fienden på marken >:("); //Ger error - Max
                 break;
@@ -234,9 +232,8 @@ public class WanderingEnemy : BaseEnemy
             }
         }
 
-        if (anim != null && dontPauseAnim)
+        if (anim != null && !dontStandStill)
             anim.SetBool("isWalking", true); //Börja gå igen - Max
-        //anim.speed = 1; //Sätter igång animationer igen - Max
     }
 
     public override void OnCollisionEnter(Collision collision)

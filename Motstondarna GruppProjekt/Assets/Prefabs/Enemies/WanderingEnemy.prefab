@@ -67,6 +67,8 @@ MonoBehaviour:
   chasingSpeed: 3
   rotationSpeed: 2
   dontPauseAnim: 1
+  yPosToDie: -10
+  isChasingPlayer: 0
   overrideChasing: 0
 --- !u!33 &6040162914256360381
 MeshFilter:
