@@ -6,11 +6,20 @@ using UnityEngine.SceneManagement;
 public class Pause : MonoBehaviour
 {
     public GameObject[] windows;
+
+    public static bool gamePaused;
+
+    private void Awake()
+    {
+        gamePaused = false;
+    }
+
     public void OpenWindow(int window)
     {
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         Time.timeScale = 0;
+        gamePaused = true;
 
         for (int i = 0; i < windows.Length; i++)
         {
@@ -23,6 +32,7 @@ public class Pause : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         Time.timeScale = 1;
+        gamePaused = false;
 
         for (int i = 0; i < windows.Length; i++)
         {
@@ -31,13 +41,15 @@ public class Pause : MonoBehaviour
     }
     public void Restart()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        SceneTransition.current.ReLoadScene();
         Time.timeScale = 1;
     }
     public void FullRestart()
     {
         PlayerPrefs.SetInt("progress", 0);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        SceneTransition.current.ReLoadScene();
         Time.timeScale = 1;
     }
     private void Update()
