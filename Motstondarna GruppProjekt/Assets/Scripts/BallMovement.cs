@@ -62,6 +62,7 @@ public class BallMovement : MonoBehaviour //av K-J (utom där det står max)
     public virtual void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        scoreText.text = "";
         
     }
 
@@ -292,7 +293,7 @@ public class BallMovement : MonoBehaviour //av K-J (utom där det står max)
         }
         else if(other.gameObject.CompareTag("Coin"))
         {
-            score += 69;
+            score++;
             scoreText.text = score.ToString();
 
             Destroy(other.gameObject);

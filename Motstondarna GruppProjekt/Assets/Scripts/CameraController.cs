@@ -36,6 +36,7 @@ public class CameraController : MonoBehaviour// av K-J
     }
     void Update()
     {
+        if (Pause.gamePaused) return;
         if(!firstPerson)
         {
             
