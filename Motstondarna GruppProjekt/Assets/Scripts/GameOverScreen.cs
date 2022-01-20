@@ -20,10 +20,12 @@ public class GameOverScreen : MonoBehaviour
     }
     public void RestartButton() // Buton till starta om spelet
     {
-        SceneManager.LoadScene("GameScene");
+        //SceneManager.LoadScene("GameScene");
+        SceneTransition.current.EnterScene(2);
     }
     public void ExitButton() // Button till gå till TitleScreen
     {
         SceneManager.LoadScene("TitleScreen");
+        SceneTransition.current.EnterScene(0);
     }
 }

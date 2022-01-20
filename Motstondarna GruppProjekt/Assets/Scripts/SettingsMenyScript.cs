@@ -7,6 +7,7 @@ public class SettingsMenyScript : MonoBehaviour
 {
     public void Settings() // Button till starta spelet
     {
-        SceneManager.LoadScene("SettingsMeny");
+        //SceneManager.LoadScene("SettingsMeny");
+        SceneTransition.current.EnterScene(1);
     }
 }

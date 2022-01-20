@@ -7,6 +7,7 @@ public class BackButton : MonoBehaviour
 {
     public void ExitButton() // Button till gå till MainMenu
     {
-        SceneManager.LoadScene("TitleScreen");
+        //SceneManager.LoadScene("TitleScreen");
+        SceneTransition.current.EnterScene(0);
     }
 }

@@ -7,6 +7,7 @@ public class PlayButton : MonoBehaviour
 {
     public void Play() // Button till starta spelet
     {
-        SceneManager.LoadScene("GameScene");
+        //SceneManager.LoadScene("GameScene");
+        SceneTransition.current.EnterScene(2);
     }
 }
