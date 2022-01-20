@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEditor;
 
 //Max Script
+#if (UNITY_EDITOR)
 [CustomEditor(typeof(LaserEnemy))]
 public class LaserEnemyEditor : Editor
 {
@@ -25,3 +26,4 @@ public class LaserEnemyEditor : Editor
         }
     }
 }
+#endif
