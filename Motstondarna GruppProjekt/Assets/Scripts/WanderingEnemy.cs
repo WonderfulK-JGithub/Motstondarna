@@ -134,7 +134,6 @@ public class WanderingEnemy : BaseEnemy
 
             if (anim != null && !dontPauseAnim)
                 anim.SetBool("isWalking", false); //Stå still - Max
-            //anim.Play("StandStill");
             //anim.speed = 0; //pausar animationen så den inte har gå-animationen utan att den rör sig - Max
 
             Invoke(nameof(NewPos), waitTimeToNewTarget); //Skaffar ny target efter ett tag - Max
@@ -157,7 +156,6 @@ public class WanderingEnemy : BaseEnemy
 
         if(anim != null)
             anim.SetBool("isWalking", true); //Börja gå igen - Max
-        //anim.Play("Walking");
         //anim.speed = 1; //Animationspeed ska alltid vara 1 när den inte wanderar
 
         isChasingPlayer = true;
