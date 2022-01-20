@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class GroundSettings : MonoBehaviour
 {
-    public bool wallCollision = false; // man kan ändra detta i inspektorn - Anton
     List<Vector3> groundCoords = new List<Vector3>(); // hämtar koordinaterna för varje markobjekt
     Transform[] faces; // alla sidor
     void Start()
@@ -16,10 +15,6 @@ public class GroundSettings : MonoBehaviour
         }
         faces = GetComponentsInChildren<Transform>(); // hämtar alla sidors Transform - Anton
 
-        for (int i = 1; i < faces.Length; i++)
-        {
-            faces[i].GetComponent<MeshCollider>().enabled = wallCollision;
-        }
 
         if (groundCoords.Contains(transform.position + new Vector3(2, 0, 0))) { Destroy(faces[1].gameObject); } // dessa rader sköter bortplockning av onödiga sidor, dvs sidor som tittar in i en annan sida. - Anton
         if (groundCoords.Contains(transform.position + new Vector3(-2, 0, 0))) { Destroy(faces[2].gameObject); }
