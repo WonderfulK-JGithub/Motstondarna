@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class JumpPad : MonoBehaviour
 {
-    [Range(0, 20)]
+    [Range(10, 50)]
     public float strength; // hur högt den ska hoppa - Anton
     private void OnCollisionEnter(Collision collision) // känner av när något hoppar på den - Anton
     {
