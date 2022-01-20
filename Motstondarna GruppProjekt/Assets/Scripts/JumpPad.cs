@@ -10,6 +10,8 @@ public class JumpPad : MonoBehaviour
         {
             Rigidbody rb = collision.gameObject.GetComponent<Rigidbody>(); // referens till rigidbodyn - Anton
             rb.velocity += transform.up * strength; // skjuter upp objektet i luften - Anton
+
+            GetComponentInChildren<Animator>().Play("jumppad"); //Animation - Max
         }
     }
 }
