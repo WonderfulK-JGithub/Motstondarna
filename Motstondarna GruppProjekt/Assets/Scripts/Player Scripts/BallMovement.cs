@@ -42,6 +42,8 @@ public class BallMovement : MonoBehaviour //av K-J (utom där det står max)
     [SerializeField] ParticleSystem chargeParticle;//referense till partiklesystemet som sätts på när man håller in dashknappen
     [SerializeField] float slideExtraGravity;//hur mycket gånger mer gravitation man ska ha när man åker i en slide(ränna)
     [SerializeField] TextMeshProUGUI scoreText;//reference till score texten
+    [SerializeField] bool inHub;
+    [SerializeField] GameObject ballUI;
 
     public int score;
 
@@ -57,12 +59,20 @@ public class BallMovement : MonoBehaviour //av K-J (utom där det står max)
      public Vector3 currentSpeed;
 
     [HideInInspector] public Rigidbody rb;
-    PlayerState state;
+    public PlayerState state;
 
     public virtual void Awake()
     {
         rb = GetComponent<Rigidbody>();
         scoreText.text = "";
+
+
+        if(inHub)
+        {
+            state = PlayerState.Off;
+            ballUI.SetActive(false);
+
+        }
         
     }
 
@@ -228,6 +238,18 @@ public class BallMovement : MonoBehaviour //av K-J (utom där det står max)
             case PlayerState.Dash:
                 #region
                 dashTrail.transform.position = transform.position;
+                break;
+            #endregion
+            case PlayerState.Hub:
+                #region
+                rb.velocity += new Vector3(0f, Physics.gravity.y * (slideExtraGravity - 1) * Time.fixedDeltaTime, 0f);
+                currentSpeed = rb.velocity;
+                #endregion
+                break;
+            case PlayerState.Off:
+                #region
+                rb.velocity = Vector3.zero;
+                rb.useGravity = false;
                 #endregion
                 break;
         }
@@ -322,4 +344,6 @@ public enum PlayerState
     ChargeDash,
     Dash,
     Renn,
+    Off,
+    Hub,
 }
