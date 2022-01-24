@@ -125,7 +125,7 @@ public class RocketEnemy : MonoBehaviour
     void Explode()
     {
         //Kollar om tillräckligt nära spelaren för att skada den - Max
-        if (Vector3.Distance(new Vector3(transform.position.x, 0, transform.position.z), new Vector3(player.position.x, 0, player.position.z)) < rocketExplodeRadius)
+        if (Vector3.Distance(transform.position, player.position) < rocketExplodeRadius)
         {
             //får fram vector riktning och längd
             Vector3 dir = player.position - transform.position;

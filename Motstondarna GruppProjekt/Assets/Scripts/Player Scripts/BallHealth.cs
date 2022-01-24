@@ -33,6 +33,8 @@ public class BallHealth : BallMovement // av K-J
         defaultColor = rend.material.color;
 
         NewHealth();
+
+        
     }
 
     // Update is called once per frame

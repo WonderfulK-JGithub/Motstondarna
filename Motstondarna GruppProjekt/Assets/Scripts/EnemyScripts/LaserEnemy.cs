@@ -21,12 +21,19 @@ public class LaserEnemy : MonoBehaviour
 
     [SerializeField] LayerMask laserMask; //Vad laserns ska collidea med
 
+    [SerializeField] float laserFireTime;
+    [SerializeField] float laserCooldown;
+
     public bool lasersOn = false;
     bool alerted = false;
+
+    float fireTimer;
+    float coolDownTimer;
 
     [Header("References")]
 
     [SerializeField] GameObject laserObject;
+    [SerializeField] GameObject[] laserDust;
 
     //Lasrarna ska komma ut ur ögonen - Max
     [SerializeField] Transform[] eyes = new Transform[2];
@@ -44,15 +51,24 @@ public class LaserEnemy : MonoBehaviour
         wanderingScript = GetComponent<WanderingEnemy>();
         player = FindObjectOfType<BallMovement>().transform;
         anim = GetComponentInChildren<Animator>();
+
+        laserDust[0].SetActive(false);
+        laserDust[1].SetActive(false);
     }
 
     private void Update()
     {
+        coolDownTimer -= Time.deltaTime;
+
         //Kollar distance till spelaren och stänger av eller sätter på lasrar - Max
         if (wanderingScript.isChasingPlayer && !wanderingScript.overrideChasing && Vector3.Distance(new Vector3(transform.position.x, 0, transform.position.z), new Vector3(player.position.x, 0, player.position.z)) < laserAttackActivateRadius)
         {
-            wanderingScript.overrideChasing = true;
-            TurnOnLasers();
+            if(coolDownTimer <= 0f)
+            {
+                wanderingScript.overrideChasing = true;
+                TurnOnLasers();
+            }
+            
         }
         else if (wanderingScript.overrideChasing && Vector3.Distance(new Vector3(transform.position.x, 0, transform.position.z), new Vector3(player.position.x, 0, player.position.z)) > laserAttackActivateRadius + 4)
         {
@@ -68,8 +84,10 @@ public class LaserEnemy : MonoBehaviour
 
         if (lasersOn)
         {
-            //Har fienden dött eller slutat chasea spelaren ska lasrarna stängas av - Max
-            if (!wanderingScript.isChasingPlayer || wanderingScript.hasDied)
+            fireTimer -= Time.deltaTime;
+
+            //Har fienden dött eller slutat chasea spelaren, eller att fireTimern har gått ut, ska lasrarna stängas av - Max
+            if (!wanderingScript.isChasingPlayer || wanderingScript.hasDied || fireTimer <= 0f)
             {
                 wanderingScript.overrideChasing = false;
                 TurnOffLasers();
@@ -88,10 +106,14 @@ public class LaserEnemy : MonoBehaviour
                     {
                         //Gör Damage
                         FindObjectOfType<BallHealth>().TakeDamage(/*eyes[i].forward * 10*/ Vector3.zero, 1);
+                        wanderingScript.overrideChasing = false;
+                        TurnOffLasers();
                     }
 
                     //Laserns storlek ska ändras så den slutar där raycasten träffar - Max
                     UpdateLaserScale(hit.distance, i);
+
+                    laserDust[i].transform.position = hit.point;
                 }
                 else
                 {
@@ -154,6 +176,8 @@ public class LaserEnemy : MonoBehaviour
 
         //Använder en IEnumerator så att animationen kan spelas innan lasern sätts igång - Max
         StartCoroutine(nameof(tilLasersOn));
+
+        fireTimer = laserFireTime;
     }
 
     IEnumerator tilLasersOn()
@@ -175,6 +199,7 @@ public class LaserEnemy : MonoBehaviour
         for (int i = 0; i <= 1; i++)
         {
             activeLasers[i] = Instantiate(laserObject, eyes[i]);
+            laserDust[i].SetActive(true);
         }
 
         //Roterar lasrarna neråt i marken så man inte dör direkt - Max
@@ -185,10 +210,13 @@ public class LaserEnemy : MonoBehaviour
     {
         lasersOn = false;
 
+        coolDownTimer = laserCooldown;
+
         //Förstör lasrarna för båda ögonen - Max
         for (int i = 1; i >= 0; i--)
         {
             Destroy(activeLasers[i]);
+            laserDust[i].SetActive(false);
         }
 
         anim.Play("Walking");
