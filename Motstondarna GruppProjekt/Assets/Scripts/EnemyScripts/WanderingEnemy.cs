@@ -169,8 +169,11 @@ public class WanderingEnemy : BaseEnemy
         transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * rotationSpeed);
 
         //Rör sig mot target - Max
-        Vector3 newVel = transform.forward * speed;
-        rb.velocity = new Vector3(newVel.x, rb.velocity.y, newVel.z);
+        if(Physics.Raycast(transform.position + transform.forward, Vector2.down, LayerMask.GetMask("Ground", "Slippery")))
+        {
+            Vector3 newVel = transform.forward * speed;
+            rb.velocity = new Vector3(newVel.x, rb.velocity.y, newVel.z);
+        }
     }
 
     bool GroundCheck()
