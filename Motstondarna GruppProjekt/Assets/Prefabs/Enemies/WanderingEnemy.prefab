@@ -63,9 +63,12 @@ MonoBehaviour:
   waitTimeToNewTarget: 2
   currentTarget: {x: 0, y: 0, z: 0}
   playerCheckRadius: 9
+  tilCanCheckForPlayer: 1
   chasingSpeed: 3
   rotationSpeed: 2
   dontPauseAnim: 1
+  yPosToDie: -10
+  isChasingPlayer: 0
   overrideChasing: 0
 --- !u!33 &6040162914256360381
 MeshFilter:

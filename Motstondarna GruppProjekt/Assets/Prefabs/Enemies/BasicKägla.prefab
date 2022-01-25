@@ -48,14 +48,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aeca44ca472a4c5439ae0b904bb4e602, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerVelocityForDeath: 10
+  playerVelocityForDeath: 8
   dieForce: 2500
   fadeSpeed: 0.5
   canDieFromOtherPins: 1
   canKillPlayer: 0
   hasDied: 0
   rb: {fileID: 0}
-  deathParticle: {fileID: 264365672311112969, guid: 6cd0c1346f7190e4c86814a8da3f9103, type: 3}
+  deathParticle: {fileID: 0}
 --- !u!33 &2729302447243454646
 MeshFilter:
   m_ObjectHideFlags: 0
