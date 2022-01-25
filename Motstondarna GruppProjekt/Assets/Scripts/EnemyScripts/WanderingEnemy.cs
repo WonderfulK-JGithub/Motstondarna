@@ -169,8 +169,11 @@ public class WanderingEnemy : BaseEnemy
         transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * rotationSpeed);
 
         //Rör sig mot target - Max
-        Vector3 newVel = transform.forward * speed;
-        rb.velocity = new Vector3(newVel.x, rb.velocity.y, newVel.z);
+        if(Physics.Raycast(transform.position + transform.forward, Vector2.down, LayerMask.GetMask("Ground", "Slippery")))
+        {
+            Vector3 newVel = transform.forward * speed;
+            rb.velocity = new Vector3(newVel.x, rb.velocity.y, newVel.z);
+        }
     }
 
     bool GroundCheck()
@@ -259,13 +262,13 @@ public class WanderingEnemy : BaseEnemy
         base.Die(contactPoint, speed);
     }
 
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
         //Visar bara upp fiendens radius i sceneview så det är enkelt att bygga banor - Max
 
         Gizmos.color = new Color(0,255,0,0.4f);
 
-        Gizmos.DrawSphere(transform.position, playerCheckRadius);
+        //Gizmos.DrawSphere(transform.position, playerCheckRadius);
 
         if (Application.isPlaying)
         {
