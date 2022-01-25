@@ -262,13 +262,13 @@ public class WanderingEnemy : BaseEnemy
         base.Die(contactPoint, speed);
     }
 
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
         //Visar bara upp fiendens radius i sceneview så det är enkelt att bygga banor - Max
 
         Gizmos.color = new Color(0,255,0,0.4f);
 
-        Gizmos.DrawSphere(transform.position, playerCheckRadius);
+        //Gizmos.DrawSphere(transform.position, playerCheckRadius);
 
         if (Application.isPlaying)
         {
