@@ -56,10 +56,12 @@ public class BallMovement : MonoBehaviour //av K-J (utom där det står max)
 
     bool aboveKillSpeed = false; //För att se om spelaren åker tillräckligt snabbt för att döda en simple bowling pin - Max
 
-     public Vector3 currentSpeed;
+    public Vector3 currentSpeed;
 
     [HideInInspector] public Rigidbody rb;
     public PlayerState state;
+
+    
 
     public virtual void Awake()
     {
@@ -231,6 +233,7 @@ public class BallMovement : MonoBehaviour //av K-J (utom där det står max)
                 #endregion
                 break;
             case PlayerState.Renn:
+            case PlayerState.End:
                 #region
                 rb.velocity += new Vector3(0f, Physics.gravity.y * (slideExtraGravity - 1) * Time.fixedDeltaTime, 0f);
                 #endregion
@@ -316,9 +319,17 @@ public class BallMovement : MonoBehaviour //av K-J (utom där det står max)
             score++;
             scoreText.text = score.ToString();
 
-            Destroy(other.gameObject);
+            other.gameObject.GetComponent<CollectableCoin>().CollectCoin();
 
             SoundManagerScript.PlaySound("Coins");
+        }
+        else if(other.gameObject.CompareTag("Finish"))
+        {
+            transform.position = other.transform.position;
+            rb.velocity = Vector3.right * 2f;
+            state = PlayerState.End;
+            rb.useGravity = true;
+            chargeParticle.Stop();
         }
     }
 
@@ -346,4 +357,5 @@ public enum PlayerState
     Renn,
     Off,
     Hub,
+    End,
 }
