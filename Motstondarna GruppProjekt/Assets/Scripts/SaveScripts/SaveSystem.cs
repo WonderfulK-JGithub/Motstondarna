@@ -107,6 +107,8 @@ public class SaveSystem : MonoBehaviour//K-J
         }
 
         Save();
+
+        PlayerPrefs.SetInt("progress", 0);
     }
 }
 

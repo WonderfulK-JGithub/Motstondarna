@@ -41,6 +41,8 @@ public class EndLevelSegment : MonoBehaviour
                 GameSaveInfo.current.coinLevelsCount[GameSaveInfo.currentLevel] = i;
 
                 SaveSystem.current.Save();
+                PlayerPrefs.SetInt("progress", 0);
+
 
                 SceneTransition.current.ReLoadScene();
             }
