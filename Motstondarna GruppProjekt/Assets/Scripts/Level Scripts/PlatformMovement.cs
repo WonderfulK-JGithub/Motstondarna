@@ -10,6 +10,8 @@ public class PlatformMovement : MonoBehaviour
     public bool enableMove; // om plattformen ska röra sig - Anton
     bool reverse; // används endast om backAndForth är satt på true och plattformen åker tillbaka - Anton
     Transform[] children; // får tag på alla children för att den senare ska extrahera ut punkterna - Anton
+    public bool autoAssignPoints = true;
+    [SerializeField]
     Transform[] points; // alla punkter (de berättar för plattformen hur den ska åka) - Anton
     int targetPoint = 0; // vilken punkt plattan rör sig mot - Anton
     List<Transform> objectsOnPlatform = new List<Transform>(); // vilka objekt som nuddar plattformen - Anton
@@ -18,10 +20,13 @@ public class PlatformMovement : MonoBehaviour
     {
         children = GetComponentsInChildren<Transform>(); // får tag på alla children - Anton
         platform = children[1]; // plattformen är första childen - Anton
-        points = new Transform[children.Length - 2]; // antalet punkter är points längd utan parenten och plattformen - Anton
-        for (int i = 2; i < children.Length; i++)
+        if (autoAssignPoints)
         {
-            points[i - 2] = children[i]; // lägger in punkterna i points-arrayen - Anton
+            points = new Transform[children.Length - 2]; // antalet punkter är points längd utan parenten och plattformen - Anton
+            for (int i = 2; i < children.Length; i++)
+            {
+                points[i - 2] = children[i]; // lägger in punkterna i points-arrayen - Anton
+            }
         }
     }
     private void FixedUpdate()
