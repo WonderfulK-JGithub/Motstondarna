@@ -4,21 +4,29 @@ using UnityEngine;
 
 public class GameSaveInfo : MonoBehaviour,ISaveable//K-J
 {
+    public static GameSaveInfo current;
+
+    public static int currentLevel;
+
     public int coinCount;
     public int levelProgress;
 
-    public int currentLevel;
-    public int currentCheckPoint;
+    public int[] coinLevelsCount;
+
+    private void Awake()
+    {
+        current = this;
+    }
 
     //spara data
     public object CaptureState()
     {
+
         return new SaveData
         {
             coinCount = coinCount,
             levelProgress = levelProgress,
-            currentLevel = currentLevel,
-            currentCheckPoint = currentCheckPoint,
+            coinLevelsCount = coinLevelsCount,
         };
 
     }
@@ -28,9 +36,8 @@ public class GameSaveInfo : MonoBehaviour,ISaveable//K-J
         var saveData = (SaveData)state;
 
         coinCount = saveData.coinCount;
-        coinCount = saveData.coinCount;
-        coinCount = saveData.coinCount;
-        coinCount = saveData.coinCount;
+        levelProgress = saveData.levelProgress;
+        coinLevelsCount = saveData.coinLevelsCount;
     }
 
     [System.Serializable]
@@ -38,8 +45,6 @@ public class GameSaveInfo : MonoBehaviour,ISaveable//K-J
     {
         public int coinCount;
         public int levelProgress;
-
-        public int currentLevel;
-        public int currentCheckPoint;
+        public int[] coinLevelsCount;
     }
 }

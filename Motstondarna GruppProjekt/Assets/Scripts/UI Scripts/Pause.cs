@@ -54,6 +54,13 @@ public class Pause : MonoBehaviour
     {
         Time.timeScale = 1;
         SceneTransition.current.EnterScene(0);
+
+        foreach (var item in FindObjectsOfType<CollectableCoin>())
+        {
+            item.isCollected = false;
+        }
+
+        SaveSystem.current.Save();
     }
     private void Update()
     {

@@ -7,7 +7,8 @@ public class CollectableCoin : MonoBehaviour, ISaveable//K-J
     [SerializeField] Color normalColor;
     [SerializeField] Color alreadyCollectedColor;
 
-    [SerializeField] bool isCollected;
+    public bool isCollected;//om man har tagit myntet
+    public bool isStored;//om man tidigare har tagit myntet och laddar om banan
 
     MeshRenderer rend;
     MeshCollider col;
@@ -23,7 +24,8 @@ public class CollectableCoin : MonoBehaviour, ISaveable//K-J
     {
         return new SaveData
         {
-            isCollected = isCollected
+            isCollected = isCollected,
+            isStored = isStored,
         };
         
     }
@@ -33,9 +35,15 @@ public class CollectableCoin : MonoBehaviour, ISaveable//K-J
         var saveData = (SaveData)state;
 
         isCollected = saveData.isCollected;
+        isStored = saveData.isStored;
 
         //ger myntet en färg baserat på om den redan har tagits eller inte;
         if(isCollected)
+        {
+            rend.enabled = false;
+            col.enabled = false;
+        }
+        else if(isStored)
         {
             rend.material.color = alreadyCollectedColor;
         }
@@ -48,11 +56,18 @@ public class CollectableCoin : MonoBehaviour, ISaveable//K-J
     [System.Serializable] struct SaveData //Spardata
     {
         public bool isCollected;
+        public bool isStored;
     }
 
 
     public void CollectCoin()//när man nuddar myntet
     {
+        if(!isStored)
+        {
+            BallHealth.current.score++;
+        }
+
+
         rend.enabled = false;
         col.enabled = false;
 

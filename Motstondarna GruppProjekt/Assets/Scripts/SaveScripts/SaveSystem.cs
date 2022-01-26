@@ -6,11 +6,14 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 public class SaveSystem : MonoBehaviour//K-J
 {
+    public static SaveSystem current;
+
     string dataPath = null;
 
     private void Awake()
     {
         dataPath = Application.persistentDataPath + "/bowlingSave.txt";
+        current = this;
     }
 
     private void Start()
@@ -19,7 +22,7 @@ public class SaveSystem : MonoBehaviour//K-J
     }
 
     [ContextMenu("Save")]
-    void Save()
+    public void Save()
     {
         var state = LoadFile();
         CaptureState(state);
@@ -93,6 +96,17 @@ public class SaveSystem : MonoBehaviour//K-J
                 saveable.RestoreState(value);
             }
         }
+    }
+
+    //Om spelaren bestämmer sig för att alt f4 ska myntent sparas som !isCollected
+    private void OnApplicationQuit()
+    {
+        foreach (var item in FindObjectsOfType<CollectableCoin>())
+        {
+            item.isCollected = false;
+        }
+
+        Save();
     }
 }
 

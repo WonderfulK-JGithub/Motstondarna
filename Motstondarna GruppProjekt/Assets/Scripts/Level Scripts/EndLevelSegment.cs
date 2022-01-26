@@ -24,6 +24,24 @@ public class EndLevelSegment : MonoBehaviour
             if (goldenPins.Count == 0)
             {
                 levelEnded = true;
+
+                int i = 0;
+                foreach (var item in FindObjectsOfType<CollectableCoin>())
+                {
+                    if(item.isCollected)
+                    {
+                        item.isStored = true;
+                        
+                    }
+                    if(item.isStored) i++;
+
+                    item.isCollected = false;
+                }
+
+                GameSaveInfo.current.coinLevelsCount[GameSaveInfo.currentLevel] = i;
+
+                SaveSystem.current.Save();
+
                 SceneTransition.current.ReLoadScene();
             }
         }

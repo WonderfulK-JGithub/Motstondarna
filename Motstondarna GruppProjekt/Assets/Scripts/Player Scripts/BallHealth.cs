@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class BallHealth : BallMovement // av K-J
 {
+    public static BallHealth current;
+
     [Header("Health")]
     [SerializeField] int maxHealth;
     [SerializeField] float invinceTime;//hur länge man är odödlig efter att man blivit skadad av en käggla
@@ -27,6 +29,8 @@ public class BallHealth : BallMovement // av K-J
     public override void Awake()
     {
         base.Awake();
+
+        current = this;
 
         healthPoints = maxHealth;
         //rend = GetComponent<MeshRenderer>();
