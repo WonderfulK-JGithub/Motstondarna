@@ -3995,6 +3995,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1351204954503641114, guid: 631db2802b7e3524094be2a195bca052, type: 3}
+      propertyPath: id
+      value: 38960392-cdd3-4a15-ac77-d9e510a5f5dc
+      objectReference: {fileID: 0}
     - target: {fileID: 1351204954503641115, guid: 631db2802b7e3524094be2a195bca052, type: 3}
       propertyPath: m_Name
       value: Collectable Coin

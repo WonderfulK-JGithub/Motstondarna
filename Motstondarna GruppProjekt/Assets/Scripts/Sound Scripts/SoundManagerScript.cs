@@ -14,7 +14,7 @@ public class SoundManagerScript : MonoBehaviour
         Click = Resources.Load<AudioClip>("Click");
         Dash = Resources.Load<AudioClip>("Dash");
         JumpPad = Resources.Load<AudioClip>("JumpPad");
-        KägglaDamage = Resources.Load<AudioClip>("KägglaDamage");
+        KägglaDamage = Resources.Load<AudioClip>("BowlingPin");
         Landa = Resources.Load<AudioClip>("Landa");
         PowerUp = Resources.Load<AudioClip>("PowerUp");
         Rolling = Resources.Load<AudioClip>("Rolling");
