@@ -4,33 +4,35 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour// av K-J
 {
-    
+    public static CameraController current;
 
     [SerializeField] float mouseSence = 3f;
-
-    float rotationX;
-    float rotationY;
-
     [SerializeField] BallMovement target;//referense till spelaren som kameran ska kolla på
-
     [SerializeField] float maxDistanceFromTarget = 5f;//hur långt kameran ska kolla ifrån spelaren
+    [SerializeField] float smoothTime;
+    [SerializeField] float smoothSpeed;
+    [SerializeField] LayerMask collisionLayers;
+    [SerializeField] float theGaming;
+    [Header("ScreenShake")]
+    [SerializeField] float screenShakeTime;
+    [SerializeField] float screenShakeMagnitude;
 
     Vector3 currentRotation;
     Vector3 smoothVelocity = Vector3.zero;
 
-    [SerializeField] float smoothTime;
-    [SerializeField] float smoothSpeed;
-    [SerializeField] LayerMask collisionLayers;
-
-    [SerializeField] float theGaming;
-
-
+    float rotationX;
+    float rotationY;
     float distanceFromTarget;
+    float shakeTimer;
+    float shakePower;
+    float powerReduction;
 
     bool firstPerson;//om man är i firstperson mode
 
     void Awake()
     {
+        current = this;
+
         Cursor.lockState = CursorLockMode.Locked;
         distanceFromTarget = maxDistanceFromTarget;
     }
@@ -58,6 +60,10 @@ public class CameraController : MonoBehaviour// av K-J
                 transform.SetParent(target.transform);
                 transform.localPosition = Vector3.zero;
             }
+
+            
+
+
         }
         else
         {
@@ -67,8 +73,8 @@ public class CameraController : MonoBehaviour// av K-J
                 transform.parent = null;
             }
         }
-       
-
+        
+        
     }
 
     void FixedUpdate()
@@ -88,7 +94,30 @@ public class CameraController : MonoBehaviour// av K-J
             }
 
             transform.position = target.transform.position - transform.forward * distanceFromTarget;//ändrar kamerans position
+
+            if(shakeTimer > 0f)
+            {
+                shakeTimer -= Time.fixedDeltaTime;
+
+                Vector3 shakePos = new Vector3();
+                shakePos.x = Random.Range(-shakePower, shakePower);
+                shakePos.y = Random.Range(-shakePower, shakePower);
+
+                Vector3 truePos = shakePos.x * transform.right + shakePos.y * transform.up;
+
+                transform.position += truePos;
+
+                shakePower -= powerReduction * Time.fixedDeltaTime;
+            }
         }
        
+    }
+
+    [ContextMenu("ScreenShake")]
+    public void ScreenShake()
+    {
+        shakeTimer = screenShakeTime;
+        shakePower = screenShakeMagnitude;
+        powerReduction = shakePower / shakeTimer;
     }
 }

@@ -255,6 +255,18 @@ public class BallMovement : MonoBehaviour //av K-J (utom där det står max)
                 rb.useGravity = false;
                 #endregion
                 break;
+            case PlayerState.UnControllable:
+                #region
+                if (Physics.Raycast(transform.position, Vector3.down, 0.52f, groundLayers))
+                {
+                    state = PlayerState.Free;
+                }
+
+                currentSpeed = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+                rb.useGravity = true;
+
+                #endregion
+                break;
         }
 
         rb.angularVelocity = new Vector3(rb.velocity.z,0f,-rb.velocity.x);//ändrar rotationSpeeden baserat på hastigheten bollen har
@@ -342,6 +354,13 @@ public class BallMovement : MonoBehaviour //av K-J (utom där det står max)
             currentSpeed.y = 0f;
         }
     }
+
+    public void BossDamaged(Vector3 bossKnockback)
+    {
+        state = PlayerState.UnControllable;
+
+        rb.velocity = bossKnockback;
+    }
     
 }
 
@@ -358,4 +377,5 @@ public enum PlayerState
     Off,
     Hub,
     End,
+    UnControllable,
 }

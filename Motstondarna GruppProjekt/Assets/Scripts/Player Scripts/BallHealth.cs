@@ -71,9 +71,10 @@ public class BallHealth : BallMovement // av K-J
     }
 
     public void TakeDamage(Vector3 knockBack,int damage)//tar bort hp och ändrar hastigheten/ "ge en knockback"
-    {
-        
+    { 
         if (invinceable) return;
+
+        CameraController.current.ScreenShake();
 
         currentSpeed = knockBack;
         if(knockBack != Vector3.zero)rb.velocity = new Vector3(currentSpeed.x, rb.velocity.y, currentSpeed.z);
@@ -84,6 +85,8 @@ public class BallHealth : BallMovement // av K-J
         if(healthPoints <= 0)
         {
             GameOver();
+            invinceable = true;
+            this.enabled = false;
         }
         else
         {
