@@ -132,6 +132,9 @@ public class BallHealth : BallMovement // av K-J
 
             
         }
-
+        else if(other.gameObject.CompareTag("ShockWave"))
+        {
+            TakeDamage(Vector3.zero, 1);
+        }
     }
 }

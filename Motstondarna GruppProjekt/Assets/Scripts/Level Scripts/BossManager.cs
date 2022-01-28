@@ -37,6 +37,8 @@ public class BossManager : MonoBehaviour
                     state = BossState.BigGuy;
 
                     print("Enemies Cleared");
+
+                    BossEnemy.current.smash = true;
                 }
                 break;
         }
