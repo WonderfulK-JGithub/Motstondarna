@@ -107,7 +107,7 @@ public class BallHealth : BallMovement // av K-J
     {
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-        SceneTransition.current.EnterScene(3);
+        SceneTransition.current.ReLoadScene();
         SoundManagerScript.PlaySound("Game Over");
 
         

@@ -6,9 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/TitleScreen.unity
+    path: Assets/Scenes/Theo/TitleScreen.unity
     guid: 4ea418bc53d13b749a84ddc7821b7aa5
   - enabled: 1
-    path: Assets/Scenes/GameOverScene.unity
+    path: Assets/Scenes/Michal/GameOverScene.unity
     guid: e1590c0b01c04a842b79af11d8f0f30e
+  - enabled: 1
+    path: Assets/Scenes/Theo/SettingsMeny.unity
+    guid: 8b02c88dfa51d0b409e748f05f81d08a
   m_configObjects: {}
