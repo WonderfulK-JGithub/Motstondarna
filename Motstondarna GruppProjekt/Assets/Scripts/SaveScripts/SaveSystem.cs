@@ -40,6 +40,7 @@ public class SaveSystem : MonoBehaviour//K-J
     void Delete()
     {
         File.Delete(dataPath);
+        print("File deleted");
     }//tar bort sparfilen
 
     //sparar och laddar binärfil på samma gammla sätt som vanligt
@@ -58,7 +59,9 @@ public class SaveSystem : MonoBehaviour//K-J
     {
         if (!File.Exists(dataPath))
         {
+            print("no file");
             return new Dictionary<string, object>();
+            
         }
         else
         {

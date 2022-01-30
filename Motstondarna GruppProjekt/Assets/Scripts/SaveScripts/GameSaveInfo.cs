@@ -6,7 +6,7 @@ public class GameSaveInfo : MonoBehaviour,ISaveable//K-J
 {
     public static GameSaveInfo current;
 
-    public static int currentLevel;
+    public static int currentLevel = -1;
 
     public int coinCount;
     public int levelProgress;
@@ -24,7 +24,6 @@ public class GameSaveInfo : MonoBehaviour,ISaveable//K-J
 
         return new SaveData
         {
-            coinCount = coinCount,
             levelProgress = levelProgress,
             coinLevelsCount = coinLevelsCount,
         };
@@ -35,7 +34,6 @@ public class GameSaveInfo : MonoBehaviour,ISaveable//K-J
     {
         var saveData = (SaveData)state;
 
-        coinCount = saveData.coinCount;
         levelProgress = saveData.levelProgress;
         coinLevelsCount = saveData.coinLevelsCount;
     }
@@ -43,7 +41,6 @@ public class GameSaveInfo : MonoBehaviour,ISaveable//K-J
     [System.Serializable]
     struct SaveData //Spardata
     {
-        public int coinCount;
         public int levelProgress;
         public int[] coinLevelsCount;
     }
