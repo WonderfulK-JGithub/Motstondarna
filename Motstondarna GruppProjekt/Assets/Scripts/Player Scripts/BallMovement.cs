@@ -75,6 +75,8 @@ public class BallMovement : MonoBehaviour //av K-J (utom där det står max)
             ballUI.SetActive(false);
 
         }
+
+        
         
     }
 
@@ -93,6 +95,11 @@ public class BallMovement : MonoBehaviour //av K-J (utom där det står max)
 
                 noInput = inputX == 0 && inputZ == 0;//variabel som kollar om man tryckt åt något håll alls
 
+                if(inputX != 0 && inputZ != 0)
+                {
+                    inputX *= Mathf.Sqrt(0.5f);
+                    inputZ *= Mathf.Sqrt(0.5f);
+                }
                 
                 //Den speed som bollen ska accelerera mot
                 targetSpeed = new Vector3(inputX * topSpeed * orientationTransform.right.x + inputZ * topSpeed * orientationTransform.forward.x, 0f, inputX * topSpeed * orientationTransform.right.z + inputZ * topSpeed * orientationTransform.forward.z);
@@ -264,6 +271,7 @@ public class BallMovement : MonoBehaviour //av K-J (utom där det står max)
 
                 currentSpeed = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
                 rb.useGravity = true;
+                rb.velocity += new Vector3(0f, Physics.gravity.y * (extraGravityFactor - 1) * Time.fixedDeltaTime, 0f);
 
                 #endregion
                 break;

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -985,7 +985,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8476f0bf4f0d1d94b82b0abb5e191644, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bossKnockback: {x: 0, y: 12, z: -20}
+  bossKnockback: {x: 0, y: 50, z: -25}
   shockWavePrefab: {fileID: 1151621369967864743, guid: 0d572914e332deb42b2c4252753b3d1f, type: 3}
   leftShockWavePos: {x: 5, y: -4.5, z: 54}
   rightShockWavePos: {x: -5, y: -4.5, z: 54}

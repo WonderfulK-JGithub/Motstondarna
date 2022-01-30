@@ -153,8 +153,6 @@ public class LevelSelectManager : MonoBehaviour
         state = LevelSelectState.Unlocking;
         unlockedLevel = level;
 
-        print(level);
-
         cam.targetPoint = levelCameraPoints[level];
         unlockTimer = unlockTime;
     }
