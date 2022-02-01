@@ -28,11 +28,6 @@ public class SoundManagerScript : MonoBehaviour
 
         audioSrc = GetComponent<AudioSource>();
     }
-    void Update()
-    {
-
-    }
-
     public static void PlaySound(string clip) //Använder clip string value som en paramiter där den parar ihop "AmbientWind" med korrekt ljudfil /Theo
     {
         switch (clip)
