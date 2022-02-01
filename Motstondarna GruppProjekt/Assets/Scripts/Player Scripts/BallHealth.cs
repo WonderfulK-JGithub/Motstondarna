@@ -13,6 +13,7 @@ public class BallHealth : BallMovement // av K-J
 
     [SerializeField] Image healthImage;
     [SerializeField] Sprite[] healthSprites;
+    [SerializeField] Animator healthImageAnim;
 
     public Color invinceColor;//vilken färg man har när man är odödlig (ändras av en animation som bollen har)
     Color defaultColor;
@@ -82,6 +83,8 @@ public class BallHealth : BallMovement // av K-J
         healthPoints -= damage;
         NewHealth();
 
+        healthImageAnim.Play("HP_Image_Hurt");
+
         if(healthPoints <= 0)
         {
             GameOver();
@@ -127,8 +130,6 @@ public class BallHealth : BallMovement // av K-J
             Destroy(other.gameObject);
 
             SoundManagerScript.PlaySound("PowerUp");
-
-            PlayerPrefs.SetInt("score", score);
 
             
         }

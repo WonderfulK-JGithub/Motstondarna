@@ -7,6 +7,9 @@ public class LevelSelectManager : MonoBehaviour
 {
     [SerializeField] Transform[] levelCameraPoints;
     [SerializeField] TextMeshProUGUI[] levelNumbers;
+    [SerializeField] TextMeshProUGUI coinCountText;
+    [SerializeField] TextMeshProUGUI[] levelCoinCountTexts;
+
     [SerializeField] Transform ball;
     [SerializeField] Vector3 ballOffsett;
 
@@ -69,6 +72,14 @@ public class LevelSelectManager : MonoBehaviour
             levelProgress++;
 
             UnlockLevel(levelProgress);
+        }
+
+        coinCountText.text = GameSaveInfo.current.coinCount.ToString();
+
+        for (int i = 0; i < GameSaveInfo.current.coinLevelsCount.Length; i++)
+        {
+
+            levelCoinCountTexts[i].text = GameSaveInfo.current.coinLevelsCount[i].ToString() + "/10";
         }
     }
 

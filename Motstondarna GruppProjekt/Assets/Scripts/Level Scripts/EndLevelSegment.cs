@@ -30,6 +30,7 @@ public class EndLevelSegment : MonoBehaviour
                 {
                     if(item.isCollected)
                     {
+                        if (!item.isStored) GameSaveInfo.current.coinCount++;
                         item.isStored = true;
                         
                     }

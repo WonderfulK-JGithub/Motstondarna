@@ -62,12 +62,6 @@ public class CollectableCoin : MonoBehaviour, ISaveable//K-J
 
     public void CollectCoin()//när man nuddar myntet
     {
-        if(!isStored)
-        {
-            BallHealth.current.score++;
-        }
-
-
         rend.enabled = false;
         col.enabled = false;
 

@@ -41,11 +41,8 @@ public class BallMovement : MonoBehaviour //av K-J (utom där det står max)
     [Header("Other")]
     [SerializeField] ParticleSystem chargeParticle;//referense till partiklesystemet som sätts på när man håller in dashknappen
     [SerializeField] float slideExtraGravity;//hur mycket gånger mer gravitation man ska ha när man åker i en slide(ränna)
-    [SerializeField] TextMeshProUGUI scoreText;//reference till score texten
     [SerializeField] bool inHub;
     [SerializeField] GameObject ballUI;
-
-    public int score;
 
     bool onGround;
     bool onSlippary;
@@ -66,7 +63,6 @@ public class BallMovement : MonoBehaviour //av K-J (utom där det står max)
     public virtual void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        scoreText.text = "";
 
 
         if(inHub)
@@ -336,8 +332,6 @@ public class BallMovement : MonoBehaviour //av K-J (utom där det står max)
         }
         else if(other.gameObject.CompareTag("Coin"))
         {
-            score++;
-            scoreText.text = score.ToString();
 
             other.gameObject.GetComponent<CollectableCoin>().CollectCoin();
 
