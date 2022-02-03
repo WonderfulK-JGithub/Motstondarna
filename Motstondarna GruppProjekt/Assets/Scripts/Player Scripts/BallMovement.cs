@@ -184,7 +184,7 @@ public class BallMovement : MonoBehaviour //av K-J (utom där det står max)
         {
             case PlayerState.Free:
                 #region
-                if (Physics.Raycast(transform.position, Vector3.down, 0.52f, groundLayers))
+                if (Physics.Raycast(transform.position, Vector3.down, 0.60f, groundLayers))
                 {
                     onGround = true;
                     canDash = true;

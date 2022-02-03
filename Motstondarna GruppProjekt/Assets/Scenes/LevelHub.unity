@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.4513592, g: 0.5009369, b: 0.5727685, a: 1}
+  m_IndirectSpecularColor: {r: 0.45135915, g: 0.5009363, b: 0.57276773, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -785,7 +785,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 274d0ddefac44e241ac37ed0280faa6d, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2134,10 +2134,8 @@ MonoBehaviour:
   dashTrail: {fileID: 2667104023877951565}
   chargeParticle: {fileID: 577211305022748965}
   slideExtraGravity: 3
-  scoreText: {fileID: 1858425600491688583}
   inHub: 1
   ballUI: {fileID: 5545703571860970947}
-  score: 0
   currentSpeed: {x: 0, y: 0, z: 0}
   rb: {fileID: 0}
   state: 0
@@ -2149,6 +2147,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 51a4b791be079034eb7b9e387c675f3d, type: 3}
   - {fileID: 21300000, guid: d9e381f51a6084e44a060cbf4de194f4, type: 3}
   - {fileID: 21300000, guid: c7d69b6a37a7b1b4f8b85dd9ce266cde, type: 3}
+  healthImageAnim: {fileID: 0}
   invinceColor: {r: 0, g: 0, b: 0, a: 0}
   rend: {fileID: 3086749107515061019}
 --- !u!1 &1366039238
