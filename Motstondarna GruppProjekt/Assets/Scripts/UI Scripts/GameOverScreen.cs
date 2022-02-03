@@ -16,7 +16,7 @@ public class GameOverScreen : MonoBehaviour
     {
         print("setup");
         gameObject.SetActive(true);
-        pointsText.text = score.ToString() + " POÄNG";
+        pointsText.text = score.ToString() + " POINTS"; // Visar "(poäng) POÄNG"
     }
     public void RestartButton() // Buton till starta om spelet
     {
