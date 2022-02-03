@@ -40,6 +40,8 @@ public class BaseEnemy : MonoBehaviour
     //Den här funktionen callas både om spelaren collidar med en collider eller en trigger - Max
     void OnAnyCollisionEnter(Collider other, Collision collision = null)
     {
+        if (hasDied) return;
+
         BallMovement ball = other.transform.GetComponent<BallMovement>();
 
         if (ball != null) //Kollar om det är spelaren man collidat med - Max
@@ -112,7 +114,6 @@ public class BaseEnemy : MonoBehaviour
         hasDied = true; //Så att man inte kan dö flera gånger - Max
 
         SoundManagerScript.PlaySound("KägglaDamage"); //Ljudeffekt - Max
-        AdvancedAudioManager.current.PlayUnderLimit(AdvancedAudioManager.current.audioClips[(int)AUDIO.PIN],10);
         if(deathParticle != null)
             SpawnParticles(); //Spawnar particles - Max
     }

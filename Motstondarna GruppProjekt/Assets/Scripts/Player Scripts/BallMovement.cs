@@ -34,7 +34,10 @@ public class BallMovement : MonoBehaviour //av K-J (utom där det står max)
     
     [Header("Dashing")]
     [SerializeField] float dashTime;//hur länge man är fast i dashen
+    [SerializeField] float dashHoldTime;
     [SerializeField] GameObject dashTrail;//referense till trailobjektet
+    [SerializeField] Color dashBarColor;
+
 
     float dashTimer;
 
@@ -132,6 +135,7 @@ public class BallMovement : MonoBehaviour //av K-J (utom där det står max)
                     state = PlayerState.ChargeDash;//ändrar state
                     chargeParticle.Play();//Sätter igång particles
                     canDash = false;//gör att man inte kan dasha (föräns variabeln blir true igen)
+                    dashTimer = dashHoldTime;
 
                     rb.useGravity = false;//stänger av gravitation
 
@@ -159,6 +163,15 @@ public class BallMovement : MonoBehaviour //av K-J (utom där det står max)
                     dashTimer = dashTime;
 
                     dashTrail.SetActive(true);
+                }
+                else
+                {
+                    dashTimer -= Time.deltaTime;
+                    if(dashTimer <= 0)
+                    {
+                        state = PlayerState.Free;
+                        chargeParticle.Stop();
+                    }
                 }
                 #endregion
                 break;
@@ -277,9 +290,18 @@ public class BallMovement : MonoBehaviour //av K-J (utom där det står max)
 
         float _value = new Vector3(rb.velocity.x,0f,rb.velocity.z).magnitude / (topSpeed * 0.95f);//_value är mellan 0 och 1 och är hur mycket procent av topspeed man har
 
-        speedBar.value = Mathf.Lerp(speedBar.value,_value,0.3f);//ändrar valuen på slidern så att baren fylls upp
+        if(state == PlayerState.ChargeDash)
+        {
+            speedBar.value = dashTimer / dashHoldTime;
 
-        fillImage.color = speedColors.Evaluate(_value);//ändar färgen på baren baserat på om man har tillräckligt med fart(för att döda käglor) med hjälp av en gradient
+            fillImage.color = dashBarColor;
+        }
+        else
+        {
+            speedBar.value = Mathf.Lerp(speedBar.value, _value, 0.3f);//ändrar valuen på slidern så att baren fylls upp
+
+            fillImage.color = speedColors.Evaluate(_value);//ändar färgen på baren baserat på om man har tillräckligt med fart(för att döda käglor) med hjälp av en gradient
+        }
 
         //Kollar bollens hastighet och ändrar vissa bowling pins till 
         //triggers så att det ser bättre ut när man får en strike - Max 

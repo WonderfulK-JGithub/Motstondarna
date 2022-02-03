@@ -5019,7 +5019,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   dashTime: 0.4
+  dashHoldTime: 3
   dashTrail: {fileID: 2667104024554036990}
+  dashBarColor: {r: 0.32685232, g: 0, b: 1, a: 1}
   chargeParticle: {fileID: 577211304363952022}
   slideExtraGravity: 3
   inHub: 0

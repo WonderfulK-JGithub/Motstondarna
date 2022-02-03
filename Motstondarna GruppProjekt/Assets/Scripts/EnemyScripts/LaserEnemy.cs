@@ -120,6 +120,8 @@ public class LaserEnemy : MonoBehaviour
                 else
                 {
                     UpdateLaserScale(laserMaxDistance, i);
+
+                    laserDust[i].transform.position = new Vector3(69f, 420f, 1337f);
                 }
             }
 
