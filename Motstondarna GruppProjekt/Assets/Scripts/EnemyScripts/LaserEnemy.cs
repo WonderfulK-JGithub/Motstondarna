@@ -46,6 +46,8 @@ public class LaserEnemy : MonoBehaviour
 
     Animator anim;
 
+    AudioSource currentSound;
+
     private void Awake()
     {
         wanderingScript = GetComponent<WanderingEnemy>();
@@ -192,8 +194,8 @@ public class LaserEnemy : MonoBehaviour
         alerted = false;
 
         //Ljudeffekt
-        SoundManagerScript.PlaySound("LaserÖgon");
-
+        //SoundManagerScript.PlaySound("LaserÖgon");
+        currentSound = AdvancedAudioManager.current.PlayLoopedSound(AdvancedAudioManager.current.audioClips[(int)AUDIO.LASER]);
 
         //Spawnar lasrar på båda ögonen - Max
         for (int i = 0; i <= 1; i++)
@@ -217,6 +219,12 @@ public class LaserEnemy : MonoBehaviour
         {
             Destroy(activeLasers[i]);
             laserDust[i].SetActive(false);
+        }
+
+        if(currentSound != null)
+        {
+            Destroy(currentSound.gameObject);
+            currentSound = null;
         }
 
         anim.Play("Walking");
