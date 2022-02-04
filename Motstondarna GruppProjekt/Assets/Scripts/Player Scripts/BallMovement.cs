@@ -54,7 +54,7 @@ public class BallMovement : MonoBehaviour //av K-J (utom där det står max)
 
     bool noInput;
 
-    bool aboveKillSpeed = false; //För att se om spelaren åker tillräckligt snabbt för att döda en simple bowling pin - Max
+    public bool aboveKillSpeed = false; //För att se om spelaren åker tillräckligt snabbt för att döda en simple bowling pin - Max
 
     public Vector3 currentSpeed;
 
