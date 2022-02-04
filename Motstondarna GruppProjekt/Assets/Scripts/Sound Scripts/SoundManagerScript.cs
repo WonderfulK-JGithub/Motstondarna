@@ -12,19 +12,20 @@ public class SoundManagerScript : MonoBehaviour
         AmbientWind = Resources.Load<AudioClip>("AmbientWind");
         Checkpoint = Resources.Load<AudioClip>("Checkoint");
         Click = Resources.Load<AudioClip>("Click");
-        Dash = Resources.Load<AudioClip>("Dash");
-        JumpPad = Resources.Load<AudioClip>("JumpPad");
+        Dash = Resources.Load<AudioClip>("Dash2");
+        JumpPad = Resources.Load<AudioClip>("JumpPad2");
         K‰gglaDamage = Resources.Load<AudioClip>("BowlingPin");
         Landa = Resources.Load<AudioClip>("Landa");
         PowerUp = Resources.Load<AudioClip>("PowerUp");
         Rolling = Resources.Load<AudioClip>("Rolling");
         R‰nna = Resources.Load<AudioClip>("R‰nna");
-        Skada = Resources.Load<AudioClip>("Skada");
+        Skada = Resources.Load<AudioClip>("PlayerDamage");
         Laser÷gon = Resources.Load<AudioClip>("Laser÷gon");
         RocketFiende = Resources.Load<AudioClip>("RocketFiende");
         Coins = Resources.Load<AudioClip>("Coins");
         Hoppa = Resources.Load<AudioClip>("Hoppa");
         GameOver = Resources.Load<AudioClip>("Game Over");
+        
 
         audioSrc = GetComponent<AudioSource>();
     }

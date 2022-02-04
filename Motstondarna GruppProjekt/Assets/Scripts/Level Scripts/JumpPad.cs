@@ -12,6 +12,8 @@ public class JumpPad : MonoBehaviour
             rb.velocity += transform.up * strength; // skjuter upp objektet i luften - Anton
 
             GetComponentInChildren<Animator>().Play("jumppad"); //Animation - Max
+
+            SoundManagerScript.PlaySound("JumpPad");
         }
     }
 }

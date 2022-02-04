@@ -95,6 +95,7 @@ public class BallHealth : BallMovement // av K-J
         {
             invinceTimer = invinceTime;
             invinceable = true;
+            SoundManagerScript.PlaySound("Skada");
         }
     }
 

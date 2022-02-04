@@ -376,6 +376,15 @@ public class BallMovement : MonoBehaviour //av K-J (utom där det står max)
         }
     }
 
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.CompareTag("Ränna") && state == PlayerState.Free)
+        {
+            state = PlayerState.Renn;
+            
+        }
+    }
+
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.CompareTag("Ränna"))
