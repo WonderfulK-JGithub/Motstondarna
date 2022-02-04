@@ -48,9 +48,14 @@ public class BossEnemy : MonoBehaviour
     {
         if(collision.gameObject.CompareTag("Player"))
         {
-            BallHealth.current.BossDamaged(bossKnockback);
-            BossManager.current.BossDamaged();
-            smash = false;
+            BallHealth ballHD = collision.gameObject.GetComponent<BallHealth>();
+
+            if(ballHD.aboveKillSpeed)
+            {
+                BallHealth.current.BossDamaged(bossKnockback);
+                BossManager.current.BossDamaged();
+                smash = false;
+            }
         }
     }
 }

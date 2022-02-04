@@ -110,7 +110,10 @@ public class CameraController : MonoBehaviour// av K-J
                 shakePower -= powerReduction * Time.fixedDeltaTime;
             }
         }
-       
+        else
+        {
+            transform.localEulerAngles = new Vector3(target.transform.localEulerAngles.x, target.transform.localEulerAngles.y, target.transform.localEulerAngles.z);//ändrar rotationen på transformen
+        }
     }
 
     [ContextMenu("ScreenShake")]
