@@ -215,11 +215,18 @@ public class BallMovement : MonoBehaviour //av K-J (utom där det står max)
                     onSlippary = false;
                 }
 
-                
 
-                float accModifier = Vector3.Angle(targetSpeed.normalized, currentSpeed.normalized) <= 90f ? 1f : extraAccelerationFactor;//är vinkeln mellan vectorerna av den nuvarnade hastigheten och target hastigheten mer än 90 grader räknar jag det som tvärsvägning
-
-                
+                //är vinkeln mellan vectorerna av den nuvarnade hastigheten och target hastigheten mer än 90 grader räknar jag det som tvärsvägning
+                //det ska även bli extra acceleration om spelaren är över top hastigheten
+                float accModifier = 1f;
+                if(currentSpeed.magnitude > topSpeed)
+                {
+                    accModifier = extraAccelerationFactor * 2f;
+                }
+                else if(Vector3.Angle(targetSpeed.normalized, currentSpeed.normalized) > 90f)
+                {
+                    accModifier = extraAccelerationFactor;
+                }
 
                 if ((onGround && !onSlippary) || !noInput)//Är man i luften eller på halt golv OCH inte trycker åt något håll behåller man den hastighet man hade
                 {
