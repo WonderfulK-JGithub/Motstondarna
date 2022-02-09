@@ -28,8 +28,6 @@ public class LevelSelectManager : MonoBehaviour
 
     int unlockedLevel = -1;
 
-    public int levelProgress;
-
     bool hasSelected;
 
     float unlockTimer;
@@ -47,38 +45,14 @@ public class LevelSelectManager : MonoBehaviour
     {
         state = LevelSelectState.Selecting;
 
-        GameSaveInfo.currentLevel = 0;
-        levelProgress = GameSaveInfo.current.levelProgress;
+        if (GameSaveInfo.currentLevel != -1) levelIndex = GameSaveInfo.currentLevel;
 
-        for (int i = 0; i < levelNumbers.Length; i++)
-        {
-            if (i < levelProgress)
-            {
-                levelNumbers[i].color = finishedColor;
-            }
-            else if (i == levelProgress)
-            {
-                levelNumbers[i].color = unlockedColor;
-            }
-            else
-            {
-                levelNumbers[i].color = lockedColor;
-            }
-        }
-
-        if (GameSaveInfo.currentLevel != -1 && levelProgress == GameSaveInfo.currentLevel)
-        {
-            GameSaveInfo.current.levelProgress++;
-            levelProgress++;
-
-            UnlockLevel(levelProgress);
-        }
+        ProgressCheck();
 
         coinCountText.text = GameSaveInfo.current.coinCount.ToString();
 
         for (int i = 0; i < GameSaveInfo.current.coinLevelsCount.Length; i++)
         {
-
             levelCoinCountTexts[i].text = GameSaveInfo.current.coinLevelsCount[i].ToString() + "/10";
         }
     }
@@ -108,7 +82,7 @@ public class LevelSelectManager : MonoBehaviour
 
                 if (Input.GetKeyDown(KeyCode.Return))
                 {
-                    if (levelIndex <= levelProgress)
+                    if (levelIndex <= GameSaveInfo.current.levelProgress)
                     {
                         LevelSelected();
                     }
@@ -116,7 +90,7 @@ public class LevelSelectManager : MonoBehaviour
                 #endregion
                 break;
             case LevelSelectState.Unlocking:
-
+                #region
                 unlockTimer -= Time.deltaTime;
 
                 if(unlockTimer <= 0f)
@@ -131,8 +105,9 @@ public class LevelSelectManager : MonoBehaviour
                 {
                     levelNumbers[unlockedLevel].transform.localRotation *= Quaternion.Euler(0f, rotateSpeed * Time.deltaTime * 10f, 0f);
                 }
-
+                #endregion
                 break;
+
         }
     }
 
@@ -154,9 +129,37 @@ public class LevelSelectManager : MonoBehaviour
 
     void EnterLevel()
     {
-        SceneTransition.current.EnterScene(levelIndex + 0);
+        SceneTransition.current.EnterScene(levelIndex + GameSaveInfo.levelStartIndex);
     }
     
+    void ProgressCheck()
+    {
+
+        for (int i = 0; i < levelNumbers.Length; i++)
+        {
+            if (i < GameSaveInfo.current.levelProgress)
+            {
+                levelNumbers[i].color = finishedColor;
+            }
+            else if (i == GameSaveInfo.current.levelProgress)
+            {
+                levelNumbers[i].color = unlockedColor;
+            }
+            else
+            {
+                levelNumbers[i].color = lockedColor;
+            }
+        }
+
+        if (GameSaveInfo.currentLevel != -1 && GameSaveInfo.current.levelProgress == GameSaveInfo.currentLevel)
+        {
+            GameSaveInfo.current.levelProgress++;
+
+            UnlockLevel(GameSaveInfo.current.levelProgress);
+        }
+
+        GameSaveInfo.currentLevel = -1;
+    }
     void UnlockLevel(int level)
     {
         levelNumbers[level-1].color = finishedColor;

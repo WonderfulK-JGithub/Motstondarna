@@ -40,6 +40,13 @@ public class PlatformMovement : MonoBehaviour
 
         for (int i = 0; i < objectsOnPlatform.Count; i++)
         {
+            if (objectsOnPlatform[i] == null)
+            {
+                print("When the imposter is sus, whoaoh, Yeah Yeah");
+                objectsOnPlatform.RemoveAt(i);
+                i--;
+                continue;
+            }
             objectsOnPlatform[i].position -= difference; // detta flyttar alla objekt som är på plattan - Anton
         }
 

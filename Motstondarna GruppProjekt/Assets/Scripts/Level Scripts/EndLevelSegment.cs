@@ -24,29 +24,36 @@ public class EndLevelSegment : MonoBehaviour
             if (goldenPins.Count == 0)
             {
                 levelEnded = true;
-
-                int i = 0;
-                foreach (var item in FindObjectsOfType<CollectableCoin>())
-                {
-                    if(item.isCollected)
-                    {
-                        if (!item.isStored) GameSaveInfo.current.coinCount++;
-                        item.isStored = true;
-                        
-                    }
-                    if(item.isStored) i++;
-
-                    item.isCollected = false;
-                }
-
-                GameSaveInfo.current.coinLevelsCount[GameSaveInfo.currentLevel] = i;
-
-                SaveSystem.current.Save();
-                PlayerPrefs.SetInt("progress", 0);
-
-
-                SceneTransition.current.ReLoadScene();
+                EndLevel();
             }
         }
+    }
+
+    void EndLevel()
+    {
+        int i = 0;
+        foreach (var item in FindObjectsOfType<CollectableCoin>())
+        {
+            if (item.isCollected)
+            {
+                if (!item.isStored) GameSaveInfo.current.coinCount++;
+                item.isStored = true;
+
+            }
+            if (item.isStored) i++;
+
+            item.isCollected = false;
+        }
+
+        GameSaveInfo.currentLevel = SceneTransition.current.GetSceneIndex() - GameSaveInfo.levelStartIndex;
+
+        GameSaveInfo.current.coinLevelsCount[GameSaveInfo.currentLevel] = i;
+
+        SaveSystem.current.Save();
+        PlayerPrefs.SetInt("progress", 0);
+
+
+        //SceneTransition.current.ReLoadScene();
+        SceneTransition.current.EnterScene(3);
     }
 }

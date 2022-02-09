@@ -7,6 +7,7 @@ public class GameSaveInfo : MonoBehaviour,ISaveable//K-J
     public static GameSaveInfo current;
 
     public static int currentLevel = -1;
+    public const int levelStartIndex = 4;
 
     public int coinCount;
     public int levelProgress;

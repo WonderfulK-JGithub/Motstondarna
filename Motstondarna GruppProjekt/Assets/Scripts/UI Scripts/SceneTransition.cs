@@ -28,6 +28,11 @@ public class SceneTransition : MonoBehaviour
         anim.Play("SceneTransition_Exit");
     }
 
+    public int GetSceneIndex()
+    {
+        return SceneManager.GetActiveScene().buildIndex;
+    }
+
 
     void LoadScene()
     {
