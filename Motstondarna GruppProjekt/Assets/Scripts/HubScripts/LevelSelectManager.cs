@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class LevelSelectManager : MonoBehaviour
 {
@@ -21,6 +22,10 @@ public class LevelSelectManager : MonoBehaviour
     [SerializeField] float transitionWait;
     [SerializeField] float unlockTime;
     [SerializeField] ParticleSystem unlockPS;
+
+    [Header("Bonus Level")]
+    [SerializeField] TextMeshProUGUI needText;
+    [SerializeField] Image needCoinImage;
 
     HubCamera cam;
 
@@ -48,6 +53,12 @@ public class LevelSelectManager : MonoBehaviour
         if (GameSaveInfo.currentLevel != -1) levelIndex = GameSaveInfo.currentLevel;
 
         ProgressCheck();
+
+        if(GameSaveInfo.current.coinCount == 50)
+        {
+            needCoinImage.enabled = false;
+            needText.enabled = false;
+        }
 
         coinCountText.text = GameSaveInfo.current.coinCount.ToString();
 
@@ -84,6 +95,7 @@ public class LevelSelectManager : MonoBehaviour
                 {
                     if (levelIndex <= GameSaveInfo.current.levelProgress)
                     {
+                        if (levelIndex == 5 && GameSaveInfo.current.coinCount < 50) return;
                         LevelSelected();
                     }
                 }
@@ -151,7 +163,14 @@ public class LevelSelectManager : MonoBehaviour
             {
                 levelNumbers[i].color = lockedColor;
             }
+
+            if(i == 5 && GameSaveInfo.current.coinCount < 50)
+            {
+                levelNumbers[i].color = lockedColor;
+            }
         }
+
+        
 
         if (GameSaveInfo.currentLevel != -1 && GameSaveInfo.current.levelProgress == GameSaveInfo.currentLevel)
         {

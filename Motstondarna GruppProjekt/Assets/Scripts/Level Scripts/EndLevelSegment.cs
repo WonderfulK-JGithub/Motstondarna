@@ -47,9 +47,17 @@ public class EndLevelSegment : MonoBehaviour
 
         GameSaveInfo.currentLevel = SceneTransition.current.GetSceneIndex() - GameSaveInfo.levelStartIndex;
 
-        GameSaveInfo.current.coinLevelsCount[GameSaveInfo.currentLevel] = i;
+        if(GameSaveInfo.currentLevel < 5)
+        {
+            GameSaveInfo.current.coinLevelsCount[GameSaveInfo.currentLevel] = i;
+        }
+        else
+        {
+            GameSaveInfo.current.levelProgress = 5;
+        }
 
         SaveSystem.current.Save();
+
         PlayerPrefs.SetInt("progress", 0);
 
 
