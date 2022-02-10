@@ -100,6 +100,8 @@ public class LevelSelectManager : MonoBehaviour
                     unlockPS.Play();
                     state = LevelSelectState.Selecting;
                     levelIndex = unlockedLevel;
+
+                    SaveSystem.current.Save();
                 }
                 else
                 {

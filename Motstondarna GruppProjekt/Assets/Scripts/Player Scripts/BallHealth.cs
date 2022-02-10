@@ -10,10 +10,14 @@ public class BallHealth : BallMovement // av K-J
     [Header("Health")]
     [SerializeField] int maxHealth;
     [SerializeField] float invinceTime;//hur länge man är odödlig efter att man blivit skadad av en käggla
+    [SerializeField] float deathTime;//hur mycket scenetransitionen är delayed när man är död
 
     [SerializeField] Image healthImage;
     [SerializeField] Sprite[] healthSprites;
     [SerializeField] Animator healthImageAnim;
+    [SerializeField] ParticleSystem waterSplashPS;
+
+    public float lowestLevel = -4;
 
     public Color invinceColor;//vilken färg man har när man är odödlig (ändras av en animation som bollen har)
     Color defaultColor;
@@ -69,6 +73,11 @@ public class BallHealth : BallMovement // av K-J
         {
             TakeDamage(Vector3.zero, 1);
         }
+
+        if (transform.position.y < lowestLevel) // om man är under lowestLevel - Anton
+        {
+            GameOver();
+        }
     }
 
     public void TakeDamage(Vector3 knockBack,int damage)//tar bort hp och ändrar hastigheten/ "ge en knockback"
@@ -109,14 +118,22 @@ public class BallHealth : BallMovement // av K-J
 
     public void GameOver()
     {
+        enabled = false;
+
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-        SceneTransition.current.ReLoadScene();
-        SoundManagerScript.PlaySound("Game Over");
-
         
+        SoundManagerScript.PlaySound("Game Over");
+        CameraController.current.enabled = false;
+
+        Invoke("Transition", deathTime);
         Pause.gamePaused = true;
         FindObjectOfType<Pause>().enabled = false;
+    }
+
+    void Transition()
+    {
+        SceneTransition.current.ReLoadScene();
     }
 
     private new void OnTriggerEnter(Collider other)
@@ -137,6 +154,19 @@ public class BallHealth : BallMovement // av K-J
         else if(other.gameObject.CompareTag("ShockWave"))
         {
             TakeDamage(Vector3.zero, 1);
+        }
+        else if(other.gameObject.CompareTag("Water"))
+        {
+            //SoundManagerScript.PlaySound("WaterSplash");
+
+            //waterSplashPS.Play();
+            //waterSplashPS.transform.position = transform.position;
+
+            GameOver();
+        }
+        else if(other.gameObject.CompareTag("Lava"))
+        {
+
         }
     }
 }
