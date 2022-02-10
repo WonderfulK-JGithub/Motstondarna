@@ -56,6 +56,7 @@ MonoBehaviour:
   hasDied: 0
   rb: {fileID: 0}
   deathParticle: {fileID: 0}
+  waterSplashPS: {fileID: 1891877849658848471, guid: c29469f0ab8a53448af5ca30a50efae1, type: 3}
 --- !u!33 &2729302447243454646
 MeshFilter:
   m_ObjectHideFlags: 0

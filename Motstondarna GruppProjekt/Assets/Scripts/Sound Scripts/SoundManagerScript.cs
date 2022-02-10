@@ -4,7 +4,7 @@ using UnityEngine;
 //Theo
 public class SoundManagerScript : MonoBehaviour
 {
-    public static AudioClip AmbientWind, Checkpoint, Click, Dash, JumpPad, K‰gglaDamage, Landa, PowerUp, Rolling, R‰nna, Skada, Laser÷gon, RocketFiende, Coins, Hoppa,GameOver; //Definerar audiclippen /Theo
+    public static AudioClip AmbientWind, Checkpoint, Click, Dash, JumpPad, K‰gglaDamage, Landa, PowerUp, Rolling, R‰nna, Skada, Laser÷gon, RocketFiende, Coins, Hoppa,GameOver,WaterSplash,LavaBurn; //Definerar audiclippen /Theo
     static AudioSource audioSrc;
 
     void Start() //Parar ihop r‰tt variebel med motsvarande ljudfil
@@ -25,7 +25,8 @@ public class SoundManagerScript : MonoBehaviour
         Coins = Resources.Load<AudioClip>("Coins");
         Hoppa = Resources.Load<AudioClip>("Hoppa");
         GameOver = Resources.Load<AudioClip>("Game Over");
-        
+        WaterSplash = Resources.Load<AudioClip>("WaterSplash");
+
 
         audioSrc = GetComponent<AudioSource>();
     }
@@ -80,6 +81,9 @@ public class SoundManagerScript : MonoBehaviour
                 break;
             case "Game Over":
                 audioSrc.PlayOneShot(GameOver);
+                break;
+            case "WaterSplash":
+                audioSrc.PlayOneShot(WaterSplash);
                 break;
         }
     }

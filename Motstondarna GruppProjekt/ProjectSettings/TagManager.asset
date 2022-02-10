@@ -9,6 +9,8 @@ TagManager:
   - SimpleBowlingPin
   - Heart
   - ShockWave
+  - Water
+  - Lava
   layers:
   - Default
   - TransparentFX
