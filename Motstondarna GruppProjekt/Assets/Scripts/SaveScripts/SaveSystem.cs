@@ -14,10 +14,7 @@ public class SaveSystem : MonoBehaviour//K-J
     {
         dataPath = Application.persistentDataPath + "/bowlingSave.txt";
         current = this;
-    }
 
-    private void Start()
-    {
         Load();//laddar myntens data vid start av banan
     }
 
