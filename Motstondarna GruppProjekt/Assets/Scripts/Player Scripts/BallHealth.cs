@@ -164,9 +164,5 @@ public class BallHealth : BallMovement // av K-J
 
             GameOver();
         }
-        else if(other.gameObject.CompareTag("Lava"))
-        {
-
-        }
     }
 }
