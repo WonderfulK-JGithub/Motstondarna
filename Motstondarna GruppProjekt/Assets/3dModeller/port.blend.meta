@@ -1,77 +1,8 @@
 fileFormatVersion: 2
-guid: a883f987b1f1812458f7d4e86fa63362
+guid: aff221c1140b7c343adc10394bbf0f46
 ModelImporter:
   serializedVersion: 20200
-  internalIDToNameTable:
-  - first:
-      74: -7597983235715544647
-    second: Armature|Armature.001Action.001
-  - first:
-      74: 4781951162920444690
-    second: Armature|ArmatureAction
-  - first:
-      74: 7026222156141547930
-    second: Armature|Plane.001Action.001
-  - first:
-      74: -8434355280063164500
-    second: Armature|Plane.002Action
-  - first:
-      74: 6767156099390128960
-    second: Armature|Plane.004Action
-  - first:
-      74: -5784005261616917065
-    second: Armature.001|Armature.001Action.001
-  - first:
-      74: -960898424075949690
-    second: Armature.001|ArmatureAction
-  - first:
-      74: 4785705945719673406
-    second: Armature.001|Plane.001Action.001
-  - first:
-      74: 3171211008697608905
-    second: Armature.001|Plane.002Action
-  - first:
-      74: -2140620872576521243
-    second: Armature.001|Plane.004Action
-  - first:
-      74: -894896622507537408
-    second: Armature.003|Armature.002Action
-  - first:
-      74: 8645343760740499401
-    second: Armature.003|Armature.003Action
-  - first:
-      74: 2695772432341665292
-    second: Armature.003|Plane.001Action.001
-  - first:
-      74: -405951551705346573
-    second: Armature.003|Plane.002Action
-  - first:
-      74: -6713198076506928574
-    second: Armature.003|Plane.004Action
-  - first:
-      74: 5138602965388526686
-    second: Armature.002|Armature.002Action
-  - first:
-      74: -5505715565960345857
-    second: Armature.002|Armature.003Action
-  - first:
-      74: -5493810874143999654
-    second: Armature.002|Plane.001Action.001
-  - first:
-      74: 1636473622485001273
-    second: Armature.002|Plane.002Action
-  - first:
-      74: 5950371053090060706
-    second: Armature.002|Plane.004Action
-  - first:
-      74: 4541415141716747528
-    second: Armature.005|Plane.001Action.001
-  - first:
-      74: 2962349237320715038
-    second: Armature.005|Plane.002Action
-  - first:
-      74: -1856944593213976377
-    second: Armature.005|Plane.004Action
+  internalIDToNameTable: []
   externalObjects: {}
   materials:
     materialImportMode: 2

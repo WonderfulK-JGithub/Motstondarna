@@ -5,11 +5,13 @@ using UnityEngine;
 public class WaterBehavior : MonoBehaviour
 {
     [SerializeField] GameObject waterSplashPS;
+    [SerializeField] float mogusDrip = 69f;
 
     private void OnTriggerEnter(Collider other)
     {
-        SoundManagerScript.PlaySound("WaterSplash");
-        Destroy(Instantiate(waterSplashPS, other.transform.position, Quaternion.identity), 5f);
+        if(mogusDrip == 69f)SoundManagerScript.PlaySound("WaterSplash");
+        else SoundManagerScript.PlaySound("LavaSplash");
+        Destroy(Instantiate(waterSplashPS, other.transform.position, Quaternion.Euler(-90f,0f,0f)), 5f);
 
     }
 }
